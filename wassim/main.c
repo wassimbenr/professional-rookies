@@ -19,7 +19,7 @@ int main(void)
     }
     TTF_Font *police = NULL;
     SDL_Surface *texte = NULL;
-    positionBackground.x = 0;
+    positionBackground.x = 1;
     positionBackground.y = 0;
     SDL_Color couleur = {0, 0, 0};
     SDL_Event event;
