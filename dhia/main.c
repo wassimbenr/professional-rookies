@@ -3,25 +3,56 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
-int main(void)
+
+#include "defs.h"
+#include "hero.h"
+#include "background.h"
+
+int main()
 {
-   
-                    texte = TTF_RenderText_Blended(police, "Re", couleur);
-                    positionText.x = 87;
-                    positionText.y = 262;
-                    break;
-                }
-                }
-            }
-        }
-        SDL_BlitSurface(background, NULL, screen, &positionBackground);
-        SDL_BlitSurface(texte, NULL, screen, &positionText);
-        SDL_Flip(screen);
-    }
-    SDL_FreeSurface(background);
-    TTF_CloseFont(police);
-    TTF_Quit();
-    SDL_FreeSurface(texte);
-    SDL_Quit();
-    return 0;
+	SDL_Surface *screen=NULL;
+	SDL_Event event;
+	int continuer=1;
+	hero kirby;
+	background background;
+	
+	initialiser_background(&background);
+	initialiser_hero(&kirby);
+	
+	screen=SDL_SetVideoMode(background.image->w,background.image->h,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+
+	SDL_EnableKeyRepeat(10,10);	
+	while(continuer)
+	{
+		while(SDL_PollEvent(&event))
+		{
+			switch(event.type)
+			{
+				case SDL_QUIT:
+					continuer=0;
+					break;
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym)
+					{
+						case SDLK_ESCAPE:
+							continuer=0;
+							break;
+					}
+					break;
+			}
+			deplacer_hero(&kirby,event,background.background_mask);
+		}
+
+		
+		animer_hero(&kirby);
+
+		afficher_background(&background,screen);
+		afficher_hero(&kirby,screen);
+
+		SDL_Flip(screen);
+	}
+	free_background(&background);
+	free_hero(&kirby);
+	SDL_Quit();
+	return 0;
 }
