@@ -8,10 +8,11 @@ int main(void)
     SDL_Surface *screen = NULL;
     SDL_Surface *background = NULL;
     SDL_Rect positionBackground;
+    SDL_Rect positionscreen;
     SDL_Rect positionText;
     SDL_WM_SetCaption("Test", NULL);
-    screen = SDL_SetVideoMode(480, 360, 32, SDL_HWSURFACE);
-    background = IMG_Load("img/backgrounds/piano.png"); // f hot l background f dossier img/background
+    background = IMG_Load("img/backgrounds/full-bg.png"); // f hot l background f dossier img/background
+    screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
     if (TTF_Init() == -1)
     {
         fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
@@ -19,8 +20,12 @@ int main(void)
     }
     TTF_Font *police = NULL;
     SDL_Surface *texte = NULL;
-    positionBackground.x = 0;
+    positionBackground.x = 00;
     positionBackground.y = 0;
+    positionscreen.x=0;
+    positionscreen.y=800;
+    positionscreen.w=800;
+    positionscreen.h=600;
     SDL_Color couleur = {0, 0, 0};
     SDL_Event event;
     int continuer = 1;
@@ -66,7 +71,7 @@ int main(void)
                 }
             }
         }
-        SDL_BlitSurface(background, NULL, screen, &positionBackground);
+        SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
         SDL_BlitSurface(texte, NULL, screen, &positionText);
         SDL_Flip(screen);
     }
