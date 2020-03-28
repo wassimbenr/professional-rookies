@@ -3,77 +3,56 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
-int main(void)
+
+#include "defs.h"
+#include "hero.h"
+#include "background.h"
+
+int main()
 {
-    SDL_Surface *screen = NULL;
-    SDL_Surface *background = NULL;
-    SDL_Rect positionBackground;
-    SDL_Rect positionText;
-    SDL_WM_SetCaption("Test", NULL);
-    screen = SDL_SetVideoMode(480, 360, 32, SDL_HWSURFACE);
-    background = IMG_Load("img/backgrounds/piano.png"); // f hot l background f dossier img/background
-    if (TTF_Init() == -1)
-    {
-        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-        exit(EXIT_FAILURE);
-    }
-    TTF_Font *police = NULL;
-    SDL_Surface *texte = NULL;
-    positionBackground.x = 0;
-    positionBackground.y = 0;
-    SDL_Color couleur = {0, 0, 0};
-    SDL_Event event;
-    int continuer = 1;
-    police = TTF_OpenFont("fonts/angelina.TTF", 15);
-    if (!screen)
-    {
-        fprintf(stderr, "Impossible de charger le mode video: %s\n", SDL_GetError());
-        printf("Window not created\n");
-        exit(EXIT_FAILURE);
-    }
-    if (!background)
-    {
-        printf("Unable to Load Image%s\n", SDL_GetError());
-        return 1;
-    }
-    SDL_EnableKeyRepeat(5, 5);
-    while (continuer)
-    {
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                continuer = 0;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_d:
-                {
-                    texte = TTF_RenderText_Blended(police, "Do", couleur);
-                    positionText.x = 32;
-                    positionText.y = 262;
-                    break;
-                }
-                case SDLK_r:
-                {
-                    texte = TTF_RenderText_Blended(police, "Re", couleur);
-                    positionText.x = 87;
-                    positionText.y = 262;
-                    break;
-                }
-                }
-            }
-        }
-        SDL_BlitSurface(background, NULL, screen, &positionBackground);
-        SDL_BlitSurface(texte, NULL, screen, &positionText);
-        SDL_Flip(screen);
-    }
-    SDL_FreeSurface(background);
-    TTF_CloseFont(police);
-    TTF_Quit();
-    SDL_FreeSurface(texte);
-    SDL_Quit();
-    return 0;
+	SDL_Surface *screen=NULL;
+	SDL_Event event;
+	int continuer=1;
+	hero kirby;
+	background background;
+	
+	initialiser_background(&background);
+	initialiser_hero(&kirby);
+	
+	screen=SDL_SetVideoMode(background.image->w,background.image->h,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+
+	SDL_EnableKeyRepeat(10,10);	
+	while(continuer)
+	{
+		while(SDL_PollEvent(&event))
+		{
+			switch(event.type)
+			{
+				case SDL_QUIT:
+					continuer=0;
+					break;
+				case SDL_KEYDOWN:
+					switch(event.key.keysym.sym)
+					{
+						case SDLK_ESCAPE:
+							continuer=0;
+							break;
+					}
+					break;
+			}
+			deplacer_hero(&kirby,event,background.background_mask);
+		}
+
+		
+		animer_hero(&kirby);
+
+		afficher_background(&background,screen);
+		afficher_hero(&kirby,screen);
+
+		SDL_Flip(screen);
+	}
+	free_background(&background);
+	free_hero(&kirby);
+	SDL_Quit();
+	return 0;
 }
