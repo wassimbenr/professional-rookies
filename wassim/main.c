@@ -28,30 +28,33 @@ int main(void)
         printf("Unable to Load Image%s\n", SDL_GetError());
         return 1;
     }
-
     entite enemie;
     init_entite(&enemie);
-
-
-
-    SDL_EnableKeyRepeat(5, 5);
     while (continuer)
     {
-        while (SDL_PollEvent(&event))
+        SDL_PollEvent(&event);
+
+        SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
+        deplacer_alea(&enemie);
+        afficher_entite(&enemie, screen);
+        SDL_Flip(screen);
+        //SDL_WaitEvent(&event);
+        switch (event.type)
         {
-            switch (event.type)
+        case SDL_QUIT:
+            continuer = 0;
+            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym)
             {
-            case SDL_QUIT:
+            case SDLK_ESCAPE:
                 continuer = 0;
                 break;
             }
         }
-        SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
-        
-        afficher_entite(&enemie,screen);
-        SDL_Flip(screen);
     }
     SDL_FreeSurface(background);
+    free_entite(&enemie);
     SDL_Quit();
     return 0;
 }
