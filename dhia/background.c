@@ -1,5 +1,6 @@
 #include "background.h"
 
+
 void initialiser_background(background *b)
 {
 	SDL_Init(SDL_INIT_VIDEO);

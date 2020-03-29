@@ -1,8 +1,8 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
-#include "SDL/SDL_ttf.h"
+#include "SDL/SDL_ttf.h"*/
 
 #include "defs.h"
 #include "hero.h"
@@ -41,9 +41,9 @@ int main()
 					break;
 			}
 			deplacer_hero(&kirby,event,background.background_mask);
-			printf("%d\n",kirby.position_hero.y);
 		}
-		
+		if (CollisionParfaite(background.background_mask,kirby.sprite.frame,kirby.position_hero)!=-2 && kirby.direction!=2 && kirby.position_hero.y!=NIVEAU_SOL)
+				kirby.position_hero.y+=5;
 		animer_hero(&kirby);
 
 		afficher_background(&background,screen);

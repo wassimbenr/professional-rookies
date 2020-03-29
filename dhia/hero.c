@@ -1,7 +1,7 @@
 #include "hero.h"
 #include <math.h>
 #include "defs.h"
-
+#include "background.h"
 void initialiser_hero(hero *h)
 {
 	h->position_hero.x=100;
@@ -76,9 +76,9 @@ int CollisionParfaite(SDL_Surface* backgroundMask, SDL_Rect frame, SDL_Rect posi
 
 void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 {
-	static int t=0;
-	if (t==3)
-		t=0;
+	/*static int t=0;
+	if (t==17)
+		t=0;*/
 	//to not execute jump for the first 2 frames
 	switch(event.type)
 	{
@@ -100,13 +100,14 @@ void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 				}
 				break;
 			case SDLK_UP:
-				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 && t==2)
+				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 /*&& t==16*/)
 				{	
 					if (h->position_hero.y!=410)
-						h->position_hero.y-=2;
+						h->position_hero.y-=6;
 					h->direction=2;
 				}
-				t++;
+				h->direction=2;
+				//t++;
 				break;
 			case SDLK_DOWN:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=-2)
@@ -121,8 +122,6 @@ void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 			h->direction=0;
 			break;
 	}
-	if (h->position_hero.y!=NIVEAU_SOL && h->direction!=2)
-		h->position_hero.y+=60;
 }
 void afficher_hero(hero *h, SDL_Surface* screen)
 {
@@ -149,11 +148,10 @@ void animer_hero(hero *h)
 	}
 	else if(h->direction==2)
 	{
-		h->sprite.frame.y=370;
-		h->sprite.frame.h=140;
+		h->sprite.frame.y=400;
+		h->sprite.frame.h=120;
 		h->sprite.maxframe=7;
 		h->sprite.frame.w=50;
-		//h->position_hero.y=NIVEAU_SOL;
 	}
 	else if(h->direction==3)
 	{
@@ -163,7 +161,7 @@ void animer_hero(hero *h)
 		h->sprite.maxframe=9;
 	}
 	tempsActuel=SDL_GetTicks();
-	if (tempsActuel-tempsPrecedent >250)
+	if (tempsActuel-tempsPrecedent >150)
 	{
 		h->sprite.curframe+=1;
 		if (h->sprite.curframe > h->sprite.maxframe)
