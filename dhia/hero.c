@@ -76,6 +76,10 @@ int CollisionParfaite(SDL_Surface* backgroundMask, SDL_Rect frame, SDL_Rect posi
 
 void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 {
+	static int t=0;
+	if (t==3)
+		t=0;
+	//to not execute jump for the first 2 frames
 	switch(event.type)
 	{
 		case SDL_KEYDOWN:
@@ -96,12 +100,13 @@ void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 				}
 				break;
 			case SDLK_UP:
-				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2)
+				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 && t==2)
 				{	
 					if (h->position_hero.y!=410)
 						h->position_hero.y-=2;
 					h->direction=2;
 				}
+				t++;
 				break;
 			case SDLK_DOWN:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=-2)
@@ -130,10 +135,8 @@ void animer_hero(hero *h)
 
 	if (h->direction==0)
 	{
-		//initialiser_hero(h);
 		h->sprite.frame.y=0;
 		h->sprite.frame.h=69;
-		h->position_hero.y=NIVEAU_SOL;
 		h->sprite.maxframe=4;
 		h->sprite.frame.w=50;
 	}
@@ -141,28 +144,26 @@ void animer_hero(hero *h)
 	{
 		h->sprite.frame.y=140;
 		h->sprite.frame.h=69;
-		h->position_hero.y=NIVEAU_SOL;
 		h->sprite.maxframe=4;
 		h->sprite.frame.w=50;
 	}
 	else if(h->direction==2)
 	{
-		h->sprite.frame.y=364;
-		h->sprite.frame.h=170;
-		h->position_hero.y=430;
+		h->sprite.frame.y=370;
+		h->sprite.frame.h=140;
 		h->sprite.maxframe=7;
 		h->sprite.frame.w=50;
+		//h->position_hero.y=NIVEAU_SOL;
 	}
 	else if(h->direction==3)
 	{
 		h->sprite.frame.y=280;
 		h->sprite.frame.h=73;
 		h->sprite.frame.w=49;
-		h->position_hero.y=NIVEAU_SOL;
 		h->sprite.maxframe=9;
 	}
 	tempsActuel=SDL_GetTicks();
-	if (tempsActuel-tempsPrecedent > 150)
+	if (tempsActuel-tempsPrecedent >250)
 	{
 		h->sprite.curframe+=1;
 		if (h->sprite.curframe > h->sprite.maxframe)
