@@ -7,25 +7,8 @@ int main(void)
 {
     SDL_Surface *screen = NULL;
     SDL_Surface *background = NULL;
-    SDL_Event event;
     SDL_Rect positionBackground;
     SDL_Rect positionscreen;
-<<<<<<< HEAD
-
-    screen = SDL_SetVideoMode(200, 160, 32, SDL_HWSURFACE);
-    background = IMG_Load("img/backgrounds/piano.png"); // f hot l background f dossier img/background
-    positionBackground.x = 0;
-    positionBackground.y = 0;
-
-    positionscreen.x=100;
-    positionscreen.y=100;
-    positionscreen.w=200;
-    positionscreen.h=160;
-
-    SDL_Init(SDL_INIT_VIDEO);
-
-    
-=======
     SDL_Rect positionText;
     SDL_WM_SetCaption("Test", NULL);
     background = IMG_Load("img/backgrounds/full-bg.png"); // f hot l background f dossier img/background
@@ -45,11 +28,20 @@ int main(void)
     positionscreen.h=600;
     SDL_Color couleur = {0, 0, 0};
     SDL_Event event;
->>>>>>> a445bca041315940e5dffb5edac58ca3eef170df
     int continuer = 1;
-
-
-    //SDL_EnableKeyRepeat(5, 5);
+    police = TTF_OpenFont("fonts/angelina.TTF", 15);
+    if (!screen)
+    {
+        fprintf(stderr, "Impossible de charger le mode video: %s\n", SDL_GetError());
+        printf("Window not created\n");
+        exit(EXIT_FAILURE);
+    }
+    if (!background)
+    {
+        printf("Unable to Load Image%s\n", SDL_GetError());
+        return 1;
+    }
+    SDL_EnableKeyRepeat(5, 5);
     while (continuer)
     {
         while (SDL_PollEvent(&event))
@@ -64,29 +56,29 @@ int main(void)
                 {
                 case SDLK_d:
                 {
-                    positionscreen.y-=20;
+                    texte = TTF_RenderText_Blended(police, "Do", couleur);
+                    positionText.x = 32;
+                    positionText.y = 262;
                     break;
                 }
                 case SDLK_r:
                 {
-                    
+                    texte = TTF_RenderText_Blended(police, "Re", couleur);
+                    positionText.x = 87;
+                    positionText.y = 262;
                     break;
                 }
                 }
             }
         }
         SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
-<<<<<<< HEAD
-  
-=======
         SDL_BlitSurface(texte, NULL, screen, &positionText);
->>>>>>> a445bca041315940e5dffb5edac58ca3eef170df
         SDL_Flip(screen);
     }
-    /*SDL_FreeSurface(background);
+    SDL_FreeSurface(background);
     TTF_CloseFont(police);
     TTF_Quit();
-    SDL_FreeSurface(texte);*/
+    SDL_FreeSurface(texte);
     SDL_Quit();
     return 0;
 }
