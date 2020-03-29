@@ -28,6 +28,12 @@ int main(void)
         printf("Unable to Load Image%s\n", SDL_GetError());
         return 1;
     }
+
+    entite enemie;
+    init_entite(&enemie);
+
+
+
     SDL_EnableKeyRepeat(5, 5);
     while (continuer)
     {
@@ -41,6 +47,8 @@ int main(void)
             }
         }
         SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
+        
+        afficher_entite(&enemie,screen);
         SDL_Flip(screen);
     }
     SDL_FreeSurface(background);
