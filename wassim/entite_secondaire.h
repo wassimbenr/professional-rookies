@@ -1,36 +1,32 @@
-# ifndef entite_secondaire.h
-# définir entite_secondaire.h
-# inclut  < SDL / SDL.h >
-# inclure  " SDL / SDL_image.h "
+#include <stdio.h>
+#include "SDL/SDL.h"
+#include "SDL/SDL_image.h"
+#include "SDL/SDL_mixer.h"
+#include "SDL/SDL_ttf.h"
 
-typedef struct FRAME
+typedef struct Sprite
 {
-	int i;	
-	int j;	
-}FRAME;
-
+	SDL_Surface *image;
+	SDL_Rect frame;
+	int curframe,maxframe;
+}sprite;
 
 struct Entite
 { 
         SDL_Rect posMax;
         SDL_Rect posMin;
         SDL_Surface * sprite_secondaire;
-	SDL_Rect positionEntite;
         SDL_Rect posScreen ;
         SDL_Rect posSprite ;
+        SDL_Rect position_entite;
+        sprite sprite;
 	int Direction;
+        int vitesse;
 };
 typedef  struct Entite entite;
 void init_entite(entite *E);
 void deplacer_alea(entite *E);
 void animation (entite *E);
-void display_ennemi(Ennemi E, SDL_Surface* screen);
+void display_ennemi(entite *E, SDL_Surface* screen);
 void freeEnnemi(entite *E);
 
-
-
-
-
-
-
-#endif
