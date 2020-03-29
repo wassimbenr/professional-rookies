@@ -17,6 +17,7 @@ char txt [ 20 ];
 TTF_Font *police = NULL;
 SDL_Color couleurTxt;
 int val_score;
+//aa
 }score;
 
  
