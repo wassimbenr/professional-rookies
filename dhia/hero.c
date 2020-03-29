@@ -8,13 +8,13 @@ void initialiser_hero(hero *h)
 	h->position_hero.y=NIVEAU_SOL;
 	h->direction=0;
 
-	h->sprite.image=IMG_Load("./img/hero/kirby.png");
+	h->sprite.image=IMG_Load("./img/hero/girl.png");
 	h->sprite.frame.x=0;
 	h->sprite.frame.y=0;
-	h->sprite.frame.w=32;
-	h->sprite.frame.h=32;
+	h->sprite.frame.w=50;
+	h->sprite.frame.h=69;
 	h->sprite.curframe=0;
-	h->sprite.maxframe=1;
+	h->sprite.maxframe=4;
 }
 SDL_Color GetPixel(SDL_Surface *pSurface,int x,int y)
 {
@@ -84,34 +84,40 @@ void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 				case SDLK_RIGHT:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=-1)
 				{
-					h->position_hero.x+=2;
+					h->position_hero.x+=4;
 					h->direction=1;
 				}
 				break;
 			case SDLK_LEFT:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=1)
 				{
-					h->position_hero.x-=2;
+					h->position_hero.x-=4;
 					h->direction=-1;
 				}
 				break;
 			case SDLK_UP:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2)
 				{	
-					h->position_hero.y-=5;
+					if (h->position_hero.y!=410)
+						h->position_hero.y-=2;
+					h->direction=2;
 				}
 				break;
 			case SDLK_DOWN:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=-2)
 					h->position_hero.y+=5;
 				break;
+			case SDLK_d:
+				h->direction=3;
+				break;
 			}
 			break;
 		case SDL_KEYUP:
 			h->direction=0;
-			h->position_hero.y=NIVEAU_SOL;
 			break;
 	}
+	if (h->position_hero.y!=NIVEAU_SOL && h->direction!=2)
+		h->position_hero.y+=60;
 }
 void afficher_hero(hero *h, SDL_Surface* screen)
 {
@@ -123,11 +129,40 @@ void animer_hero(hero *h)
 	static int tempsPrecedent=0;
 
 	if (h->direction==0)
+	{
+		//initialiser_hero(h);
 		h->sprite.frame.y=0;
-	else if(h->direction==1)
-		h->sprite.frame.y=50;
+		h->sprite.frame.h=69;
+		h->position_hero.y=NIVEAU_SOL;
+		h->sprite.maxframe=4;
+		h->sprite.frame.w=50;
+	}
+	else if(h->direction==-1)
+	{
+		h->sprite.frame.y=140;
+		h->sprite.frame.h=69;
+		h->position_hero.y=NIVEAU_SOL;
+		h->sprite.maxframe=4;
+		h->sprite.frame.w=50;
+	}
+	else if(h->direction==2)
+	{
+		h->sprite.frame.y=364;
+		h->sprite.frame.h=170;
+		h->position_hero.y=430;
+		h->sprite.maxframe=7;
+		h->sprite.frame.w=50;
+	}
+	else if(h->direction==3)
+	{
+		h->sprite.frame.y=280;
+		h->sprite.frame.h=73;
+		h->sprite.frame.w=49;
+		h->position_hero.y=NIVEAU_SOL;
+		h->sprite.maxframe=9;
+	}
 	tempsActuel=SDL_GetTicks();
-	if (tempsActuel-tempsPrecedent > 200)
+	if (tempsActuel-tempsPrecedent > 150)
 	{
 		h->sprite.curframe+=1;
 		if (h->sprite.curframe > h->sprite.maxframe)

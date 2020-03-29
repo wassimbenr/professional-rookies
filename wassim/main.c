@@ -7,36 +7,27 @@ int main(void)
 {
     SDL_Surface *screen = NULL;
     SDL_Surface *background = NULL;
-    SDL_Rect positionBackground;
-    SDL_Rect positionText;
-    SDL_WM_SetCaption("Test", NULL);
-    screen = SDL_SetVideoMode(480, 360, 32, SDL_HWSURFACE);
-    background = IMG_Load("img/backgrounds/piano.png"); // f hot l background f dossier img/background
-    if (TTF_Init() == -1)
-    {
-        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-        exit(EXIT_FAILURE);
-    }
-    TTF_Font *police = NULL;
-    SDL_Surface *texte = NULL;
-    positionBackground.x = 1;
-    positionBackground.y = 0;
-    SDL_Color couleur = {0, 0, 0};
     SDL_Event event;
+    SDL_Rect positionBackground;
+    SDL_Rect positionscreen;
+
+    screen = SDL_SetVideoMode(200, 160, 32, SDL_HWSURFACE);
+    background = IMG_Load("img/backgrounds/piano.png"); // f hot l background f dossier img/background
+    positionBackground.x = 0;
+    positionBackground.y = 0;
+
+    positionscreen.x=100;
+    positionscreen.y=100;
+    positionscreen.w=200;
+    positionscreen.h=160;
+
+    SDL_Init(SDL_INIT_VIDEO);
+
+    
     int continuer = 1;
-    police = TTF_OpenFont("fonts/angelina.TTF", 15);
-    if (!screen)
-    {
-        fprintf(stderr, "Impossible de charger le mode video: %s\n", SDL_GetError());
-        printf("Window not created\n");
-        exit(EXIT_FAILURE);
-    }
-    if (!background)
-    {
-        printf("Unable to Load Image%s\n", SDL_GetError());
-        return 1;
-    }
-    SDL_EnableKeyRepeat(5, 5);
+
+
+    //SDL_EnableKeyRepeat(5, 5);
     while (continuer)
     {
         while (SDL_PollEvent(&event))
@@ -51,29 +42,25 @@ int main(void)
                 {
                 case SDLK_d:
                 {
-                    texte = TTF_RenderText_Blended(police, "Do", couleur);
-                    positionText.x = 32;
-                    positionText.y = 262;
+                    positionscreen.y-=20;
                     break;
                 }
                 case SDLK_r:
                 {
-                    texte = TTF_RenderText_Blended(police, "Re", couleur);
-                    positionText.x = 87;
-                    positionText.y = 262;
+                    
                     break;
                 }
                 }
             }
         }
-        SDL_BlitSurface(background, NULL, screen, &positionBackground);
-        SDL_BlitSurface(texte, NULL, screen, &positionText);
+        SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
+  
         SDL_Flip(screen);
     }
-    SDL_FreeSurface(background);
+    /*SDL_FreeSurface(background);
     TTF_CloseFont(police);
     TTF_Quit();
-    SDL_FreeSurface(texte);
+    SDL_FreeSurface(texte);*/
     SDL_Quit();
     return 0;
 }

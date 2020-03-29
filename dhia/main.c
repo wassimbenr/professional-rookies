@@ -41,8 +41,8 @@ int main()
 					break;
 			}
 			deplacer_hero(&kirby,event,background.background_mask);
+			//printf("%d\n",kirby.position_hero.y);
 		}
-
 		
 		animer_hero(&kirby);
 

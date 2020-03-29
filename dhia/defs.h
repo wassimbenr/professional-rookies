@@ -1,1 +1,1 @@
-#define NIVEAU_SOL 510
+#define NIVEAU_SOL 470
