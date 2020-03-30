@@ -36,6 +36,7 @@ int main(void)
 
         SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
         deplacer_alea(&enemie);
+        animation(&enemie);
         afficher_entite(&enemie, screen);
         SDL_Flip(screen);
         //SDL_WaitEvent(&event);
