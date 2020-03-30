@@ -102,11 +102,12 @@ void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 			case SDLK_UP:
 				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 /*&& t==16*/)
 				{	
-					if (h->position_hero.y!=410)
-						h->position_hero.y-=6;
+					//if (h->position_hero.y!=NIVEAU_SOL-60)
+					//	h->position_hero.y-=1; //doit ne pas depasser
+					//h->direction=2;
 					h->direction=2;
 				}
-				h->direction=2;
+				
 				//t++;
 				break;
 			case SDLK_DOWN:
@@ -119,9 +120,18 @@ void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
 			}
 			break;
 		case SDL_KEYUP:
-			h->direction=0;
+			//h->direction=0;
 			break;
 	}
+	//Added
+	/*if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 && h->direction==2)
+	{	
+		if (h->position_hero.y!=NIVEAU_SOL-60)
+			h->position_hero.y-=1; //doit ne pas depasser
+		//h->direction=2;
+	}
+	if (h->position_hero.y==NIVEAU_SOL-60)
+		h->direction=0;*/
 }
 void afficher_hero(hero *h, SDL_Surface* screen)
 {
