@@ -80,7 +80,7 @@ void afficher_hero(hero *h, SDL_Surface* screen)
 {
 	SDL_BlitSurface(h->sprite.image,&h->sprite.frame,screen,&h->position);
 }
-void animer_hero(hero *h,enum movement movement)
+void animer_hero(hero *h,movement movement)
 {
 	static int tempsActuel=0;
 	static int tempsPrecedent=0;

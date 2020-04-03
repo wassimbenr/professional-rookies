@@ -7,6 +7,9 @@
 enum direction {RIGHT,LEFT};
 enum movement {IDLE,WALK,JUMP,PUNCH,KICK,HIT,DIE};
 
+typedef enum direction direction;
+typedef enum movement movement;
+
 typedef struct Sprite
 {
 	SDL_Surface *image;
@@ -18,12 +21,12 @@ typedef struct Hero
 {
 	sprite sprite;
 	SDL_Rect position;
-	enum direction direction;
-	enum movement movement;
+	direction direction;
+	movement movement;
 
 }hero;
 
 void initialiser_hero(hero *h);
-void animer_hero(hero *h,enum movement movement);
+void animer_hero(hero *h,movement movement);
 void afficher_hero(hero *h, SDL_Surface* screen);
 void free_hero(hero *h);
