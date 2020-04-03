@@ -8,15 +8,17 @@ int main()
 	SDL_Surface *screen=NULL;
 	SDL_Event event;
 	int continuer=1;
-	hero kirby;
+	hero safwen;
 	background background;
+
 	
 	initialiser_background(&background);
-	initialiser_hero(&kirby);
+	initialiser_hero(&safwen);
 	
 	screen=SDL_SetVideoMode(background.image->w,background.image->h,32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
 	SDL_EnableKeyRepeat(10,10);	
+
 	while(continuer)
 	{
 		while(SDL_PollEvent(&event))
@@ -25,7 +27,6 @@ int main()
 			{
 				case SDL_QUIT:
 					continuer=0;
-					printf("%d\n",kirby.position_hero.y);
 					break;
 				case SDL_KEYDOWN:
 					switch(event.key.keysym.sym)
@@ -33,39 +34,48 @@ int main()
 						case SDLK_ESCAPE:
 							continuer=0;
 							break;
+						case SDLK_RIGHT:
+							safwen.direction=RIGHT;
+							animer_hero(&safwen,WALK); 
+							break;
+						case SDLK_LEFT:
+							safwen.direction=LEFT;
+							animer_hero(&safwen,WALK);
+							break;
+						case SDLK_UP:
+							animer_hero(&safwen,JUMP);
+							break;
+						case SDLK_d:
+							animer_hero(&safwen,PUNCH);
+							break;
+						case SDLK_s:
+							animer_hero(&safwen,KICK);
+							break;
+						case SDLK_q:
+							animer_hero(&safwen,HIT);
+							break;
+						case SDLK_x:
+							animer_hero(&safwen,DIE);
+							break;
 					}
 					break;
+				case SDL_KEYUP: 
+					if(safwen.movement==WALK)  //movements with interruptable animations
+						safwen.movement=IDLE;
+					break;
 			}
-			deplacer_hero(&kirby,event,background.background_mask);
 		}
-		//GRAVITY
-		//printf("%d\n%d\n%d\n",CollisionParfaite(background.background_mask,kirby.sprite.frame,kirby.position_hero),kirby.direction,kirby.position_hero.y);
-		if (CollisionParfaite(background.background_mask,kirby.sprite.frame,kirby.position_hero)!=-2 && kirby.direction!=2 && kirby.position_hero.y!=NIVEAU_SOL)
-				kirby.position_hero.y+=1; //doit etre un multiple de la difference to avoid seg fault (depasse NIVEAU_SOL)
-		//position y must be stored (if hero steps on platform. So it can e used for jump limit)
-		// add if (not in 0 level) then make it so
-		//has to cancel out the jump limit value
 
 
-		//SINGLE PRESS
-		if (CollisionParfaite(background.background_mask,kirby.sprite.frame,kirby.position_hero)!=2 && kirby.direction==2/*&& t==16*/)
-		{	
-			if (kirby.position_hero.y!=NIVEAU_SOL-60)
-				kirby.position_hero.y-=1; //doit ne pas depasser
-			//h->direction=2;
-		}
-		if (kirby.position_hero.y==NIVEAU_SOL-60 || kirby.position_hero.y==468) //second condition adjusted to current valeu displayed but has to be equal tp ground_level+60
-			kirby.direction=0;
-
-		animer_hero(&kirby);
+		animer_hero(&safwen,safwen.movement);
 
 		afficher_background(&background,screen);
-		afficher_hero(&kirby,screen);
+		afficher_hero(&safwen,screen);
 
 		SDL_Flip(screen);
 	}
 	free_background(&background);
-	free_hero(&kirby);
+	free_hero(&safwen);
 	SDL_Quit();
 	return 0;
 }

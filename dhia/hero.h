@@ -4,6 +4,9 @@
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
 
+enum direction {RIGHT,LEFT};
+enum movement {IDLE,WALK,JUMP,PUNCH,KICK,HIT,DIE};
+
 typedef struct Sprite
 {
 	SDL_Surface *image;
@@ -14,14 +17,13 @@ typedef struct Sprite
 typedef struct Hero
 {
 	sprite sprite;
-	SDL_Rect position_hero;
-	int direction;
-	int vitesse;
-	int gravite;
+	SDL_Rect position;
+	enum direction direction;
+	enum movement movement;
+
 }hero;
 
 void initialiser_hero(hero *h);
-void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask);
+void animer_hero(hero *h,enum movement movement);
 void afficher_hero(hero *h, SDL_Surface* screen);
-void animer_hero(hero *h);
 void free_hero(hero *h);

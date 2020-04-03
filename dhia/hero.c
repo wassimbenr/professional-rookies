@@ -1,20 +1,23 @@
 #include "hero.h"
-#include <math.h>
 #include "defs.h"
 #include "background.h"
 void initialiser_hero(hero *h)
 {
-	h->position_hero.x=100;
-	h->position_hero.y=NIVEAU_SOL;
-	h->direction=0;
+	h->position.x=100;
+	h->position.y=NIVEAU_SOL;
 
-	h->sprite.image=IMG_Load("./img/hero/girl.png");
+	h->direction=RIGHT;
+	h->movement=IDLE;
+
+	h->sprite.image=IMG_Load("./img/hero/safwen_right.png");
 	h->sprite.frame.x=0;
 	h->sprite.frame.y=0;
-	h->sprite.frame.w=50;
-	h->sprite.frame.h=69;
+
+	h->sprite.frame.w=80;
+	h->sprite.frame.h=72;
 	h->sprite.curframe=0;
-	h->sprite.maxframe=4;
+
+
 }
 SDL_Color GetPixel(SDL_Surface *pSurface,int x,int y)
 {
@@ -73,113 +76,72 @@ int CollisionParfaite(SDL_Surface* backgroundMask, SDL_Rect frame, SDL_Rect posi
 	}
 	return collision;
 }
-
-void deplacer_hero(hero *h,SDL_Event event,SDL_Surface* backgroundMask)
-{
-	/*static int t=0;
-	if (t==17)
-		t=0;*/
-	//to not execute jump for the first 2 frames
-	switch(event.type)
-	{
-		case SDL_KEYDOWN:
-			switch(event.key.keysym.sym)
-			{
-				case SDLK_RIGHT:
-				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=-1)
-				{
-					h->position_hero.x+=4;
-					h->direction=1;
-				}
-				break;
-			case SDLK_LEFT:
-				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=1)
-				{
-					h->position_hero.x-=4;
-					h->direction=-1;
-				}
-				break;
-			case SDLK_UP:
-				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 /*&& t==16*/)
-				{	
-					//if (h->position_hero.y!=NIVEAU_SOL-60)
-					//	h->position_hero.y-=1; //doit ne pas depasser
-					//h->direction=2;
-					h->direction=2;
-				}
-				
-				//t++;
-				break;
-			case SDLK_DOWN:
-				if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=-2)
-					h->position_hero.y+=5;
-				break;
-			case SDLK_d:
-				h->direction=3;
-				break;
-			}
-			break;
-		case SDL_KEYUP:
-			//h->direction=0;
-			break;
-	}
-	//Added
-	/*if (CollisionParfaite(backgroundMask,h->sprite.frame,h->position_hero)!=2 && h->direction==2)
-	{	
-		if (h->position_hero.y!=NIVEAU_SOL-60)
-			h->position_hero.y-=1; //doit ne pas depasser
-		//h->direction=2;
-	}
-	if (h->position_hero.y==NIVEAU_SOL-60)
-		h->direction=0;*/
-}
 void afficher_hero(hero *h, SDL_Surface* screen)
 {
-	SDL_BlitSurface(h->sprite.image,&h->sprite.frame,screen,&h->position_hero);
+	SDL_BlitSurface(h->sprite.image,&h->sprite.frame,screen,&h->position);
 }
-void animer_hero(hero *h)
+void animer_hero(hero *h,enum movement movement)
 {
 	static int tempsActuel=0;
 	static int tempsPrecedent=0;
 
-	if (h->direction==0)
+	if (h->direction==RIGHT)
+		h->sprite.image=IMG_Load("./img/hero/safwen_right.png");
+	if (h->direction==LEFT)
+		h->sprite.image=IMG_Load("./img/hero/safwen_left.png");
+
+	switch(movement)
 	{
-		h->sprite.frame.y=0;
-		h->sprite.frame.h=69;
-		h->sprite.maxframe=4;
-		h->sprite.frame.w=50;
-	}
-	else if(h->direction==-1)
-	{
-		h->sprite.frame.y=140;
-		h->sprite.frame.h=69;
-		h->sprite.maxframe=4;
-		h->sprite.frame.w=50;
-	}
-	else if(h->direction==2)
-	{
-		h->sprite.frame.y=400;
-		h->sprite.frame.h=120;
-		h->sprite.maxframe=7;
-		h->sprite.frame.w=50;
-	}
-	else if(h->direction==3)
-	{
-		h->sprite.frame.y=280;
-		h->sprite.frame.h=73;
-		h->sprite.frame.w=49;
-		h->sprite.maxframe=9;
+		case IDLE:
+			h->sprite.frame.y=0;
+			h->sprite.maxframe=3;
+			break;
+		case WALK:
+			h->sprite.frame.y=72;
+			h->sprite.maxframe=4;
+			h->movement=WALK;
+			break;
+		case JUMP:
+			h->sprite.frame.y=144;
+			h->sprite.maxframe=2;
+			h->movement=JUMP;
+			break;
+		case PUNCH:
+			h->sprite.frame.y=216;
+			h->sprite.maxframe=3;
+			h->movement=PUNCH;
+			break;
+		case KICK:
+			h->sprite.frame.y=288;
+			h->sprite.maxframe=3;
+			h->movement=KICK;
+			break;
+		case HIT:
+			h->sprite.frame.y=360;
+			h->sprite.maxframe=4;
+			h->movement=HIT;
+			break;
+		case DIE:
+			h->sprite.frame.y=432;
+			h->sprite.maxframe=2;
+			h->movement=DIE;
+			break;
 	}
 	tempsActuel=SDL_GetTicks();
 	if (tempsActuel-tempsPrecedent >150)
 	{
-		h->sprite.curframe+=1;
-		if (h->sprite.curframe > h->sprite.maxframe)
+		if (h->sprite.curframe >= h->sprite.maxframe)
+		{		
 			h->sprite.curframe=0;
+			h->movement=IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
+		}
+
 		h->sprite.frame.x=h->sprite.curframe*h->sprite.frame.w;
 		tempsPrecedent=tempsActuel;
+		h->sprite.curframe+=1;
 	}
 }
+
 void free_hero(hero *h)
 {
 	SDL_FreeSurface(h->sprite.image);

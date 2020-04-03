@@ -4,7 +4,7 @@ void init_entite(entite *E)
 	E->Direction = 1;
 
 	E->sprite.image = IMG_Load("img/es/es.png");
-	E->sprite.frame.x = 0;
+	E->sprite.frame.x = 4;
 	E->sprite.frame.y = 0;
 	E->sprite.maxframe = 4;
 	E->sprite.frame.w = (E->sprite.image->w) / E->sprite.maxframe;
@@ -32,7 +32,7 @@ void animation(entite *E)
 		E->sprite.frame.y = 2*E->sprite.frame.h;
 	}
 	tempsActuel = SDL_GetTicks();
-	if (tempsActuel - tempsPrecedent > 100)
+	if (tempsActuel - tempsPrecedent > 50)
 	{
 		if (E->sprite.curframe > E->sprite.maxframe)
 			E->sprite.curframe = 0;
