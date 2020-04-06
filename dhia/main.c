@@ -35,10 +35,12 @@ int main()
 							continuer=0;
 							break;
 						case SDLK_RIGHT:
+							safwen.position.x+=4;
 							safwen.direction=RIGHT;
 							animer_hero(&safwen,WALK); 
 							break;
 						case SDLK_LEFT:
+							safwen.position.x-=4;
 							safwen.direction=LEFT;
 							animer_hero(&safwen,WALK);
 							break;
