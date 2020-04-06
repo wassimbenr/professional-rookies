@@ -114,12 +114,12 @@ void animer_hero(hero *h,movement movement)
 			break;
 		case KICK:
 			h->sprite.frame.y=4*h->sprite.frame.h;
-			h->sprite.maxframe=4;
+			h->sprite.maxframe=3;
 			h->movement=KICK;
 			break;
 		case HIT:
 			h->sprite.frame.y=5*h->sprite.frame.h;
-			h->sprite.maxframe=5;
+			h->sprite.maxframe=4;
 			h->movement=HIT;
 			break;
 		case DIE:
@@ -131,7 +131,7 @@ void animer_hero(hero *h,movement movement)
 	tempsActuel=SDL_GetTicks();
 	if (tempsActuel-tempsPrecedent >200)
 	{
-		if (h->sprite.curframe == h->sprite.maxframe)
+		if (h->sprite.curframe >= h->sprite.maxframe)
 		{		
 			h->sprite.curframe=0;
 			h->movement=IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
