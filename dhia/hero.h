@@ -25,7 +25,6 @@ typedef struct Hero
 	movement movement;
 
 }hero;
-
 void initialiser_hero(hero *h);
 void animer_hero(hero *h,movement movement);
 void afficher_hero(hero *h, SDL_Surface* screen);

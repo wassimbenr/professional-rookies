@@ -17,9 +17,8 @@ void initialiser_hero(hero *h)
 	h->sprite.frame.h=h->sprite.image->h/7;
 
 	h->sprite.curframe=0;
-
-
 }
+
 SDL_Color GetPixel(SDL_Surface *pSurface,int x,int y)
 {
 	SDL_Color color;

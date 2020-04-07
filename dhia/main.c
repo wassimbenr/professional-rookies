@@ -8,7 +8,7 @@ int main()
 	SDL_Surface *screen=NULL;
 	SDL_Event event;
 	int continuer=1;
-	hero safwen;
+	hero safwen,omar;
 	background background;
 
 	
@@ -37,7 +37,7 @@ int main()
 						case SDLK_RIGHT:
 							safwen.position.x+=4;
 							safwen.direction=RIGHT;
-							animer_hero(&safwen,WALK); 
+							animer_hero(&safwen,WALK);  
 							break;
 						case SDLK_LEFT:
 							safwen.position.x-=4;
@@ -70,7 +70,6 @@ int main()
 
 
 		animer_hero(&safwen,safwen.movement);
-
 		afficher_background(&background,screen);
 		afficher_hero(&safwen,screen);
 
