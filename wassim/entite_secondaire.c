@@ -9,7 +9,7 @@ void init_entite(entite *E)
 	E->sprite.frame.x = 0;
 	E->sprite.frame.y = 0;
 	E->sprite.maxframe = 4; //Nb de colone
-	E->sprite.curframe = 0;
+	E->sprite.curframe = 0; //unused
 	E->sprite.frame.w = E->sprite.image->w / E->sprite.maxframe;
 	E->sprite.frame.h = E->sprite.image->h / E->sprite.maxframe; //2=Nb de ligne(g/d)
 
@@ -17,7 +17,7 @@ void init_entite(entite *E)
 	E->posEntite.y = 500;
 
 	srand(time(NULL));
-	E->posMin.x = rand() % 200 + E->posEntite.x;
+	E->posMin.x = rand() % 200 + E->posEntite.x; //+ position Hero
 	E->posMax.x = rand() % 200 + E->posMin.x;
 }
 void animation(entite *E)
@@ -32,6 +32,23 @@ void animation(entite *E)
 	{
 		E->sprite.frame.y = 2 * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
 	}
+
+	switch (E->state)
+	{
+		case (WAITING):
+			{
+				E->sprite.image = IMG_Load("img/es/es.png");
+				E->sprite.maxframe = 4;
+				break;
+			}
+		case (MOVING):
+			{
+				E->sprite.image = IMG_Load("img/es/es.png");
+				E->sprite.maxframe = 4;
+				break;
+			}
+	}
+
 	tempsActuel = SDL_GetTicks();
 	if (tempsActuel - tempsPrecedent > 50)
 	{
