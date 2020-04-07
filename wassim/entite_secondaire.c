@@ -22,14 +22,13 @@ void animation(entite *E)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
-
 	if (E->Direction == 0) //gauche
 	{
-		E->sprite.frame.y = 3*E->sprite.frame.h;
+		E->sprite.frame.y = 3 * E->sprite.frame.h;
 	}
 	else if (E->Direction == 1)
 	{
-		E->sprite.frame.y = 2*E->sprite.frame.h;
+		E->sprite.frame.y = 2 * E->sprite.frame.h;
 	}
 	tempsActuel = SDL_GetTicks();
 	if (tempsActuel - tempsPrecedent > 50)
@@ -39,7 +38,6 @@ void animation(entite *E)
 		E->sprite.frame.x = E->sprite.curframe * E->sprite.frame.w;
 		tempsPrecedent = tempsActuel;
 		E->sprite.curframe += 1;
-		
 	}
 }
 void afficher_entite(entite *E, SDL_Surface *screen)
