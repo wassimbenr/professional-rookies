@@ -1,40 +1,23 @@
 #include "entite_secondaire.h"
+#include "background.h"
+
 int main(void)
 {
     SDL_Surface *screen = NULL;
-    SDL_Surface *background = NULL;
-    SDL_Rect positionBackground;
-    SDL_Rect positionscreen;
-    SDL_WM_SetCaption("wassim", NULL);
-    background = IMG_Load("img/backgrounds/full-bg.png");
-    screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE);
-    positionBackground.x = 00;
-    positionBackground.y = 0;
-    positionscreen.x = 0;
-    positionscreen.y = 800;
-    positionscreen.w = 800;
-    positionscreen.h = 600;
-    SDL_Color couleur = {0, 0, 0};
     SDL_Event event;
     int continuer = 1;
-    if (!screen)
-    {
-        fprintf(stderr, "Impossible de charger le mode video: %s\n", SDL_GetError());
-        printf("Window not created\n");
-        exit(EXIT_FAILURE);
-    }
-    if (!background)
-    {
-        printf("Unable to Load Image%s\n", SDL_GetError());
-        return 1;
-    }
+    background background;
     entite enemie;
+
+    initialiser_background(&background);
     init_entite(&enemie);
+
+    screen = SDL_SetVideoMode(background.image->w, background.image->h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    
     while (continuer)
     {
         SDL_PollEvent(&event);
-
-        SDL_BlitSurface(background, &positionscreen, screen, &positionBackground);
+        afficher_background(&background, screen);
         deplacer_alea(&enemie);
         animation(&enemie);
         afficher_entite(&enemie, screen);
@@ -54,7 +37,7 @@ int main(void)
             }
         }
     }
-    SDL_FreeSurface(background);
+    free_background(&background);
     free_entite(&enemie);
     SDL_Quit();
     return 0;
