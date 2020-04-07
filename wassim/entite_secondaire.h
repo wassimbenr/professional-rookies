@@ -17,17 +17,16 @@ typedef enum State
 	ATTACKING,
 	RUNNING,
 	MOVING,
-	MOVING1
+	
 }state;
 struct Entite
 { 
         SDL_Rect posMax;
         SDL_Rect posMin;
-        SDL_Rect position_entite;
+        SDL_Rect posEntite;
         sprite sprite;
-        SDL_Rect posScreen ;
-        SDL_Rect posSprite ;
-	int Direction;
+		state state;
+		int Direction;
         int vitesse;
 };
 typedef  struct Entite entite;
