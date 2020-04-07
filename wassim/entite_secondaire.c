@@ -3,59 +3,76 @@ void init_entite(entite *E)
 {
 	E->Direction = 1;
 
-	E->sprite.image = IMG_Load("img/es/es.png");
-	E->sprite.frame.x = 4;
-	E->sprite.frame.y = 0;
-	E->sprite.maxframe = 4;
-	E->sprite.frame.w = (E->sprite.image->w) / E->sprite.maxframe;
-	E->sprite.frame.h = (E->sprite.image->h) / E->sprite.maxframe;
-	E->sprite.curframe = 0;
+	E->state = WAITING;
 
-	E->position_entite.x = 100;
-	E->position_entite.y = 500;
+	E->sprite.image = IMG_Load("img/es/es.png"); //initialiser la premiere sprite
+	E->sprite.frame.x = 0;
+	E->sprite.frame.y = 0;
+	E->sprite.maxframe = 4; //Nb de colone
+	E->sprite.curframe = 0; //unused
+	E->sprite.frame.w = E->sprite.image->w / E->sprite.maxframe;
+	E->sprite.frame.h = E->sprite.image->h / E->sprite.maxframe; //2=Nb de ligne(g/d)
+
+	E->posEntite.x = 100;
+	E->posEntite.y = 500;
 
 	srand(time(NULL));
-	E->posMin.x = rand() % 200 + E->position_entite.x;
+	E->posMin.x = rand() % 200 + E->posEntite.x; //+ position Hero
 	E->posMax.x = rand() % 200 + E->posMin.x;
 }
 void animation(entite *E)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
-
 	if (E->Direction == 0) //gauche
 	{
-		E->sprite.frame.y = 3*E->sprite.frame.h;
+		E->sprite.frame.y = 3 * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
 	}
 	else if (E->Direction == 1)
 	{
-		E->sprite.frame.y = 2*E->sprite.frame.h;
+		E->sprite.frame.y = 2 * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
 	}
+
+	switch (E->state)
+	{
+		case (WAITING):
+			{
+				E->sprite.image = IMG_Load("img/es/es.png");
+				E->sprite.maxframe = 4;
+				break;
+			}
+		case (MOVING):
+			{
+				E->sprite.image = IMG_Load("img/es/es.png");
+				E->sprite.maxframe = 4;
+				break;
+			}
+	}
+
 	tempsActuel = SDL_GetTicks();
 	if (tempsActuel - tempsPrecedent > 50)
 	{
-		if (E->sprite.curframe > E->sprite.maxframe)
-			E->sprite.curframe = 0;
-		E->sprite.frame.x = E->sprite.curframe * E->sprite.frame.w;
+		if (E->sprite.frame.x == E->sprite.image->w - E->sprite.frame.w)
+			E->sprite.frame.x = 0;
+		else
+			E->sprite.frame.x += E->sprite.frame.w;
 		tempsPrecedent = tempsActuel;
-		E->sprite.curframe += 1;
-		
 	}
 }
 void afficher_entite(entite *E, SDL_Surface *screen)
 {
-	SDL_BlitSurface(E->sprite.image, &E->sprite.frame, screen, &E->position_entite);
+	SDL_BlitSurface(E->sprite.image, &E->sprite.frame, screen, &E->posEntite);
 }
 void deplacer_alea(entite *E)
 {
-	if (E->position_entite.x > E->posMax.x)
+	if (E->posEntite.x > E->posMax.x)
 		E->Direction = 0;
-	if (E->position_entite.x < E->posMin.x)
+	if (E->posEntite.x < E->posMin.x)
 		E->Direction = 1;
 	if (E->Direction == 0)
-		(E->position_entite.x)--;
+		(E->posEntite.x)--;
 	if (E->Direction == 1)
-		(E->position_entite.x)++;
+		(E->posEntite.x)++;
 }
 void free_entite(entite *E)
 {

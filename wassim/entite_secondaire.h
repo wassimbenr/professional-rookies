@@ -10,16 +10,23 @@ typedef struct Sprite
 	SDL_Rect frame;
 	int curframe,maxframe;
 }sprite;
+typedef enum State
+{
+	WAITING,
+	FOLLOWING,
+	ATTACKING,
+	RUNNING,
+	MOVING,
+	
+}state;
 struct Entite
 { 
-        SDL_Rect posScreen ;
-        SDL_Rect posSprite ;
-
         SDL_Rect posMax;
         SDL_Rect posMin;
-        SDL_Rect position_entite;
+        SDL_Rect posEntite;
         sprite sprite;
-	int Direction;
+		state state;
+		int Direction;
         int vitesse;
 };
 typedef  struct Entite entite;
