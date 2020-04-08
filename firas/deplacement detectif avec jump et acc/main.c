@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
         while (timeAccumulatedMs >= timeStepMs)
         {
 			test=0;
-		Uint8 *keystates = SDL_GetKeyState( NULL );
-		if(keystates[SDLK_UP])
+	    Uint8 *keystates = SDL_GetKeyState( NULL );
+		if(keystates[SDLK_UP]  || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT) ))
 				{
 					
 					if (positionDetect.y>150 && tanguiza==0)
@@ -80,40 +80,59 @@ int main(int argc, char *argv[])
 						tanguiza=1;
 						test=1;}
 				}		
-					if(keystates[SDLK_RIGHT])
+					if(keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x>positionDetect.x)))
 					{	if(positionDetect.y<220)
 						{
-							positionDetect.x+=4;
-						if (positionDetect.x==600)
+							positionDetect.x+=4+accel;
+						if (positionDetect.x>=600)
 							positionDetect.x=0;
 						}
 						else{
 						positionDetect.x+=5+accel;
 						if(accel<5)
 							accel+=0.1;
-						if (positionDetect.x==600)
+						if (positionDetect.x>=600)
 						positionDetect.x=0;}
 					}
-					if(keystates[SDLK_LEFT])
+					if(keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT)  && (event.motion.x<positionDetect.x)))
 					{
 						if(positionDetect.y<220)
 						{
-							positionDetect.x-=4;
+							positionDetect.x-=4+accel;
+							if(accel<5)
+								accel+=0.1;
 						if (positionDetect.x<0)
 							positionDetect.x=0;
 						}
 						else
 						{
-						positionDetect.x-=5;
+						positionDetect.x-=5+accel;
+						if(accel<5)
+							accel+=0.1;
 						if (positionDetect.x<0)
-						positionDetect.x=0;}
+						positionDetect.x=0;
+					}
 					}
 			if(!test && tanguiza==1 && positionDetect.y<220)
-					positionDetect.y+=7;
+			positionDetect.y+=7;
 		while (SDL_PollEvent(&event))
 		{	
 			switch(event.type)
 			{ 
+			case SDL_MOUSEBUTTONUP:
+			if(event.button.button == SDL_BUTTON_RIGHT)
+			{
+				if((positionDetect.y<220)&&(!test))
+					{positionDetect.y+=7;
+						tanguiza=1;
+					}
+					else if(positionDetect.y==220)
+						tanguiza=0;
+					break;
+			}
+			if(event.button.button == SDL_BUTTON_LEFT)
+				accel=0;
+			break;
 			case SDL_KEYDOWN:
 			if(event.key.keysym.sym==SDLK_ESCAPE)
 				continuer=0;
@@ -128,7 +147,7 @@ int main(int argc, char *argv[])
 						tanguiza=0;
 					break;
 			}
-			if(event.key.keysym.sym==SDLK_RIGHT)
+			if(event.key.keysym.sym==SDLK_RIGHT||(event.key.keysym.sym==SDLK_LEFT))
 				accel=0;
 			break;
 			}	
