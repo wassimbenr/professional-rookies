@@ -2,16 +2,16 @@
 void init_entite(entite *E)
 {
 	E->Direction = 1;
-
-	E->state = WAITING;
-
-	E->sprite.image = IMG_Load("img/es/es.png"); //initialiser la premiere sprite
+	E->state = MOVING;
+	E->sprite.image = IMG_Load("img/es/walk.png"); //initialiser la premiere sprite
 	E->sprite.frame.x = 0;
 	E->sprite.frame.y = 0;
-	E->sprite.maxframe = 4; //Nb de colone
+	E->sprite.maxframe = 5; //Nb de colone
+
 	E->sprite.curframe = 0; //unused
+	
 	E->sprite.frame.w = E->sprite.image->w / E->sprite.maxframe;
-	E->sprite.frame.h = E->sprite.image->h / E->sprite.maxframe; //2=Nb de ligne(g/d)
+	E->sprite.frame.h = E->sprite.image->h / 2; //2=Nb de ligne(g/d)
 
 	E->posEntite.x = 100;
 	E->posEntite.y = 500;
@@ -24,30 +24,24 @@ void animation(entite *E)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
-	if (E->Direction == 0) //gauche
-	{
-		E->sprite.frame.y = 3 * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
-	}
-	else if (E->Direction == 1)
-	{
-		E->sprite.frame.y = 2 * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
-	}
 
 	switch (E->state)
 	{
-		case (WAITING):
-			{
-				E->sprite.image = IMG_Load("img/es/es.png");
-				E->sprite.maxframe = 4;
-				break;
-			}
-		case (MOVING):
-			{
-				E->sprite.image = IMG_Load("img/es/es.png");
-				E->sprite.maxframe = 4;
-				break;
-			}
+	case (WAITING):
+	{
+		E->sprite.image = IMG_Load("img/es/walk.png");
+		E->sprite.maxframe = 5;
+		break;
 	}
+	case (MOVING):
+	{
+		E->sprite.image = IMG_Load("img/es/walk.png");
+		E->sprite.maxframe = 5;
+		break;
+	}
+	}
+
+	E->sprite.frame.y = E->Direction * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
 
 	tempsActuel = SDL_GetTicks();
 	if (tempsActuel - tempsPrecedent > 50)
