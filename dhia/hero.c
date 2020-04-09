@@ -3,13 +3,14 @@
 #include "background.h"
 void initialiser_hero(hero *h)
 {
-	h->position.x=100;
-	h->position.y=NIVEAU_SOL;
+	h->position.x=0;
+	h->position.y=220;
 
 	h->direction=RIGHT;
 	h->movement=IDLE;
 
 	h->sprite.image=IMG_Load("./img/hero/safwen_right.png");
+
 	h->sprite.frame.x=0;
 	h->sprite.frame.y=0;
 
@@ -128,12 +129,13 @@ void animer_hero(hero *h,movement movement)
 			break;
 	}
 	tempsActuel=SDL_GetTicks();
-	if (tempsActuel-tempsPrecedent >200)
+	if (tempsActuel-tempsPrecedent > 200)
 	{
 		if (h->sprite.curframe >= h->sprite.maxframe)
 		{		
 			h->sprite.curframe=0;
-			h->movement=IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
+			if (h->movement!=WALK)
+				h->movement=IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
 		}
 
 		h->sprite.frame.x=h->sprite.curframe*h->sprite.frame.w;

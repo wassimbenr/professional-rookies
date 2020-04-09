@@ -35,14 +35,18 @@ int main()
 							continuer=0;
 							break;
 						case SDLK_RIGHT:
-							safwen.position.x+=4;
-							safwen.direction=RIGHT;
-							animer_hero(&safwen,WALK);  
+							if (CollisionParfaite(background.background_mask,safwen.sprite.frame,safwen.position)!=1)
+							{
+								safwen.position.x+=4;
+								safwen.direction=RIGHT;
+								animer_hero(&safwen,WALK); 
+							} 
 							break;
 						case SDLK_LEFT:
 							safwen.position.x-=4;
 							safwen.direction=LEFT;
 							animer_hero(&safwen,WALK);
+
 							break;
 						case SDLK_UP:
 							animer_hero(&safwen,JUMP);
@@ -67,8 +71,7 @@ int main()
 					break;
 			}
 		}
-
-
+		
 		animer_hero(&safwen,safwen.movement);
 		afficher_background(&background,screen);
 		afficher_hero(&safwen,screen);
@@ -79,4 +82,5 @@ int main()
 	free_hero(&safwen);
 	SDL_Quit();
 	return 0;
+
 }
