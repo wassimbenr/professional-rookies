@@ -1,0 +1,6 @@
+gcc -c main.c
+gcc -c hero.c
+gcc -c background.c
+gcc main.o background.o hero.o -o test -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer -lm
+./test
+
