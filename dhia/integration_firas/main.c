@@ -4,10 +4,8 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 
-#include "hero.h"
-#include "background.h"
+#include "background.h" //hero.h included in background.h
 #include "defs.h"
-#include "main_functions.h" 
 
 int main(int argc, char *argv[])
 {
@@ -28,16 +26,14 @@ int main(int argc, char *argv[])
 	int timeLastMs, timeAccumulatedMs, timeDeltaMs, timeCurrentMs = 0;
 	int test;
 	float accel = 0;
-	int current_ground_position=GROUND_LEVEL;
 
-	SDL_Rect positionecran, positionDetect;
+	int current_ground_position=safwen.position.y;
 
-	positionDetect.x = safwen.position.x;
-	positionDetect.y = safwen.position.y;
+	SDL_Rect positionecran;
 
-	
 
 	SDL_Init(SDL_INIT_VIDEO);
+
 
 	ecran = SDL_SetVideoMode(background.image->w, background.image->h, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
 
@@ -45,15 +41,13 @@ int main(int argc, char *argv[])
 
 	while (continuer)
 	{
-
-
 		CollisionParfaite(&safwen,background);
+		printf("UP:%d DOWN:%d RIGHT:%d LEFT:%d curr_gr:%d\n",safwen.collision_UP,safwen.collision_DOWN,safwen.collision_RIGHT,safwen.collision_LEFT,current_ground_position);
+		
 		if (safwen.collision_DOWN)
 			current_ground_position=safwen.position.y;
-
-		safwen.position.x = positionDetect.x;
-		safwen.position.y = positionDetect.y;
-
+		
+		
 		timeLastMs = timeCurrentMs;
 		timeCurrentMs = SDL_GetTicks();
 		timeDeltaMs = timeCurrentMs - timeLastMs;
@@ -66,59 +60,59 @@ int main(int argc, char *argv[])
 			if (keystates[SDLK_UP] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)))
 			{
 
-				if (positionDetect.y > current_ground_position-JUMP_HEIGHT && tanguiza == 0)
+				if (safwen.position.y > current_ground_position-JUMP_HEIGHT && tanguiza == 0 && !safwen.collision_UP)
 				{
 					animer_hero(&safwen,JUMP);
-					positionDetect.y -= 7;
+					safwen.position.y -= 7;
 				}
-				else if (positionDetect.y == current_ground_position-JUMP_HEIGHT || (tanguiza == 1 && !safwen.collision_DOWN))
+				else if (safwen.position.y == current_ground_position-JUMP_HEIGHT || (tanguiza == 1 && !safwen.collision_DOWN))
 				{
 					animer_hero(&safwen,JUMP);
-					positionDetect.y += 7;
+					safwen.position.y += 7;
 					tanguiza = 1;
 					test = 1;
 				}
 			}
-			if (keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x > positionDetect.x)))
+			if (keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x > safwen.position.x)))
 			{
-				if (!safwen.collision_DOWN)
+				if (!safwen.collision_DOWN && !safwen.collision_RIGHT)
 				{
-					positionDetect.x += 4 + accel;
-					positionDetect.y+=7;
-					if (accel < 5)
-						accel += 0.1;
+					safwen.position.x += 4 + accel;
 				}
-				else
+				else if (safwen.collision_DOWN && !safwen.collision_RIGHT)
 				{
-					positionDetect.x += 5 + accel;
-					safwen.direction = RIGHT;
+					safwen.position.x += 5 + accel;
 					animer_hero(&safwen, WALK_RIGHT);
 					if (accel < 5)
 						accel += 0.1;
 				}
 			}
-			if (keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < positionDetect.x)))
+			if (keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < safwen.position.x)))
 			{
-				if (!safwen.collision_DOWN)
+				if (!safwen.collision_DOWN && !safwen.collision_LEFT)
 				{
-					positionDetect.x -= 4 + accel;
-					positionDetect.y+=7;
+					safwen.position.x -= 4 + accel;
 					if (accel < 5)
 						accel += 0.1;
+					if (safwen.position.x < 0)
+						safwen.position.x = 0;
 				}
-				else
+				else if (safwen.collision_DOWN && !safwen.collision_LEFT)
 				{
-					positionDetect.x -= 5 + accel;
-					safwen.direction = LEFT;
+					safwen.position.x -= 5 + accel;
 					animer_hero(&safwen, WALK_LEFT);
 					if (accel < 5)
 						accel += 0.1;
+					if (safwen.position.x < 0)
+						safwen.position.x = 0;
 				}
 			}
-			else if (!test && tanguiza == 1 && !safwen.collision_DOWN)
-				positionDetect.y += 7;
+			if (!test && tanguiza == 1 && !safwen.collision_DOWN)
+				safwen.position.y += 7;
 			else if (safwen.collision_DOWN)
 				tanguiza = 0;
+			if (!safwen.collision_DOWN && !keystates[SDLK_UP])
+				safwen.position.y += 7;
 			while (SDL_PollEvent(&event))
 			{
 				switch (event.type)
@@ -128,7 +122,7 @@ int main(int argc, char *argv[])
 					{
 						if ((!safwen.collision_DOWN) && (!test))
 						{
-							positionDetect.y += 7;
+							safwen.position.y += 7;
 							tanguiza = 1;
 						}
 						else if (safwen.collision_DOWN)
@@ -163,7 +157,7 @@ int main(int argc, char *argv[])
 					{
 						if ((!safwen.collision_DOWN) && (!test))
 						{
-							positionDetect.y += 7;
+							safwen.position.y += 7;
 							tanguiza = 1;
 						}
 						else if (safwen.collision_DOWN)
@@ -180,14 +174,7 @@ int main(int argc, char *argv[])
 				}
 			}
 			timeAccumulatedMs -= timeStepMs;
-			/*printf("%d\n",CollisionParfaite(background.background_mask,safwen.sprite.frame,safwen.position));
-			if  (CollisionParfaite(background.background_mask,safwen.sprite.frame,safwen.position)!=-2)
-				positionDetect.y+=1;
-			else
-			{
-				printf("%d %d\n",safwen.position.y,positionDetect.y);
-				continuer=0;
-			}*/
+
 			
 		}
 		animer_hero(&safwen,safwen.movement);
@@ -198,7 +185,6 @@ int main(int argc, char *argv[])
 
 	free_background(&background);
 	free_hero(&safwen);
-
 	SDL_Quit();
 
 	return EXIT_SUCCESS;
