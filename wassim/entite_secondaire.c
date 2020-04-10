@@ -4,7 +4,7 @@ void init_entite(entite *E)
 	E->Direction = 1;
 	E->type = 0;
 	E->state = WALK;
-	E->sprite.image = IMG_Load("img/es/walk.png"); //initialiser la premiere sprite
+	E->sprite.image = IMG_Load("img/es/walk2.png"); //initialiser la premiere sprite
 	E->sprite.frame.x = 0;
 	E->sprite.frame.y = 0;
 	E->sprite.maxframe = 5; //Nb de colone
@@ -30,13 +30,13 @@ void animation_entite(entite *E)
 	{
 	case (IDLE):
 	{
-		E->sprite.image = IMG_Load("img/es/walk.png");
+		E->sprite.image = IMG_Load("img/es/walk2.png");
 		E->sprite.maxframe = 5;
 		break;
 	}
 	case (WALK):
 	{
-		E->sprite.image = IMG_Load("img/es/walk.png");
+		E->sprite.image = IMG_Load("img/es/walk2.png");
 		E->sprite.maxframe = 5;
 		break;
 	}

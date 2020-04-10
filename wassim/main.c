@@ -12,17 +12,17 @@ int main(void)
     initialiser_background(&background);
     init_entite(&enemie);
 
-    screen = SDL_SetVideoMode(400, background.image->h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(800, background.image->h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     while (continuer)
     {
-        SDL_PollEvent(&event);
+        /*SDL_PollEvent(&event);
         if (collisionParfaite(background.background_mask, enemie.sprite.frame, enemie.posEntite) != 1)
         {
             enemie.posEntite.x += 4;
             enemie.Direction = 1;
             animation_entite(&enemie);
-        }
+        }*/
         //SDL_WaitEvent(&event);
         switch (event.type)
         {
@@ -32,6 +32,9 @@ int main(void)
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
+            case SDL_QUIT:
+                continuer = 0;
+                break;
             case SDLK_ESCAPE:
                 continuer = 0;
                 break;
