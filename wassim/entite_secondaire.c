@@ -2,47 +2,46 @@
 void init_entite(entite *E)
 {
 	E->Direction = 1;
-	E->state = MOVING;
+	E->type = 0;
+	E->state = WALK;
 	E->sprite.image = IMG_Load("img/es/walk.png"); //initialiser la premiere sprite
 	E->sprite.frame.x = 0;
 	E->sprite.frame.y = 0;
 	E->sprite.maxframe = 5; //Nb de colone
 
 	E->sprite.curframe = 0; //unused
-	
+
 	E->sprite.frame.w = E->sprite.image->w / E->sprite.maxframe;
 	E->sprite.frame.h = E->sprite.image->h / 2; //2=Nb de ligne(g/d)
 
-	E->posEntite.x = 100;
-	E->posEntite.y = 500;
+	E->posEntite.x = 0;
+	E->posEntite.y = 0;
 
 	srand(time(NULL));
 	E->posMin.x = rand() % 200 + E->posEntite.x; //+ position Hero
 	E->posMax.x = rand() % 200 + E->posMin.x;
 }
-void animation(entite *E)
+void animation_entite(entite *E)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
 
 	switch (E->state)
 	{
-	case (WAITING):
+	case (IDLE):
 	{
 		E->sprite.image = IMG_Load("img/es/walk.png");
 		E->sprite.maxframe = 5;
 		break;
 	}
-	case (MOVING):
+	case (WALK):
 	{
 		E->sprite.image = IMG_Load("img/es/walk.png");
 		E->sprite.maxframe = 5;
 		break;
 	}
 	}
-
 	E->sprite.frame.y = E->Direction * E->sprite.frame.h; // nb =  E->Direction * E->sprite.frame.h
-
 	tempsActuel = SDL_GetTicks();
 	if (tempsActuel - tempsPrecedent > 50)
 	{
@@ -72,3 +71,16 @@ void free_entite(entite *E)
 {
 	SDL_FreeSurface(E->sprite.image);
 }
+/*
+int colisionBoundingBox(entite *E, Hero *h)
+{
+
+  if ((h->position.x + h->position.w < E->posEntite.x) || (h->position.x > E->posEntite.x + E->posEntite.w) || (h->position.y + h->position.h < E->posEntite.y) || (h->position.y > E->posEntite.y + E->posEntite.h))
+  {
+    return 0;
+  }
+  else
+  {
+    return 1;
+  }
+}*/
