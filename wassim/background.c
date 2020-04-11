@@ -1,15 +1,20 @@
 #include "background.h"
+#include "defs.h"
 
 void initialiser_background(background *b)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Prototype WASSIM", NULL);
-	b->image = IMG_Load("./img/backgrounds/background.png");
-	b->background_mask = IMG_Load("./img/backgrounds/backgroundMask.jpg");
+	b->image = IMG_Load("./img/backgrounds/background1.png");
+	b->background_mask = IMG_Load("./img/backgrounds/background_masque.jpg");
 	b->posBackground.x = 0;
 	b->posBackground.y = 0;
 	b->posBackground_mask.x = 0;
 	b->posBackground_mask.y = 0;
+	b->posCamera.x=300; //SCREEN_WIDTH / 2 ;
+	b->posCamera.y=150; // - SCREEN_HEIGHT / 2;
+	b->posCamera.w=SCREEN_WIDTH;
+	b->posCamera.h=SCREEN_HEIGHT;
 }
 SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y)
 {
@@ -77,8 +82,8 @@ void scrolling(background *b)
 }
 void afficher_background(background *b, SDL_Surface *screen)
 {
-	SDL_BlitSurface(b->background_mask, NULL, screen, &b->posBackground_mask);
-	SDL_BlitSurface(b->image, NULL, screen, &b->posBackground);
+	SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->posBackground_mask);
+	SDL_BlitSurface(b->image, &b->posCamera, screen, &b->posBackground);
 }
 void free_background(background *b)
 {

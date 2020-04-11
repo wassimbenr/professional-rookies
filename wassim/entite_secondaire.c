@@ -1,4 +1,5 @@
 #include "entite_secondaire.h"
+#include "defs.h"
 void init_entite(entite *E)
 {
 	E->Direction = 1;
@@ -13,9 +14,9 @@ void init_entite(entite *E)
 
 	E->sprite.frame.w = E->sprite.image->w / E->sprite.maxframe;
 	E->sprite.frame.h = E->sprite.image->h / 2; //2=Nb de ligne(g/d)
-
-	E->posEntite.x = 0;
-	E->posEntite.y = 0;
+	//position d'Hero
+	E->posEntite.x = SCREEN_WIDTH / 2;
+	E->posEntite.y = SCREEN_HEIGHT / 2;
 
 	srand(time(NULL));
 	E->posMin.x = rand() % 200 + E->posEntite.x; //+ position Hero

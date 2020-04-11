@@ -4,6 +4,7 @@
 #include "SDL/SDL_mixer.h"
 #include <time.h>
 #include "SDL/SDL_ttf.h"
+
 //#include "hero.h"
 typedef struct Sprite
 {

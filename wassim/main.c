@@ -1,5 +1,6 @@
 #include "entite_secondaire.h"
 #include "background.h"
+#include "defs.h"
 
 int main(void)
 {
@@ -12,12 +13,12 @@ int main(void)
     initialiser_background(&background);
     init_entite(&enemie);
 
-    screen = SDL_SetVideoMode(800, background.image->h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); //background.image->h
 
     while (continuer)
     {
-        /*SDL_PollEvent(&event);
-        if (collisionParfaite(background.background_mask, enemie.sprite.frame, enemie.posEntite) != 1)
+        SDL_PollEvent(&event);
+        /*if (collisionParfaite(background.background_mask, enemie.sprite.frame, enemie.posEntite) != 1)
         {
             enemie.posEntite.x += 4;
             enemie.Direction = 1;
