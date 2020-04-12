@@ -1,35 +1,41 @@
 #include "hero.h"
 
-void initialiser_hero(hero *h, char name[20])
+void initialiser_hero(entite *h, char name[20])
 {
-	char image_load[30] = "";
+	char image_load[40] = "";
 	h->position.x = 0;
 	h->position.y = GROUND_LEVEL;
 
 	h->current_ground_position = h->position.y;
 
 	h->direction = RIGHT;
-	h->movement = IDLE;
+	h->state = IDLE;
 
+	//load function
 	strcpy(image_load, "./img/hero/");
 	strcat(image_load, name);
+	if (h->direction==RIGHT)
+		strcat(image_load,"_right");
+	else if (h->direction==LEFT)
+		strcat(image_load,"_left");
 	strcat(image_load, ".png");
 	h->sprite.image = IMG_Load(image_load);
-
+	//end load function
+	printf("%s\n",image_load);
 	h->sprite.frame.x = 0;
 	h->sprite.frame.y = 0;
 
 	h->sprite.frame.w = h->sprite.image->w / 5;
-	h->sprite.frame.h = h->sprite.image->h / 7;
+	h->sprite.frame.h = h->sprite.image->h / JUMP_SPEED;
 
 	h->sprite.curframe = 0;
 }
 
-void afficher_hero(hero *h, SDL_Surface *screen)
+void afficher_hero(entite *h, SDL_Surface *screen)
 {
 	SDL_BlitSurface(h->sprite.image, &h->sprite.frame, screen, &h->position);
 }
-void animer_hero(hero *h, movement movement)
+void animer_hero(entite *h, state movement)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
@@ -43,39 +49,39 @@ void animer_hero(hero *h, movement movement)
 	case WALK_RIGHT:
 		h->sprite.frame.y = h->sprite.frame.h;
 		h->sprite.maxframe = 4;
-		h->movement = WALK_RIGHT;
+		h->state = WALK_RIGHT;
 		h->direction = RIGHT;
 		break;
 	case WALK_LEFT:
 		h->sprite.frame.y = h->sprite.frame.h;
 		h->sprite.maxframe = 4;
-		h->movement = WALK_LEFT;
+		h->state = WALK_LEFT;
 		h->direction = LEFT;
 		break;
 	case JUMP:
 		h->sprite.frame.y = 2 * h->sprite.frame.h;
 		h->sprite.maxframe = 2;
-		h->movement = JUMP;
+		h->state = JUMP;
 		break;
 	case PUNCH:
 		h->sprite.frame.y = 3 * h->sprite.frame.h;
 		h->sprite.maxframe = 4;
-		h->movement = PUNCH;
+		h->state = PUNCH;
 		break;
 	case KICK:
 		h->sprite.frame.y = 4 * h->sprite.frame.h;
 		h->sprite.maxframe = 4;
-		h->movement = KICK;
+		h->state = KICK;
 		break;
-	case HIT:
+	case DAMAGE:
 		h->sprite.frame.y = 5 * h->sprite.frame.h;
 		h->sprite.maxframe = 4;
-		h->movement = HIT;
+		h->state =DAMAGE;
 		break;
 	case DIE:
 		h->sprite.frame.y = 6 * h->sprite.frame.h;
 		h->sprite.maxframe = 3;
-		h->movement = DIE;
+		h->state = DIE;
 		break;
 	}
 
@@ -90,8 +96,8 @@ void animer_hero(hero *h, movement movement)
 		if (h->sprite.curframe >= h->sprite.maxframe)
 		{
 			h->sprite.curframe = 0;
-			if (h->movement != WALK_RIGHT && h->movement != WALK_LEFT)
-				h->movement = IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
+			if (h->state != WALK_RIGHT && h->state != WALK_LEFT)
+				h->state = IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
 		}
 
 		h->sprite.frame.x = h->sprite.curframe * h->sprite.frame.w;
@@ -100,12 +106,12 @@ void animer_hero(hero *h, movement movement)
 	}
 }
 
-void free_hero(hero *h)
+void free_hero(entite *h)
 {
 	SDL_FreeSurface(h->sprite.image);
 }
 
-void deplacer_hero(hero *h, SDL_Event event)
+void deplacer_hero(entite *h, SDL_Event event)
 {
 	static int timeStepMs = 20;
 	static int timeLastMs, timeAccumulatedMs, timeDeltaMs, timeCurrentMs = 0;
@@ -131,13 +137,13 @@ void deplacer_hero(hero *h, SDL_Event event)
 			if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
 			{
 				animer_hero(h, JUMP);
-				h->position.y -= 7;
+				h->position.y -= JUMP_SPEED;
 			}
 
 			else if (h->position.y == h->current_ground_position - JUMP_HEIGHT || (tanguiza == 1 && !h->collision_DOWN))
 			{
 				animer_hero(h, JUMP);
-				h->position.y += 7;
+				h->position.y += JUMP_SPEED;
 				tanguiza = 1;
 				test = 1;
 			}
@@ -177,11 +183,13 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 		}
 		if (!test && tanguiza == 1 && !h->collision_DOWN)
-			h->position.y += 7;
+			h->position.y += JUMP_SPEED;
 		else if (h->collision_DOWN)
 			tanguiza = 0;
 		if (!h->collision_DOWN && !keystates[SDLK_UP])
-			h->position.y += 7;
+			h->position.y += JUMP_SPEED;
+		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT] && !keystates[SDLK_UP])
+			h->state=IDLE;
 		switch (event.type)
 		{
 			while (SDL_PollEvent(&event))
@@ -193,7 +201,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 					{
 						if ((!h->collision_DOWN) && (!test))
 						{
-							h->position.y += 7;
+							h->position.y += JUMP_SPEED;
 							tanguiza = 1;
 						}
 						else if (h->collision_DOWN)
@@ -210,7 +218,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 					{
 						if ((!h->collision_DOWN) && (!test))
 						{
-							h->position.y += 7;
+							h->position.y += JUMP_SPEED;
 							tanguiza = 1;
 						}
 						else if (h->collision_DOWN)
@@ -221,8 +229,8 @@ void deplacer_hero(hero *h, SDL_Event event)
 					{
 						accel = 0;
 					}
-					if (h->movement == WALK_RIGHT || h->movement == WALK_LEFT)
-						h->movement = IDLE;
+					if (h->state == WALK_RIGHT || h->state == WALK_LEFT)
+						h->state = IDLE;
 				}
 			}
 		}

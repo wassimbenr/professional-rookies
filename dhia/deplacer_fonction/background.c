@@ -1,4 +1,5 @@
 #include "background.h"
+
 void initialiser_background(background *b)
 {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -34,7 +35,7 @@ SDL_Color GetPixel(SDL_Surface *pSurface,int x,int y)
 	return (color);
 }
 
-void CollisionParfaite(hero *h,background b)
+void CollisionParfaite(entite *h,background b)
 {	
 	SDL_Color couleur_obstacle={255,255,255};
 	int i=0;

@@ -1,0 +1,13 @@
+void load_hero(hero *h, char name[20])
+{
+	char image_load[30] = "";
+	strcpy(image_load, "./img/hero/");
+	strcat(image_load, name);
+	if (h->direction==RIGHT)
+		strcat(image_load,"_right");
+	else if (h->direction==LEFT)
+		strcat(image_load,"_left");
+	strcat(image_load, ".png");
+	
+	h->sprite.image = IMG_Load(image_load);
+}
