@@ -5,19 +5,16 @@ void init_entite(entite *E)
 	E->Direction = 1;
 	E->type = 0;
 	E->state = WALK;
-	E->sprite.image = IMG_Load("img/es/walk2.png"); //initialiser la premiere sprite
+	E->sprite.image = IMG_Load("img/es/walk.png"); //initialiser la premiere sprite
 	E->sprite.frame.x = 0;
 	E->sprite.frame.y = 0;
 	E->sprite.maxframe = 5; //Nb de colone
-
 	E->sprite.curframe = 0; //unused
-
 	E->sprite.frame.w = E->sprite.image->w / E->sprite.maxframe;
 	E->sprite.frame.h = E->sprite.image->h / 2; //2=Nb de ligne(g/d)
 	//position d'Hero
 	E->posEntite.x = SCREEN_WIDTH / 2;
 	E->posEntite.y = SCREEN_HEIGHT / 2;
-
 	srand(time(NULL));
 	E->posMin.x = rand() % 200 + E->posEntite.x; //+ position Hero
 	E->posMax.x = rand() % 200 + E->posMin.x;
@@ -31,14 +28,38 @@ void animation_entite(entite *E)
 	{
 	case (IDLE):
 	{
-		E->sprite.image = IMG_Load("img/es/walk2.png");
-		E->sprite.maxframe = 5;
+		E->sprite.image = IMG_Load("img/es/idle.png");
+		E->sprite.maxframe = 4;
 		break;
 	}
 	case (WALK):
 	{
-		E->sprite.image = IMG_Load("img/es/walk2.png");
+		E->sprite.image = IMG_Load("img/es/walk.png");
 		E->sprite.maxframe = 5;
+		break;
+	}
+	case (DIE):
+	{
+		E->sprite.image = IMG_Load("img/es/Die.png");
+		E->sprite.maxframe = 4;
+		break;
+	}
+	case (ATTACK):
+	{
+		E->sprite.image = IMG_Load("img/es/attack.png");
+		E->sprite.maxframe = 3;
+		break;
+	}
+	case (DAMAGE):
+	{
+		E->sprite.image = IMG_Load("img/es/Damage.png");
+		E->sprite.maxframe = 5;
+		break;
+	}
+	case (JUMP):
+	{
+		E->sprite.image = IMG_Load("img/es/jump.png");
+		E->sprite.maxframe = 3;
 		break;
 	}
 	}

@@ -1,20 +1,21 @@
 #include "background.h"
 #include "defs.h"
+#include "structs.h"
 
 void initialiser_background(background *b)
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_WM_SetCaption("Prototype WASSIM", NULL);
 	b->image = IMG_Load("./img/backgrounds/background1.png");
-	b->background_mask = IMG_Load("./img/backgrounds/background_masque.jpg");
+	b->background_mask = IMG_Load("./img/backgrounds/background_masque1.jpg");
 	b->posBackground.x = 0;
 	b->posBackground.y = 0;
 	b->posBackground_mask.x = 0;
 	b->posBackground_mask.y = 0;
-	b->posCamera.x=300; //SCREEN_WIDTH / 2 ;
-	b->posCamera.y=150; // - SCREEN_HEIGHT / 2;
-	b->posCamera.w=SCREEN_WIDTH;
-	b->posCamera.h=SCREEN_HEIGHT;
+	b->posCamera.x = 300; //SCREEN_WIDTH / 2 ;
+	b->posCamera.y = 150; // - SCREEN_HEIGHT / 2;
+	b->posCamera.w = SCREEN_WIDTH;
+	b->posCamera.h = SCREEN_HEIGHT;
 }
 SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y)
 {
@@ -26,48 +27,6 @@ SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y)
 	memcpy(&col, pPosition, pSurface->format->BytesPerPixel);
 	SDL_GetRGB(col, pSurface->format, &color.r, &color.g, &color.b);
 	return (color);
-}
-int collisionParfaite(SDL_Surface *backgroundMask, SDL_Rect frame, SDL_Rect position)
-{
-	SDL_Color couleur_obstacle = {255, 255, 255};
-	int i = 0;
-	int collision = 0;
-	SDL_Rect pos[8];
-	pos[0].x = position.x;
-	pos[0].y = position.y;
-	pos[1].x = position.x + frame.w / 2;
-	pos[1].y = position.y;
-	pos[2].x = position.x + frame.w;
-	pos[2].y = position.y;
-	pos[3].x = position.x;
-	pos[3].y = position.y + frame.h / 2;
-	pos[4].x = position.x + frame.w;
-	pos[4].y = position.y + frame.h / 2;
-	pos[5].x = position.x;
-	pos[5].y = position.y + frame.h;
-	pos[6].x = position.x + frame.w / 2;
-	pos[6].y = position.y + frame.h;
-	pos[7].x = position.x + frame.w;
-	pos[7].y = position.y + frame.h;
-	while (i < 8 && collision == 0)
-	{
-		couleur_obstacle = GetPixel(backgroundMask, pos[i].x, pos[i].y);
-		if (couleur_obstacle.r == 0 && couleur_obstacle.g == 0 && couleur_obstacle.b == 0)
-			collision = 1;
-		i++;
-	}
-	if (collision != 0)
-	{
-		if (i == 0 || i == 3 || i == 5)
-			collision = -1;
-		else if (i == 2 || i == 4)
-			collision = 1;
-		else if (i == 1)
-			collision = 2;
-		else
-			collision = -2;
-	}
-	return collision;
 }
 void scrolling(background *b)
 {
@@ -89,4 +48,96 @@ void free_background(background *b)
 {
 	SDL_FreeSurface(b->image);
 	SDL_FreeSurface(b->background_mask);
+}
+void collisionParfaite(entite *h,background b)
+{	
+	SDL_Color couleur_obstacle={255,255,255};
+	int i=0;
+	int collision=0;
+	SDL_Rect pos[8];
+
+	h->collision_UP=-1;
+	h->collision_DOWN=-1;
+	h->collision_RIGHT=-1;
+	h->collision_LEFT=-1;
+
+	pos[0].x=h->position.x;
+	pos[0].y=h->position.y;
+	pos[1].x=h->position.x+h->sprite.frame.w/3.9;
+	pos[1].y=h->position.y;
+	pos[2].x=h->position.x+h->sprite.frame.w/2;
+	pos[2].y=h->position.y;
+
+	pos[3].x=h->position.x;
+	pos[3].y=h->position.y+h->sprite.frame.h/2;
+	pos[4].x=h->position.x+h->sprite.frame.w/2;
+	pos[4].y=h->position.y+h->sprite.frame.h/2;
+
+	pos[5].x=h->position.x;
+	pos[5].y=h->position.y+h->sprite.frame.h;
+	pos[6].x=h->position.x+h->sprite.frame.w/3.9;
+	pos[6].y=h->position.y+h->sprite.frame.h;
+	pos[7].x=h->position.x+h->sprite.frame.w/2;
+	pos[7].y=h->position.y+h->sprite.frame.h;
+
+	for (i=0;i<8;i++)
+	{
+		couleur_obstacle=GetPixel(b.background_mask,pos[i].x,pos[i].y);
+		if (couleur_obstacle.r==0 && couleur_obstacle.g==0 && couleur_obstacle.b==0)
+		{
+			if (i==0)
+			{
+				h->collision_LEFT++;
+				h->collision_UP++;
+			}
+			if (i==1)
+			{
+				h->collision_UP++;
+			}
+			if (i==2)
+			{
+				h->collision_RIGHT++;
+				h->collision_UP++;
+			}
+			if (i==3)
+			{
+				h->collision_LEFT++;
+			}
+			if (i==4)
+			{
+				h->collision_RIGHT++;
+			}
+			if (i==5)
+			{
+				h->collision_LEFT++;
+				h->collision_DOWN++;
+			}
+			if (i==6)
+			{
+				h->collision_DOWN++;
+			}
+			if (i==7)
+			{
+				h->collision_RIGHT++;
+				h->collision_DOWN++;
+			}
+		}	
+	}
+	if (h->collision_LEFT<=0)
+		h->collision_LEFT=0;
+	else
+		h->collision_LEFT=1;
+	if (h->collision_RIGHT<=0)
+		h->collision_RIGHT=0;
+	else
+		h->collision_RIGHT=1;
+	if (h->collision_UP<=0)
+		h->collision_UP=0;
+	else
+		h->collision_UP;
+	if (h->collision_DOWN<=0)
+		h->collision_DOWN=0;
+	else 
+		h->collision_DOWN=1;
+
 }

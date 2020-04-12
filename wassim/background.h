@@ -3,6 +3,7 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
+#include "structs.h"
 
 typedef struct Background
 {
@@ -13,9 +14,8 @@ typedef struct Background
 	SDL_Rect posCamera;
 } background;
 
-
 void scrolling(background *b);
-int collisionParfaite(SDL_Surface *backgroundMask, SDL_Rect frame, SDL_Rect position);
+void collisionParfaite(entite *h,background b);
 void initialiser_background(background *b);
 void afficher_background(background *b, SDL_Surface *screen);
 void free_background(background *b);
