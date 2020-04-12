@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
 	SDL_Event event;
 
-	initialiser_hero(&safwen,"safwen_right");
+	initialiser_hero(&safwen, "safwen_right");
 	initialiser_background(&background);
 
 	int continuer = 1;
@@ -27,27 +27,24 @@ int main(int argc, char *argv[])
 	int test;
 	float accel = 0;
 
-	int current_ground_position=safwen.position.y;
+	int current_ground_position = safwen.position.y;
 
 	SDL_Rect positionecran;
 
-
 	SDL_Init(SDL_INIT_VIDEO);
 
-
-	ecran = SDL_SetVideoMode(background.image->w, background.image->h, 32, SDL_HWSURFACE|SDL_DOUBLEBUF);
+	ecran = SDL_SetVideoMode(background.image->w, background.image->h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	SDL_EnableKeyRepeat(2, 2);
 
 	while (continuer)
 	{
-		CollisionParfaite(&safwen,background);
+		CollisionParfaite(&safwen, background);
 		//printf("UP:%d DOWN:%d RIGHT:%d LEFT:%d curr_gr:%d\n",safwen.collision_UP,safwen.collision_DOWN,safwen.collision_RIGHT,safwen.collision_LEFT,current_ground_position);
-		
+
 		if (safwen.collision_DOWN)
-			current_ground_position=safwen.position.y;
-		
-		
+			current_ground_position = safwen.position.y;
+
 		timeLastMs = timeCurrentMs;
 		timeCurrentMs = SDL_GetTicks();
 		timeDeltaMs = timeCurrentMs - timeLastMs;
@@ -60,14 +57,14 @@ int main(int argc, char *argv[])
 			if (keystates[SDLK_UP] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)))
 			{
 
-				if (safwen.position.y > current_ground_position-JUMP_HEIGHT && tanguiza == 0 && !safwen.collision_UP)
+				if (safwen.position.y > current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !safwen.collision_UP)
 				{
-					animer_hero(&safwen,JUMP);
+					animer_hero(&safwen, JUMP);
 					safwen.position.y -= 7;
 				}
-				else if (safwen.position.y == current_ground_position-JUMP_HEIGHT || (tanguiza == 1 && !safwen.collision_DOWN))
+				else if (safwen.position.y == current_ground_position - JUMP_HEIGHT || (tanguiza == 1 && !safwen.collision_DOWN))
 				{
-					animer_hero(&safwen,JUMP);
+					animer_hero(&safwen, JUMP);
 					safwen.position.y += 7;
 					tanguiza = 1;
 					test = 1;
@@ -133,23 +130,23 @@ int main(int argc, char *argv[])
 						accel = 0;
 					break;
 				case SDL_KEYDOWN:
-					switch(event.key.keysym.sym)
+					switch (event.key.keysym.sym)
 					{
-						case SDLK_ESCAPE:
-							continuer=0;
-							break;
-						case SDLK_d:
-							animer_hero(&safwen,PUNCH);
-							break;
-						case SDLK_s:
-							animer_hero(&safwen,KICK);
-							break;
-						case SDLK_q:
-							animer_hero(&safwen,HIT);
-							break;
-						case SDLK_x:
-							animer_hero(&safwen,DIE);
-							break;
+					case SDLK_ESCAPE:
+						continuer = 0;
+						break;
+					case SDLK_d:
+						animer_hero(&safwen, PUNCH);
+						break;
+					case SDLK_s:
+						animer_hero(&safwen, KICK);
+						break;
+					case SDLK_q:
+						animer_hero(&safwen, HIT);
+						break;
+					case SDLK_x:
+						animer_hero(&safwen, DIE);
+						break;
 					}
 					break;
 				case SDL_KEYUP:
@@ -168,16 +165,14 @@ int main(int argc, char *argv[])
 					{
 						accel = 0;
 					}
-					if (safwen.movement==WALK_RIGHT || safwen.movement==WALK_LEFT)
-						safwen.movement=IDLE;
+					if (safwen.movement == WALK_RIGHT || safwen.movement == WALK_LEFT)
+						safwen.movement = IDLE;
 					break;
 				}
 			}
 			timeAccumulatedMs -= timeStepMs;
-
-			
 		}
-		animer_hero(&safwen,safwen.movement);
+		animer_hero(&safwen, safwen.movement);
 		afficher_background(&background, ecran);
 		afficher_hero(&safwen, ecran);
 		SDL_Flip(ecran);

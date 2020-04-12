@@ -6,6 +6,8 @@ void initialiser_hero(hero *h, char name[20])
 	h->position.x = 0;
 	h->position.y = GROUND_LEVEL;
 
+	h->current_ground_position = h->position.y;
+
 	h->direction = RIGHT;
 	h->movement = IDLE;
 
@@ -21,9 +23,6 @@ void initialiser_hero(hero *h, char name[20])
 	h->sprite.frame.h = h->sprite.image->h / 7;
 
 	h->sprite.curframe = 0;
-
-	h->acceleration=0;
-	h->tanguiza=0;
 }
 
 void afficher_hero(hero *h, SDL_Surface *screen)
@@ -55,7 +54,7 @@ void animer_hero(hero *h, movement movement)
 		break;
 	case JUMP:
 		h->sprite.frame.y = 2 * h->sprite.frame.h;
-		h->sprite.maxframe = 3;
+		h->sprite.maxframe = 2;
 		h->movement = JUMP;
 		break;
 	case PUNCH:
@@ -84,7 +83,7 @@ void animer_hero(hero *h, movement movement)
 		h->sprite.image = IMG_Load("./img/hero/safwen_right.png");
 	if (h->direction == LEFT)
 		h->sprite.image = IMG_Load("./img/hero/safwen_left.png");
-
+	//because can changed by walking directions
 	tempsActuel = SDL_GetTicks();
 	if (tempsActuel - tempsPrecedent > 200)
 	{
@@ -101,129 +100,132 @@ void animer_hero(hero *h, movement movement)
 	}
 }
 
-void deplacer_hero(hero *h)
+void free_hero(hero *h)
+{
+	SDL_FreeSurface(h->sprite.image);
+}
+
+void deplacer_hero(hero *h, SDL_Event event)
 {
 	static int timeStepMs = 20;
 	static int timeLastMs, timeAccumulatedMs, timeDeltaMs, timeCurrentMs = 0;
-
-
 	static int current_ground_position;
-	current_ground_position = h->position.y;
-
-	if (h->collision_DOWN)
-		current_ground_position = h->position.y;
+	static float accel = 0;
+	static int tanguiza = 0;
+	static int test;
 
 	timeLastMs = timeCurrentMs;
 	timeCurrentMs = SDL_GetTicks();
 	timeDeltaMs = timeCurrentMs - timeLastMs;
 	timeAccumulatedMs += timeDeltaMs;
 
+	if (h->collision_DOWN)
+		h->current_ground_position = h->position.y;
+
 	while (timeAccumulatedMs >= timeStepMs)
 	{
-		h->test = 0;
+		test = 0;
 		Uint8 *keystates = SDL_GetKeyState(NULL);
-		if (keystates[SDLK_UP]) // || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)))
+		if (keystates[SDLK_UP] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)))
 		{
-			if (h->position.y > current_ground_position - JUMP_HEIGHT && h->tanguiza == 0 && !h->collision_UP)
+			if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
 			{
 				animer_hero(h, JUMP);
 				h->position.y -= 7;
 			}
-			else if (h->position.y == current_ground_position - JUMP_HEIGHT || (h->tanguiza == 1 && !h->collision_DOWN))
+
+			else if (h->position.y == h->current_ground_position - JUMP_HEIGHT || (tanguiza == 1 && !h->collision_DOWN))
 			{
 				animer_hero(h, JUMP);
 				h->position.y += 7;
-				h->tanguiza = 1;
-				h->test = 1;
+				tanguiza = 1;
+				test = 1;
 			}
 		}
-		if (keystates[SDLK_RIGHT]) //|| (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (e.motion.x > h->position.x)))
+		if (keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x > h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_RIGHT)
 			{
-				h->position.x += 4 + h->acceleration;
+				h->position.x += 4 + accel;
 			}
 			else if (h->collision_DOWN && !h->collision_RIGHT)
 			{
-				h->position.x += 5 + h->acceleration;
+				h->position.x += 5 + accel;
 				animer_hero(h, WALK_RIGHT);
-				if (h->acceleration < 5)
-					h->acceleration += 0.1;
+				if (accel < 5)
+					accel += 0.1;
 			}
 		}
-
-		if (keystates[SDLK_LEFT]) //|| (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (e.motion.x < h->position.x)))
+		if (keystates[SDLK_LEFT]|| (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 4 + h->acceleration;
-				if (h->acceleration < 5)
-					h->acceleration += 0.1;
+				h->position.x -= 4 + accel;
+				if (accel < 5)
+					accel += 0.1;
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
 			else if (h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 5 + h->acceleration;
+				h->position.x -= 5 + accel;
 				animer_hero(h, WALK_LEFT);
-				if (h->acceleration < 5)
-					h->acceleration += 0.1;
+				if (accel < 5)
+					accel += 0.1;
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
 		}
-		if (!h->test && h->tanguiza == 1 && !h->collision_DOWN)
+		if (!test && tanguiza == 1 && !h->collision_DOWN)
 			h->position.y += 7;
 		else if (h->collision_DOWN)
-			h->tanguiza = 0;
+			tanguiza = 0;
 		if (!h->collision_DOWN && !keystates[SDLK_UP])
 			h->position.y += 7;
-
-		/*while (SDL_PollEvent(&e))
+		switch (event.type)
 		{
-			switch (e.type)
+			while (SDL_PollEvent(&event))
 			{
-			case SDL_MOUSEBUTTONUP:
-				if (e.button.button == SDL_BUTTON_RIGHT)
+
+				if (event.type == SDL_MOUSEBUTTONUP)
 				{
-					if ((!h->collision_DOWN) && (!h->test))
+					if (event.button.button == SDL_BUTTON_RIGHT)
 					{
-						h->position.y += 7;
-						h->tanguiza = 1;
+						if ((!h->collision_DOWN) && (!test))
+						{
+							h->position.y += 7;
+							tanguiza = 1;
+						}
+						else if (h->collision_DOWN)
+							tanguiza = 0;
+						break;
 					}
-					else if (h->collision_DOWN)
-						h->tanguiza = 0;
-					break;
+					if (event.button.button == SDL_BUTTON_LEFT)
+						accel = 0;
 				}
-				if (e.button.button == SDL_BUTTON_LEFT)
-					h->acceleration = 0;
-				break;
-			case SDL_KEYUP:
-				if (e.key.keysym.sym == SDLK_UP)
+				if (event.type == SDL_KEYUP)
 				{
-					if ((!h->collision_DOWN) && (!h->test))
+
+					if (event.key.keysym.sym == SDLK_UP)
 					{
-						h->position.y += 7;
-						h->tanguiza = 1;
+						if ((!h->collision_DOWN) && (!test))
+						{
+							h->position.y += 7;
+							tanguiza = 1;
+						}
+						else if (h->collision_DOWN)
+							tanguiza = 0;
+						break;
 					}
-					else if (h->collision_DOWN)
-						h->tanguiza = 0;
-					break;
+					if (event.key.keysym.sym == SDLK_RIGHT || (event.key.keysym.sym == SDLK_LEFT))
+					{
+						accel = 0;
+					}
+					if (h->movement == WALK_RIGHT || h->movement == WALK_LEFT)
+						h->movement = IDLE;
 				}
-				if (e.key.keysym.sym == SDLK_RIGHT || (e.key.keysym.sym == SDLK_LEFT))
-				{
-					h->acceleration = 0;
-				}
-				if (h->movement == WALK_RIGHT || h->movement == WALK_LEFT)
-					h->movement = IDLE;
-				break;
 			}
-		}*/
+		}
 		timeAccumulatedMs -= timeStepMs;
 	}
-}
-
-void free_hero(hero *h)
-{
-	SDL_FreeSurface(h->sprite.image);
 }
