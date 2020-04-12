@@ -27,7 +27,7 @@ typedef struct Hero
 	int collision_UP,collision_DOWN,collision_RIGHT,collision_LEFT;
 
 }hero;
-void initialiser_hero(hero *h);
+void initialiser_hero(hero *h,char name[20]);
 void animer_hero(hero *h,movement movement);
 void afficher_hero(hero *h, SDL_Surface* screen);
 void free_hero(hero *h);

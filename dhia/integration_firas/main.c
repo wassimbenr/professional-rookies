@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
 	SDL_Event event;
 
-	initialiser_hero(&safwen);
+	initialiser_hero(&safwen,"safwen_right");
 	initialiser_background(&background);
 
 	int continuer = 1;
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	while (continuer)
 	{
 		CollisionParfaite(&safwen,background);
-		printf("UP:%d DOWN:%d RIGHT:%d LEFT:%d curr_gr:%d\n",safwen.collision_UP,safwen.collision_DOWN,safwen.collision_RIGHT,safwen.collision_LEFT,current_ground_position);
+		//printf("UP:%d DOWN:%d RIGHT:%d LEFT:%d curr_gr:%d\n",safwen.collision_UP,safwen.collision_DOWN,safwen.collision_RIGHT,safwen.collision_LEFT,current_ground_position);
 		
 		if (safwen.collision_DOWN)
 			current_ground_position=safwen.position.y;

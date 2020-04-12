@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 		safwen.position.x = positionDetect.x;
 		safwen.position.y = positionDetect.y;
 
+
 		timeLastMs = timeCurrentMs;
 		timeCurrentMs = SDL_GetTicks();
 		timeDeltaMs = timeCurrentMs - timeLastMs;

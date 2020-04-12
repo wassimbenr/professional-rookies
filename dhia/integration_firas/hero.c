@@ -1,15 +1,19 @@
 #include "hero.h"
 #include "defs.h"
 
-void initialiser_hero(hero *h)
+void initialiser_hero(hero *h,char name[20])
 {
+	char image_load[30]="";
 	h->position.x=0;
 	h->position.y=GROUND_LEVEL;
 
 	h->direction=RIGHT;
 	h->movement=IDLE;
 
-	h->sprite.image=IMG_Load("./img/hero/safwen_right.png");
+	strcpy(image_load,"./img/hero/");
+	strcat(image_load,name);
+	strcat(image_load,".png");
+	h->sprite.image=IMG_Load(image_load);
 
 	h->sprite.frame.x=0;
 	h->sprite.frame.y=0;
