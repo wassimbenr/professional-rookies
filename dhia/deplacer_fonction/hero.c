@@ -31,9 +31,9 @@ void initialiser_hero(entite *h, char name[20])
 	h->sprite.curframe = 0;
 }
 
-void afficher_hero(entite *h, SDL_Surface *screen)
+void afficher_hero(entite h, SDL_Surface *screen)
 {
-	SDL_BlitSurface(h->sprite.image, &h->sprite.frame, screen, &h->position);
+	SDL_BlitSurface(h.sprite.image, &h.sprite.frame, screen, &h.position);
 }
 void animer_hero(entite *h, state movement)
 {
@@ -103,6 +103,7 @@ void animer_hero(entite *h, state movement)
 		h->sprite.frame.x = h->sprite.curframe * h->sprite.frame.w;
 		tempsPrecedent = tempsActuel;
 		h->sprite.curframe += 1;
+
 	}
 }
 

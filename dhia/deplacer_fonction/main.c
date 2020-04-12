@@ -44,8 +44,8 @@ int main(int argc, char *argv[])
 		}
 		deplacer_hero(&safwen,event); //gravity and acceleration
 		animer_hero(&safwen, safwen.state);
-		afficher_background(&background, ecran);
-		afficher_hero(&safwen, ecran);
+		afficher_background(background, ecran);
+		afficher_hero(safwen, ecran);
 		SDL_Flip(ecran);
 	}
 

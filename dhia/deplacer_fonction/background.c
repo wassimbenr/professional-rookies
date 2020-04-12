@@ -12,10 +12,10 @@ void initialiser_background(background *b)
 	b->position_background_mask.y=0;
 }
 
-void afficher_background(background *b,SDL_Surface *screen)
+void afficher_background(background b,SDL_Surface *screen)
 {
-	SDL_BlitSurface(b->background_mask,NULL,screen,&b->position_background_mask);
-	SDL_BlitSurface(b->image,NULL,screen,&b->position_background);
+	SDL_BlitSurface(b.background_mask,NULL,screen,&b.position_background_mask);
+	SDL_BlitSurface(b.image,NULL,screen,&b.position_background);
 }
 void free_background(background *b)
 {
