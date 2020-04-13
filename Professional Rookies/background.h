@@ -1,3 +1,5 @@
+#ifndef BACKGROUND_H
+#define BACKGROUND_H
 #include <stdio.h>
 #include <string.h>
 #include "SDL/SDL.h"
@@ -20,3 +22,4 @@ void afficher_background(background *b,SDL_Surface *screen);
 void free_background(background *b);
 /*void CollisionParfaite(hero *h,background b);
 int colision_bb(hero *h, entite *e);*/
+#endif

@@ -26,15 +26,3 @@ void free_background(background *b)
 	SDL_FreeSurface(b->image);
 	SDL_FreeSurface(b->background_mask);
 }
-
-SDL_Color GetPixel(SDL_Surface *pSurface,int x,int y)
-{
-	SDL_Color color;
-	Uint32 col=0;
-	char* pPosition=(char* ) pSurface->pixels;
-	pPosition+= (pSurface->pitch * y);
-	pPosition+= (pSurface->format->BytesPerPixel *x);
-	memcpy(&col ,pPosition ,pSurface->format->BytesPerPixel);
-	SDL_GetRGB(col,pSurface->format, &color.r, &color.g, &color.b);
-	return (color);
-}

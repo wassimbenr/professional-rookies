@@ -1,4 +1,8 @@
 #include "background.h"
+#include "entite_secondaire.h"
+#include "hero.h"
+#include "background.h"
+#include "colision.h"
 
 int main(int argc, char *argv[])
 {
@@ -42,7 +46,7 @@ int main(int argc, char *argv[])
 		}
 		deplacer_hero(&safwen,event); //gravity and acceleration
 		animer_hero(&safwen, safwen.state);
-		afficher_background(background, ecran);
+		afficher_background(&background, ecran);
 		afficher_hero(safwen, ecran);
 		SDL_Flip(ecran);
 	}

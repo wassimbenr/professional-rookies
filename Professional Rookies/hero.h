@@ -1,3 +1,5 @@
+#ifndef HERO_H
+#define HERO_H
 #include <stdio.h>
 #include <string.h>
 #include "SDL/SDL.h"
@@ -46,3 +48,4 @@ void deplacer_hero(hero *h, SDL_Event event);
 void animer_hero(hero *h, state movement);
 void afficher_hero(hero h, SDL_Surface *screen);
 void free_hero(hero *h);
+#endif
