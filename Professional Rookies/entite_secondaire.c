@@ -1,7 +1,7 @@
 #include "entite_secondaire.h"
 #include "defs.h"
 
-void init_entite(entite *E)
+void initialiser_entite(entite *E)
 {
 	E->sprite_entite.image = IMG_Load("img/es/WALK_entite.png");
 	E->sprite_entite.frame.x = 0;
@@ -22,7 +22,7 @@ void init_entite(entite *E)
 	E->posMin.x = rand() % 200 + E->position.x; //+ position Hero
 	E->posMax.x = rand() % 200 + E->posMin.x;
 }
-void animation_entite(entite *E)
+void animer_entite(entite *E)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
