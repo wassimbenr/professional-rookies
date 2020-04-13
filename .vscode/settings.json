@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "hero.h": "c",
-        "defs.h": "c"
+        "defs.h": "c",
+        "colision.h": "c"
     }
 }

@@ -1,6 +1,4 @@
 #include "colision.h"
-#include "defs.h"
-#include "background.h"
 
 SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y)
 {
