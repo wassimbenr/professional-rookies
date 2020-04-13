@@ -17,39 +17,34 @@ int main(int argc, char *argv[])
 	initialiser_hero(&safwen, "safwen");
 	initialiser_background(&background);
 	initialiser_entite(&enemie);
-
+	printf("%d %d",safwen.position.x,safwen.position.y);
 	SDL_Event event;
 
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_Rect positionecran;
-
-	
 
 	SDL_EnableKeyRepeat(2, 2);
 
-	ecran = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	ecran = SDL_SetVideoMode(SCREEN_WIDTH+320, SCREEN_HEIGHT+120, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
 	while (continuer)
 	{
 
 		CollisionParfaite(&safwen, background);
 
-
 		while (SDL_PollEvent(&event))
 		{
-			deplacer_hero(&safwen,event);
-			switch(event.key.keysym.sym)
+			deplacer_hero(&safwen, event);
+			switch (event.key.keysym.sym)
 			{
-				case SDLK_ESCAPE:
-					continuer=0;
-					break;
+			case SDLK_ESCAPE:
+				continuer = 0;
+				break;
 			}
-
 		}
-		deplacer_hero(&safwen,event); //gravity and acceleration
+		deplacer_hero(&safwen, event); //gravity and acceleration
 		animer_hero(&safwen, safwen.state);
 		deplacer_alea(&enemie);
-        animer_entite(&enemie);
+		animer_entite(&enemie);
 		afficher_background(&background, ecran);
 		afficher_entite(&enemie, ecran);
 		afficher_hero(safwen, ecran);
@@ -57,7 +52,7 @@ int main(int argc, char *argv[])
 	}
 
 	free_background(&background);
-	 free_entite(&enemie);
+	free_entite(&enemie);
 	free_hero(&safwen);
 	SDL_Quit();
 

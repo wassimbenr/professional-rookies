@@ -25,7 +25,7 @@ void initialiser_hero(hero *h, char name[20])
 	h->sprite.frame.y = 0;
 
 	h->sprite.frame.w = h->sprite.image->w / 5;
-	h->sprite.frame.h = h->sprite.image->h / JUMP_SPEED;
+	h->sprite.frame.h = h->sprite.image->h / 7;
 
 	h->sprite.curframe = 0;
 }

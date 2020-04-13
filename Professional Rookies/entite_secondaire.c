@@ -3,7 +3,7 @@
 
 void initialiser_entite(entite *E)
 {
-	E->sprite_entite.image = IMG_Load("img/es/WALK_entite.png");
+	E->sprite_entite.image = IMG_Load("img/es/walk.png");
 	E->sprite_entite.frame.x = 0;
 	E->sprite_entite.frame.y = 0;
 	E->sprite_entite.maxframe = 5; //Nb de colone
@@ -12,7 +12,7 @@ void initialiser_entite(entite *E)
 	E->type = ENTITE;
 	E->state_entite = WALK_entite;
 	E->position.x = SCREEN_WIDTH / 2;
-	E->position.y = SCREEN_HEIGHT / 2;
+	E->position.y = GROUND_LEVEL;;
 	//E->direction = 1;
 	
 	E->direction_entite = 1;
@@ -31,7 +31,7 @@ void animer_entite(entite *E)
 	{
 	case (WALK_entite):
 	{
-		E->sprite_entite.image = IMG_Load("img/es/WALK_entite.png");
+		E->sprite_entite.image = IMG_Load("img/es/walk.png");
 		E->sprite_entite.maxframe = 5;
 		break;
 	}

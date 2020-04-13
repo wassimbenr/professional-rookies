@@ -1,5 +1,5 @@
 game:main.o hero.o colision.o entite_secondaire.o background.o
-	gcc main.o hero.o colision.o entite_secondaire.o background.o -o game -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf
+	gcc main.o hero.o colision.o entite_secondaire.o background.o -o game -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -ggdb
 main.o:main.c
 	gcc -c main.c
 hero.o:hero.c
