@@ -2,6 +2,7 @@
 #include "background.h"
 #include "hero.h"
 #include "defs.h"
+#include "colision.h"
 int main(void)
 {
     SDL_Surface *screen = NULL;
@@ -14,7 +15,7 @@ int main(void)
     initialiser_background(&background);
     init_entite(&enemie);
 
-    screen = SDL_SetVideoMode(SCREEN_WIDTH+200, SCREEN_HEIGHT+200, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); //background.image->h
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); //background.image->h
 
     SDL_EnableKeyRepeat(10, 10);
 
@@ -87,7 +88,7 @@ int main(void)
                 break;
             }
         }
-        scrolling(&background);
+        //scrolling(&background,&safwen);
         afficher_background(&background, screen);
         animer_hero(&safwen, safwen.state);
         deplacer_alea(&enemie);

@@ -6,8 +6,8 @@
 
 
 /* Taille de la fenêtre / résolution en plein écran */
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 640// 640
+#define SCREEN_HEIGHT 480//480
 
 /* Valeur RGB pour la transparence (canal alpha) */
 #define TRANS_R 255
