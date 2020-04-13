@@ -13,3 +13,7 @@
 #define TRANS_R 255
 #define TRANS_G 0
 #define TRANS_B 255
+
+#define JUMP_HEIGHT 140
+#define GROUND_LEVEL 465
+#define VERTICAL_MOVEMENT 7

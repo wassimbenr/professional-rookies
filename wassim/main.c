@@ -8,19 +8,20 @@ int main(void)
     SDL_Event event;
     int continuer = 1;
     background background;
-    entite safwen,enemie;
+    entite safwen, enemie;
 
     initialiser_hero(&safwen);
     initialiser_background(&background);
     init_entite(&enemie);
 
-    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); //background.image->h
+    screen = SDL_SetVideoMode(SCREEN_WIDTH+200, SCREEN_HEIGHT+200, 32, SDL_HWSURFACE | SDL_DOUBLEBUF); //background.image->h
 
     SDL_EnableKeyRepeat(10, 10);
 
     while (continuer)
     {
         collisionParfaite(&safwen, background);
+        printf("%d%d%d%d\n", safwen.collision_UP, safwen.collision_DOWN, safwen.collision_RIGHT, safwen.collision_DOWN);
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -40,6 +41,7 @@ int main(void)
                         safwen.position.x += 4;
                         safwen.direction = RIGHT;
                         animer_hero(&safwen, WALK);
+                        background.posCamera.x+= 4;
                     }
                     break;
                 case SDLK_LEFT:
@@ -47,13 +49,24 @@ int main(void)
                     {
                         safwen.position.x -= 4;
                         safwen.direction = LEFT;
+                        background.posCamera.x-=4;
                         animer_hero(&safwen, WALK);
                     }
-
+                case SDLK_DOWN:
+                    if (!safwen.collision_DOWN)
+                    {
+                        safwen.position.y += 4;
+                        background.posCamera.y+= 4;
+                    }
                     break;
                 case SDLK_UP:
-                    animer_hero(&safwen, JUMP);
+                    if (!safwen.collision_UP)
+                    {
+                        safwen.position.y -= 4;
+                        background.posCamera.y-= 4;
+                    }
                     break;
+
                 case SDLK_d:
                     animer_hero(&safwen, PUNCH);
                     break;

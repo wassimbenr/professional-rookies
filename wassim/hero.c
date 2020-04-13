@@ -2,8 +2,8 @@
 #include "defs.h"
 void initialiser_hero(entite *h)
 {
-	h->position.x = 0;
-	h->position.y = 220;
+	h->position.x = SCREEN_WIDTH / 2 ;
+	h->position.y = SCREEN_HEIGHT / 2 ;
 
 	h->direction = RIGHT;
 	h->state = IDLE;
@@ -18,10 +18,7 @@ void initialiser_hero(entite *h)
 
 	h->sprite.curframe = 0;
 }
-void afficher_hero(entite *h, SDL_Surface *screen)
-{
-	SDL_BlitSurface(h->sprite.image, &h->sprite.frame, screen, &h->position);
-}
+
 void animer_hero(entite *h, state state)
 {
 	static int tempsActuel = 0;
@@ -84,7 +81,10 @@ void animer_hero(entite *h, state state)
 		h->sprite.curframe += 1;
 	}
 }
-
+void afficher_hero(entite *h, SDL_Surface *screen)
+{
+	SDL_BlitSurface(h->sprite.image, &h->sprite.frame, screen, &h->position);
+}
 void free_hero(entite *h)
 {
 	SDL_FreeSurface(h->sprite.image);

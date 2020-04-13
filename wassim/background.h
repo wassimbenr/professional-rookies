@@ -16,6 +16,7 @@ typedef struct Background
 
 void scrolling(background *b);
 void collisionParfaite(entite *h,background b);
+int colision_bb(entite *h, entite *e);
 void initialiser_background(background *b);
 void afficher_background(background *b, SDL_Surface *screen);
 void free_background(background *b);

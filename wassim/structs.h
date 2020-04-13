@@ -20,14 +20,18 @@ typedef enum State
 	DAMAGE,
 	JUMP,
 	WALK,
-	PUNCH,
-	KICK
+	PUNCH,// if else
+	KICK// useless 
 }state;
 typedef enum Direction
 {
-	RIGHT,LEFT
+	LEFT, RIGHT
 }direction;
-struct Entite
+typedef enum Type
+{
+	HERO,ENTITE,COIN
+}type;
+typedef struct Entite
 {
 	SDL_Rect posMax;
 	SDL_Rect posMin;
@@ -39,9 +43,11 @@ struct Entite
 	state state;
 	int collision_UP,collision_DOWN,collision_RIGHT,collision_LEFT;
 	direction direction;
-	int Direction;
-	int type; // 0=enemie - 1=coin
+
+	type type; 
 	int vitesse;
-};
-typedef struct Entite entite;
+
+} entite;
+
+
 #endif
