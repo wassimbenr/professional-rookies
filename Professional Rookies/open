@@ -1,2 +1,2 @@
-code main.c hero.c hero.h background.c background.h defs.h
+code jeu.c hero.c hero.h background.c background.h defs.h
 

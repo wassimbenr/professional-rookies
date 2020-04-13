@@ -103,7 +103,7 @@ void CollisionParfaite(hero *h,background b)
 		h->collision_DOWN=1;
 
 }
-int colision_bb(hero *h, entite *e)
+int Colision_bb(hero *h, entite *e)
 {
 	if ((h->position.x + h->position.w < e->position.x) || (h->position.x > e->position.x + e->position.w) || (h->position.y + h->position.h < e->position.y) || (h->position.y > e->position.y + e->position.h))
 	{
@@ -113,4 +113,22 @@ int colision_bb(hero *h, entite *e)
 	{
 		return 1;
 	}
+}
+
+void attack_entite (entite *e,hero *h)
+{
+	printf("%d\n",e->posMin.x <= h->position.x);
+	if ((e->posMin.x <= h->position.x ) && (e->type == ENTITE) )
+	{
+		if (!Colision_bb) //pas de colision
+		 {
+			 e->direction_entite = h->direction;
+			 e->position.x = h->position.x;
+		 }
+		 e->state_entite=ATTACK;
+	}
+
+
+	  
+
 }
