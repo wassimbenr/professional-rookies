@@ -3,7 +3,7 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
-
+#include "defs.h"
 #include "settings.h"
 #include "jeu.h"
 
@@ -55,7 +55,7 @@ int main(void)
 		printf("unable to initialize SDL : %s\n", SDL_GetError());
 		return 1;
 	}
-	screen = SDL_SetVideoMode(960, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+	screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 	if (screen == NULL)
 	{
 		printf("unable to set video mode : %s\n", SDL_GetError());

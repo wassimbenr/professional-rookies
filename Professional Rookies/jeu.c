@@ -26,8 +26,6 @@ void jeu(SDL_Surface *ecran)
 
 	SDL_EnableKeyRepeat(2, 2);
 
-	//ecran = SDL_SetVideoMode(SCREEN_WIDTH+320, SCREEN_HEIGHT+120, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
-
 	while (Jcontinuer)
 	{
 
@@ -52,7 +50,7 @@ void jeu(SDL_Surface *ecran)
 		printf("collision: %d\n",Colision_bb(&safwen,&enemie));
 
 		deplacer_hero(&safwen, event); //gravity and acceleration
-
+		scrolling(&background,&safwen);
 
 		animer_hero(&safwen, safwen.state);
 		deplacer_alea(&enemie);
