@@ -1,6 +1,6 @@
 #include "background.h"
 #include "defs.h"
-#include "structs.h"
+
 void initialiser_background(background *b)
 {
 	SDL_Init(SDL_INIT_VIDEO);
@@ -16,6 +16,7 @@ void initialiser_background(background *b)
 	b->posCamera.w = SCREEN_WIDTH;
 	b->posCamera.h = SCREEN_HEIGHT;
 }
+/*
 void scrolling(background *b, entite *e)
 {
 	if (SDLK_LEFT)
@@ -34,7 +35,8 @@ void scrolling(background *b, entite *e)
 		b->posCamera.x = 0;
 	if (b->posCamera.x <= 0)
 		b->posCamera.x = b->image->w - SCREEN_WIDTH;
-}
+}*/
+
 void afficher_background(background *b, SDL_Surface *screen)
 {
 	SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->posBackground_mask); //&b->posBackground_mask

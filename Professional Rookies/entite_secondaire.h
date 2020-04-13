@@ -4,14 +4,14 @@
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
 
-typedef struct Sprite
+typedef struct Sprite_entite
 {
     SDL_Surface *image;
     SDL_Rect frame;
     int curframe, maxframe;
 } sprite_entite;
 
-typedef enum State
+typedef enum State_entite
 {
     IDLE,
     DIE,
@@ -21,7 +21,7 @@ typedef enum State
     WALK
 } state_entite;
 
-typedef enum Direction
+typedef enum Direction_entite
 {
     LEFT,
     RIGHT

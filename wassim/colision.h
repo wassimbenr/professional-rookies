@@ -5,7 +5,8 @@
 #include "SDL/SDL_ttf.h"
 #include "structs.h"
 #include "background.h"
+#include "hero.h"
 
 SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y);
 void collisionParfaite(entite *h,background b);
-int colision_bb(entite *h, entite *e);
+int colision_bb(hero *h, entite *e);
