@@ -3,15 +3,15 @@
 
 void initialiser_entite(entite *E)
 {
-	E->sprite_entite.image = IMG_Load("img/es/walk.png");
+	E->sprite_entite.image = IMG_Load("img/es/attack.png");
 	E->sprite_entite.frame.x = 0;
 	E->sprite_entite.frame.y = 0;
-	E->sprite_entite.maxframe = 5; //Nb de colone
+	E->sprite_entite.maxframe = 3; //Nb de colone
 	E->sprite_entite.frame.w = E->sprite_entite.image->w / E->sprite_entite.maxframe;
 	E->sprite_entite.frame.h = E->sprite_entite.image->h / 2; //2=Nb de ligne(g/d)
 	E->type = ENTITE;
 	E->state_entite = WALK_entite;
-	E->position.x = SCREEN_WIDTH / 2;
+	E->position.x = SCREEN_WIDTH / 4;
 	E->position.y = GROUND_LEVEL;;
 	//E->direction = 1;
 	

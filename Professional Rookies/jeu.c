@@ -28,11 +28,11 @@ void jeu(SDL_Surface *ecran)
 	{
 
 		CollisionParfaite(&safwen, background);
-
+		printf("%d %d %d %d",safwen.collision_UP,safwen.collision_DOWN,safwen.collision_RIGHT,safwen.collision_LEFT);
 		while (SDL_PollEvent(&event))
 		{
 			deplacer_hero(&safwen, event);
-			scrolling(&background, &safwen ,event);
+			scrolling(&background, &safwen, event);
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_ESCAPE:
@@ -42,15 +42,19 @@ void jeu(SDL_Surface *ecran)
 		}
 		if (safwen.position.x >= 666 && verif == 0)
 		{
-			enigme_math(ecran);
+			//enigme_math(ecran);
 			verif = 1;
 		}
-		attack_entite(&enemie, &safwen);
-		printf("collision: %d\n", Colision_bb(&safwen, &enemie));
-
 		deplacer_hero(&safwen, event); //gravity and acceleration
+
+		if (enemie.posMin.x > safwen.position.x)
+			deplacer_alea(&enemie);
+
+			attack_entite(&enemie, &safwen);
+
 		animer_hero(&safwen, safwen.state);
-		deplacer_alea(&enemie);
+
+		//enemie.state_entite=ATTACK_entite;
 		animer_entite(&enemie);
 		afficher_background(&background, ecran);
 		afficher_entite(&enemie, ecran);
