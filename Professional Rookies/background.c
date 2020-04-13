@@ -16,26 +16,33 @@ void initialiser_background(background *b)
 	b->posCamera.h = SCREEN_HEIGHT;
 }
 
-
-
-void scrolling(background *b, hero *h)
+void scrolling(background *b, hero *h, SDL_Event event)
 {
-	/*if (SDLK_LEFT)
-		b->posCamera.x--;
-	if (SDLK_RIGHT)
-		b->posCamera.x++;
-	if (SDLK_UP)
-		b->posCamera.y--;
-	if (SDLK_DOWN)
-		b->posCamera.y++;*/
-
-	b->posCamera.x = ( h->position.x + h->sprite.frame.w / 2) - SCREEN_WIDTH / 2;
+	while (SDL_PollEvent(&event))
+		{
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_LEFT:
+				b->posCamera.x--;
+				break;
+			case SDLK_RIGHT:
+				b->posCamera.x++;
+				break;
+			case SDLK_UP:
+				b->posCamera.y--;
+				break;
+			case SDLK_DOWN:
+				b->posCamera.y++;
+				break;
+			}
+		}
+	//b->posCamera.x = ( h->position.x + h->sprite.frame.w / 2) - SCREEN_WIDTH / 4;
 	//b->posCamera.y = ( h->position.y + h->sprite.frame.h / 2) - SCREEN_HEIGHT / 2;
-
+/*
 	if (b->posCamera.x >= b->image->w - SCREEN_WIDTH)
 		b->posCamera.x = 0;
 	if (b->posCamera.x <= 0)
-		b->posCamera.x = b->image->w - SCREEN_WIDTH;
+		b->posCamera.x = b->image->w - SCREEN_WIDTH;*/
 }
 void afficher_background(background *b, SDL_Surface *screen)
 {

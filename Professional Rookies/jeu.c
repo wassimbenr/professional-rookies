@@ -5,21 +5,19 @@
 #include "defs.h"
 #include "enigme.h"
 
-
 void jeu(SDL_Surface *ecran)
 {
 	hero safwen;
 	background background;
 	entite enemie;
 
-
 	int Jcontinuer = 1;
-	int verif=0;
+	int verif = 0;
 
 	initialiser_hero(&safwen, "safwen");
 	initialiser_background(&background);
 	initialiser_entite(&enemie);
-	
+
 	SDL_Event event;
 
 	SDL_Init(SDL_INIT_VIDEO);
@@ -34,6 +32,7 @@ void jeu(SDL_Surface *ecran)
 		while (SDL_PollEvent(&event))
 		{
 			deplacer_hero(&safwen, event);
+			scrolling(&background, &safwen ,event);
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_ESCAPE:
@@ -46,12 +45,10 @@ void jeu(SDL_Surface *ecran)
 			enigme_math(ecran);
 			verif = 1;
 		}
-		attack_entite(&enemie,&safwen);
-		printf("collision: %d\n",Colision_bb(&safwen,&enemie));
+		attack_entite(&enemie, &safwen);
+		printf("collision: %d\n", Colision_bb(&safwen, &enemie));
 
 		deplacer_hero(&safwen, event); //gravity and acceleration
-		scrolling(&background,&safwen);
-
 		animer_hero(&safwen, safwen.state);
 		deplacer_alea(&enemie);
 		animer_entite(&enemie);
@@ -60,14 +57,12 @@ void jeu(SDL_Surface *ecran)
 		afficher_hero(safwen, ecran);
 		SDL_Flip(ecran);
 
-		printf("safwen: %d %d\n",safwen.position.x,safwen.position.y);
-		printf("omar: %d %d\n",enemie.position.x,enemie.position.y);
+		printf("safwen: %d %d\n", safwen.position.x, safwen.position.y);
+		printf("omar: %d %d\n", enemie.position.x, enemie.position.y);
 	}
 
 	free_background(&background);
 	free_entite(&enemie);
 	free_hero(&safwen);
 	SDL_Quit();
-
-
 }
