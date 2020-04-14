@@ -23,38 +23,56 @@ void jeu(SDL_Surface *ecran)
 	SDL_Init(SDL_INIT_VIDEO);
 
 	SDL_EnableKeyRepeat(2, 2);
-
+	int nb=0;
 	while (Jcontinuer)
 	{
 
 		CollisionParfaite(&safwen, background);
-		printf("%d %d %d %d",safwen.collision_UP,safwen.collision_DOWN,safwen.collision_RIGHT,safwen.collision_LEFT);
+		//printf("%d %d %d %d", safwen.collision_UP, safwen.collision_DOWN, safwen.collision_RIGHT, safwen.collision_LEFT);
+
 		while (SDL_PollEvent(&event))
 		{
-			deplacer_hero(&safwen, event);
-			scrolling(&background, &safwen, event);
-			switch (event.key.keysym.sym)
+			switch (event.type)
 			{
-			case SDLK_ESCAPE:
+			case SDL_QUIT:
 				Jcontinuer = 0;
 				break;
+			case SDL_KEYDOWN:
+				deplacer_hero(&safwen, event);
+				scrolling(&background, event);
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_ESCAPE:
+					Jcontinuer = 0;
+					break;
+				case SDLK_d:
+					animer_hero(&safwen, PUNCH);
+					break;
+				case SDLK_s:
+					animer_hero(&safwen, KICK);
+					break;
+				}
+				break;
+			case SDL_KEYUP:
+				if (safwen.state == WALK_RIGHT || safwen.state == WALK_LEFT) //states with interruptable animations
+					safwen.state = IDLE;
+				break;
 			}
+			deplacer_hero(&safwen, event);
 		}
-		if (safwen.position.x >= 666 && verif == 0)
+		if (safwen.position.x >= 706 && verif == 0)
 		{
-			//enigme_math(ecran);
+			enigme_math(ecran);
 			verif = 1;
 		}
 		deplacer_hero(&safwen, event); //gravity and acceleration
+		//deplacer_alea(&enemie);
 
-		if (enemie.posMin.x > safwen.position.x)
-			deplacer_alea(&enemie);
-
-			attack_entite(&enemie, &safwen);
+		//if (enemie.posMin.x <= safwen.position.x)
+		
+		attack_entite(&enemie, &safwen);
 
 		animer_hero(&safwen, safwen.state);
-
-		//enemie.state_entite=ATTACK_entite;
 		animer_entite(&enemie);
 		afficher_background(&background, ecran);
 		afficher_entite(&enemie, ecran);

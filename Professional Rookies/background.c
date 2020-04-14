@@ -16,9 +16,8 @@ void initialiser_background(background *b)
 	b->posCamera.h = SCREEN_HEIGHT;
 }
 
-void scrolling(background *b, hero *h, SDL_Event event)
+void scrolling(background *b, SDL_Event event)
 {
-
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_LEFT:
@@ -35,7 +34,9 @@ void scrolling(background *b, hero *h, SDL_Event event)
 }
 void afficher_background(background *b, SDL_Surface *screen)
 {
-	SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->position_background_mask); //&b->position_background_mask
+	//SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->position_background_mask); //&b->position_background_mask
+	
+	SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->position_background_mask);
 	SDL_BlitSurface(b->image,  &b->posCamera, screen, &b->position_background);				//&b->position_background
 }
 void free_background(background *b)

@@ -1,5 +1,5 @@
 game:jeu.o hero.o colision.o entite_secondaire.o background.o enigme.o enigme_fonctions.o menuP.o settings.o
-	gcc jeu.o hero.o colision.o entite_secondaire.o background.o enigme.o enigme_fonctions.o menuP.o settings.o -o game -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf 
+	gcc jeu.o hero.o colision.o entite_secondaire.o background.o enigme.o enigme_fonctions.o menuP.o settings.o -o game -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -ggdb
 jeu.o:jeu.c
 	gcc -c jeu.c
 hero.o:hero.c

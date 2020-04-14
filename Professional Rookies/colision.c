@@ -118,27 +118,27 @@ void attack_entite(entite *e, hero *h)
 {
 	printf("position: %d\n", e->posMin.x <= h->position.x);
 	printf("collision: %d\n", Colision_bb(h, e));
-	if (Colision_bb(h, e) && (h->state!=KICK ||h->state!=PUNCH))
+
+	if (Colision_bb(h, e))
 	{
 		h->state = DAMAGE;
 		//e->state_entite=ATTACK_entite;
 	}
-		
-	else if (Colision_bb(h, e) && (h->state==KICK ||h->state==PUNCH))
-		e->state_entite=DIE_entite;
-
-	if (e->posMin.x <= h->position.x)
+	else 
 	{
+		e->state_entite = WALK_entite;
+	}
 
-		if (e->position.x > h->position.x)
-		{
-			e->direction_entite = 0;
-			e->position.x -= 2;
-		}
-		else if (e->position.x < h->position.x)
-		{
-			e->direction_entite = 1;
-			e->position.x += 2;
-		}
+	if (e->position.x >= h->position.x)
+	{
+		e->direction_entite = 0;
+		e->position.x -= 2;
+		e->state_entite = ATTACK_entite;
+	}
+	else if (e->position.x < h->position.x)
+	{
+		e->direction_entite = 1;
+		e->position.x += 2;
+		e->state_entite = ATTACK_entite;
 	}
 }

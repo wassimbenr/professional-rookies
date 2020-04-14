@@ -3,23 +3,22 @@
 
 void initialiser_entite(entite *E)
 {
-	E->sprite_entite.image = IMG_Load("img/es/attack.png");
+	E->sprite_entite.image = IMG_Load("img/es/walk.png");
+	E->sprite_entite.maxframe = 5;
 	E->sprite_entite.frame.x = 0;
-	E->sprite_entite.frame.y = 0;
-	E->sprite_entite.maxframe = 3; //Nb de colone
+	E->sprite_entite.frame.y = 0;//2=Nb de ligne(g/d)
 	E->sprite_entite.frame.w = E->sprite_entite.image->w / E->sprite_entite.maxframe;
 	E->sprite_entite.frame.h = E->sprite_entite.image->h / 2; //2=Nb de ligne(g/d)
 	E->type = ENTITE;
 	E->state_entite = WALK_entite;
-	E->position.x = SCREEN_WIDTH / 4;
-	E->position.y = GROUND_LEVEL;;
+	E->position.x = 100;
+	E->position.y = GROUND_LEVEL;
 	//E->direction = 1;
-	
 	E->direction_entite = 1;
 	E->type = 0;
 	E->sprite_entite.curframe = 0; //unused
 	srand(time(NULL));
-	E->posMin.x = rand() % 200 + E->position.x; //+ position Hero
+	E->posMin.x = rand() % 200 + 100 +E->position.x; //+ position Hero
 	E->posMax.x = rand() % 200 + E->posMin.x;
 }
 void animer_entite(entite *E)
@@ -48,9 +47,11 @@ void animer_entite(entite *E)
 		break;
 	}
 	}
+	E->sprite_entite.frame.w = E->sprite_entite.image->w / E->sprite_entite.maxframe;
+	E->sprite_entite.frame.h = E->sprite_entite.image->h / 2; //2=Nb de ligne(g/d)
 	E->sprite_entite.frame.y = E->direction_entite * E->sprite_entite.frame.h; // nb =  E->direction * E->sprite_entite.frame.h
 	tempsActuel = SDL_GetTicks();
-	if (tempsActuel - tempsPrecedent > 50)
+	if (tempsActuel - tempsPrecedent > 200)
 	{
 		if (E->sprite_entite.frame.x == E->sprite_entite.image->w - E->sprite_entite.frame.w)
 			E->sprite_entite.frame.x = 0;
