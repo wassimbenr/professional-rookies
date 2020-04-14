@@ -39,6 +39,9 @@ int main(int argc, char *argv[])
 				case SDLK_ESCAPE:
 					continuer=0;
 					break;
+				case SDLK_d:
+					animer_hero(&safwen,PUNCH);
+					break;
 			}
 
 		}
