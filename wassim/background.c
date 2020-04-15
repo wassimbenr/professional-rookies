@@ -1,46 +1,43 @@
 #include "background.h"
-#include "defs.h"
 
 void initialiser_background(background *b)
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_WM_SetCaption("Prototype WASSIM", NULL);
-	b->image = IMG_Load("./img/backgrounds/background1.png");
-	b->background_mask = IMG_Load("./img/backgrounds/background_masque.png");
-	b->posBackground.x = 0;
-	b->posBackground.y = 0;
-	b->posBackground_mask.x = 0;
-	b->posBackground_mask.y = 0;
-	b->posCamera.x = 0; //SCREEN_WIDTH / 2 ;
+
+	b->image=IMG_Load("./img/background/background.jpg");
+	b->background_mask=IMG_Load("./img/background/backgroundMask.jpg");
+	b->position_background.x=0;
+	b->position_background.y=-0;
+	b->position_background_mask.x=0;
+	b->position_background_mask.y=0;
+	b->posCamera.x = 0; //b->posCamera.x = ( h->position.x + h->sprite.frame.w / 2) - SCREEN_WIDTH / 4
 	b->posCamera.y = 0; // - SCREEN_HEIGHT / 2;
 	b->posCamera.w = SCREEN_WIDTH;
 	b->posCamera.h = SCREEN_HEIGHT;
 }
-/*
-void scrolling(background *b, entite *e)
+
+void scrolling(background *b, SDL_Event event)
 {
-	if (SDLK_LEFT)
-		b->posCamera.x--;
-	if (SDLK_RIGHT)
-		b->posCamera.x++;
-	if (SDLK_UP)
-		b->posCamera.y--;
-	if (SDLK_DOWN)
-		b->posCamera.y++;
-
-	b->posCamera.x = ( e->position.x + e->sprite.frame.w / 2) - SCREEN_WIDTH / 2;
-	b->posCamera.y = ( e->position.y + e->sprite.frame.h / 2) - SCREEN_HEIGHT / 2;
-
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_LEFT:
+				b->posCamera.x--;
+				break;
+			case SDLK_RIGHT:
+				b->posCamera.x++;
+				break;
+			}
 	if (b->posCamera.x >= b->image->w - SCREEN_WIDTH)
-		b->posCamera.x = 0;
-	if (b->posCamera.x <= 0)
 		b->posCamera.x = b->image->w - SCREEN_WIDTH;
-}*/
-
+	if (b->posCamera.x <= 0)
+		b->posCamera.x = 0;
+}
 void afficher_background(background *b, SDL_Surface *screen)
 {
-	SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->posBackground_mask); //&b->posBackground_mask
-	SDL_BlitSurface(b->image, &b->posCamera, screen, &b->posBackground);				//&b->posBackground
+	//SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->position_background_mask); //&b->position_background_mask
+	
+	SDL_BlitSurface(b->background_mask, &b->posCamera, screen, &b->position_background_mask);
+	SDL_BlitSurface(b->image,  &b->posCamera, screen, &b->position_background);				//&b->position_background
 }
 void free_background(background *b)
 {

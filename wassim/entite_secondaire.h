@@ -1,31 +1,27 @@
+#ifndef ES_H
+#define ES_H
 #include <stdio.h>
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
+#include <time.h>
 
-typedef struct Sprite
+typedef struct Sprite_entite
 {
     SDL_Surface *image;
     SDL_Rect frame;
     int curframe, maxframe;
 } sprite_entite;
 
-typedef enum State
+typedef enum State_entite
 {
-    IDLE,
-    DIE,
-    ATTACK,
-    DAMAGE,
-    JUMP,
-    WALK
+    WALK_entite,
+    DIE_entite,
+    ATTACK_entite,
+    FOLLOW_entite
 } state_entite;
 
-typedef enum Direction
-{
-    LEFT,
-    RIGHT
-} direction_entite;
 
 typedef enum Type
 {
@@ -40,9 +36,9 @@ typedef struct Entite
     SDL_Rect posMin;
 
     SDL_Rect position;
-    sprite_entite sprite;
-    state_entite state;
-    direction_entite direction;
+    sprite_entite sprite_entite;
+    state_entite state_entite;
+    int direction_entite;
 
     type type;
     int vitesse;
@@ -53,3 +49,4 @@ void deplacer_alea(entite *E);
 void animer_entite(entite *E);
 void afficher_entite(entite *E, SDL_Surface *screen);
 void free_entite(entite *E);
+#endif

@@ -1,6 +1,4 @@
 #include "colision.h"
-#include "defs.h"
-#include "structs.h"
 
 SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y)
 {
@@ -13,9 +11,9 @@ SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y)
 	SDL_GetRGB(col, pSurface->format, &color.r, &color.g, &color.b);
 	return (color);
 }
-void collisionParfaite(entite *h, background b)
+void CollisionParfaite(hero *h, background b)
 {
-	SDL_Color couleur_obstacle = {0, 0, 0};
+	SDL_Color couleur_obstacle = {255, 255, 255};
 	int i = 0;
 	int collision = 0;
 	SDL_Rect pos[8];
@@ -104,14 +102,43 @@ void collisionParfaite(entite *h, background b)
 	else
 		h->collision_DOWN = 1;
 }
-int colision_bb(entite *h, entite *e)
+int Colision_bb(hero *h, entite *e)
 {
-	if ((h->position.x + h->position.w < e->position.x) || (h->position.x > e->position.x + e->position.w) || (h->position.y + h->position.h < e->position.y) || (h->position.y > e->position.y + e->position.h))
+	if ((h->position.x + h->position.w / 2 < e->position.x) || (h->position.x > e->position.x + e->position.w / 2) || (h->position.y + h->position.h < e->position.y) || (h->position.y > e->position.y + e->position.h))
 	{
 		return 0;
 	}
 	else
 	{
 		return 1;
+	}
+}
+
+void attack_entite(entite *e, hero *h)
+{
+	printf("position: %d\n", e->posMin.x <= h->position.x);
+	printf("collision: %d\n", Colision_bb(h, e));
+
+	if (Colision_bb(h, e))
+	{
+		h->state = DAMAGE;
+		//e->state_entite=ATTACK_entite;
+	}
+	else 
+	{
+		e->state_entite = WALK_entite;
+	}
+
+	if (e->position.x >= h->position.x)
+	{
+		e->direction_entite = 0;
+		e->position.x -= 2;
+		e->state_entite = ATTACK_entite;
+	}
+	else if (e->position.x < h->position.x)
+	{
+		e->direction_entite = 1;
+		e->position.x += 2;
+		e->state_entite = ATTACK_entite;
 	}
 }
