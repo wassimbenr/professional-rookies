@@ -4,10 +4,10 @@
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
 #include "defs.h"
-#include "settings.h"
+#include "structs.h"
 #include "jeu.h"
-
-int main(void)
+#include "settings.h"
+int menu(etat *etat)
 {
 	SDL_Surface *screen = NULL;
 	SDL_Surface *backgroundP = NULL;
@@ -30,10 +30,7 @@ int main(void)
 	int tempsActuel = 0, tempsPrecedent = 0;
 	int t = 0, ind = 1;
 
-
-	int verif=0;
-
-
+	int verif = 0;
 
 	SDL_WM_SetCaption("--- Menu Principal --- ", NULL);
 	if (TTF_Init() == -1)
@@ -117,12 +114,13 @@ int main(void)
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_RETURN:
-					if (rang == 1 && verif==0)
+					if (rang == 1 && verif == 0)
 					{
 						Mix_PlayChannel(-1, click, 0);
 						Mix_PauseMusic();
+						//etat=GAME;
 						jeu(screen);
-						verif=1;
+						verif = 1;
 						Mix_ResumeMusic();
 					}
 					if (rang == 2)
@@ -136,6 +134,7 @@ int main(void)
 						Mix_PlayChannel(-1, click, 0);
 						buttonQuit = IMG_Load("./img/menu/buttonQuitSelected.png");
 						continuer = 0;
+						*etat=EXIT;
 					}
 					break;
 				case SDLK_DOWN:
@@ -295,13 +294,13 @@ int main(void)
 			case SDL_MOUSEBUTTONUP:
 				if (event.button.button == SDL_BUTTON_LEFT)
 				{
-					if (verif ==0 && event.motion.x > positionPlay.x && event.motion.x < positionPlay.x + buttonPlay->w && event.motion.y > positionPlay.y && event.motion.y < positionPlay.y + buttonPlay->h)
+					if (verif == 0 && event.motion.x > positionPlay.x && event.motion.x < positionPlay.x + buttonPlay->w && event.motion.y > positionPlay.y && event.motion.y < positionPlay.y + buttonPlay->h)
 					{
 						Mix_PlayChannel(-1, click, 0);
 						Mix_PauseMusic();
 						buttonPlay = IMG_Load("./img/menu/buttonPlaySelected.png");
 						jeu(screen);
-						verif=1;
+						verif = 1;
 						Mix_ResumeMusic();
 					}
 					else if (event.motion.x > positionSettings.x && event.motion.x < positionSettings.x + buttonSettings->w && event.motion.y > positionSettings.y && event.motion.y < positionSettings.y + buttonSettings->h)
@@ -325,6 +324,7 @@ int main(void)
 						Mix_PlayChannel(-1, click, 0);
 						buttonQuit = IMG_Load("./img/menu/buttonQuitSelected.png");
 						continuer = 0;
+						*etat=EXIT;
 					}
 					else if (event.motion.x > 500 && event.motion.x < 672 && event.motion.y > 400 && event.motion.y < 568)
 					{
