@@ -4,6 +4,8 @@
 #include "SDL/SDL_mixer.h"
 #include <math.h>
 #include <time.h>
+#include "defs.h"
+
 
 typedef struct
 {
@@ -16,7 +18,7 @@ typedef struct
     int rangR,resolution;
 } enigme;
 
-void enigme_math(SDL_Surface *screen);
+void enigme_math(SDL_Surface *screen,enigme *E,etat *etat);
 void initenigme(enigme *E);
 void afficherenigme(enigme *E, SDL_Surface *screen);
 void freeenigme(enigme *E);

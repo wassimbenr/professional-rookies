@@ -3,141 +3,117 @@
 #include "hero.h"
 #include "colision.h"
 #include "enigme.h"
+#include "menu.h"
 
 
-typedef enum etat
-{
-    MENU,
-    SETTINGS,
-    GAME,
-    ENIGME,
-    GAME_OVER,
-}etat;
 
-void main ()
+void main()
 {
     hero safwen;
     background background;
     entite ennemie;
-    enigme enigme_math;
+    enigme enigme;
 
-    Etat=MENU;
+    etat etat = MENU;
 
     SDL_Event event;
 
-    int continuer=1;
-    SDL_Surface *ecran;
+    int continuer = 1;
+    int volume = 120, mute = 0, fullscreen = 0;
+
+    SDL_Surface *screen;
+    SDL_Surface *game_over = IMG_Load("./img/game_over.png");
+    SDL_Rect position_game_over;
+    position_game_over.x = 0;
+    position_game_over.y = 0;
 
     initialiser_hero(&safwen, "safwen");
-	initialiser_background(&background);
-	initialiser_entite(&enemie);
+    initialiser_background(&background);
+    initialiser_entite(&ennemie);
+    initenigme(&enigme);
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    ecran = SDL_SetVideoMode(SCREEN_WIDTH+320, SCREEN_HEIGHT+120, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(SCREEN_WIDTH + 320, SCREEN_HEIGHT + 120, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     SDL_EnableKeyRepeat(2, 2);
 
     while (continuer)
     {
-         if (etat==MENU)
-         {
-            menu();
-         }
-         else if (etat==SETTINGS)
-         {
-             settings();
-         }
-         else if (etat==GAME)
-         {
+        if (etat == MENU)
+        {
+            menu(&etat, volume);
+        }
+        else if (etat == SETTINGS)
+        {
+            settings(screen, &mute, &fullscreen, &volume, &etat);
+        }
+        else if (etat == GAME)
+        {
+            afficher_background(&background, screen);
+            afficher_entite(&ennemie, screen);
+            afficher_hero(safwen, screen);
 
-         }
-         else if (etat==ENIGME)
-         {
-            
+            CollisionParfaite(&safwen, background);
 
-            if ()
-                etat=GAME;
-         }
-         else if (etat==GAME_OVER)
-         {
-             blit gameover image;
-             etat=menu;
-         }
+            while (SDL_PollEvent(&event))
+            {
+                switch (event.type)
+                {
+                    {
+                    case SDL_KEYDOWN:
+                        switch (event.key.keysym.sym)
+                        {
+                        case SDLK_RIGHT:
+                            safwen.position.x += 2;
+                            animer_hero(&safwen, WALK_RIGHT);
+                            break;
+                        case SDLK_LEFT:
+                            safwen.position.x -= 2;
+                            animer_hero(&safwen, WALK_LEFT);
+                            break;
+                        case SDLK_ESCAPE:
+                            etat = MENU;
+                            break;
+                        }
+                        break;
+                    case SDL_KEYUP:
+                        if (safwen.state == WALK_RIGHT || safwen.state == WALK_LEFT)
+                            safwen.state = IDLE;
+                        break;
+                    }
+                }
+            }
+
+            attack_entite(&ennemie, &safwen);
+
+            if (ennemie.posMin.x > safwen.position.x)
+                deplacer_alea(&ennemie);
+
+            animer_hero(&safwen, safwen.state);
+            animer_entite(&ennemie);
+
+            if (safwen.position.x == 900)
+                etat = ENIGME;
+        }
+        else if (etat == ENIGME)
+        {
+            afficherenigme(&enigme, screen);
+            enigme_math(screen,&enigme, &etat);
+        }
+        else if (etat == GAME_OVER)
+        {
+            SDL_BlitSurface(game_over, NULL, screen, &position_game_over);
+            SDL_Delay(2000);
+            etat = MENU;
+        }
+        else if (etat == EXIT)
+            continuer = 0;
+        SDL_Flip(screen);
     }
-
-
+    free_background(&background);
+    free_entite(&ennemie);
+    free_hero(&safwen);
+    freeenigme(&enigme);
+    SDL_Quit();
 }
-
-Void main()
-// Initialisation des ressources
-Initialise_entity
-Initialise_Perso
-Initialise_back
-Initialise_enigma
-etat= « Menu »
-Tant que (continuer)
-Si etat= « menu »
-// display + input + update menu
-Sinon Si etat= « settings »
-// display + input + update settings
-Sinon Si etat= « game »
-Blit_back
-Blit_Perso
-Blit_entity
-RunTime_Game
-// Input &amp; Update
-Si événement = touche droite
-Perso.direction ← 0
-Sinon
-Si événement = touche gauche
-Perso.direction ←1
-Sinon Perso.direction ←-1
-Fin si
-Fin si
-Si évènement=déplacement souris
-Deplacer_Perso_Souris
-Fin si
-Si Perso.direction dans {0,1}
-Si Perso.pos.x&lt;(screen-&gt;w/2)
-Move_Perso
-Sinon
-Scrolling
-Animate_Perso
-Fin Si
-MoveAl_Entity
-Animate_Entity
-Fin si
-Si (collision :Bounding Box ou Perfect Pixel)
-etat= « enigme »
-Fin si
-
-Sinon si etat= « enigme »
-reponse=0
-Blit_Enigma
-Gen_Enigma (statique ou dynamique)
-Si (temps écoulé&lt; duré enigme)
-Si ( Resolve_Enigma==1) //bonne réponse
-reponse=1
-Sinon reponse=-1  //mauvaise réponse
-Fin si
-Sinon reponse=-1 
-Fin si
-Si( reponse !=0)
-Update_ScoreVie
-Si ((Perso.nbre_vie == 0) ou (Perso.score &lt;0))
-etat= « game over »
-Fin Si
-etat= « game »
-reponse=0
-Fin si
-Sinon Si etat=  « game over »
-Blit_gameover
-etat=  « menu »
-FIN SI
-
-Flip
-Fin tant que
-//libération des ressources
-Free…
-FIN

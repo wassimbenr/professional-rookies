@@ -1,13 +1,14 @@
 #include "settings.h"
-void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
+void settings(SDL_Surface *screen, int *mute, int *fullscreen, int *volume, etat *etat)
 {
+
 	SDL_Surface *background;
 	SDL_Rect pos_backg;
 	SDL_Event event;
-	SDL_Surface *full = NULL, *mute = NULL, *back = NULL, *screen_mode = NULL, *sound = NULL, *volume_bar = NULL, *plus = NULL, *moins = NULL;
+	SDL_Surface *full = NULL, *mute_image = NULL, *back = NULL, *screen_mode = NULL, *sound = NULL, *volume_bar = NULL, *plus = NULL, *moins = NULL;
 	SDL_Rect pos_mute, pos_full, pos_back, pos_sound, pos_screen, pos_vol_bar, pos_plus, pos_moins;
 	Mix_Chunk *click;
-	int continuer = 1, f = 0, m = 0, b = 0;
+	int  f = 0, m = 0, b = 0;
 	TTF_Font *police = NULL;
 	police = TTF_OpenFont("./img/menu/8bit.ttf", 15);
 	SDL_Color couleurBlanche = {255, 255, 255};
@@ -37,7 +38,7 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 	switch (*volume)
 	{
 	case 0:
-		*u = 1;
+		*mute = 1;
 		volume_bar = NULL;
 		break;
 	case 24:
@@ -57,12 +58,12 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 		break;
 	}
 	sound = IMG_Load("./img/menu/sound.png");
-	if (*u == 0)
-		mute = IMG_Load("./img/menu/mute.png");
+	if (*mute == 0)
+		mute_image = IMG_Load("./img/menu/mute.png");
 	else
-		mute = IMG_Load("./img/menu/mute_tick.png");
+		mute_image = IMG_Load("./img/menu/mute_tick.png");
 	screen_mode = IMG_Load("./img/menu/screen.png");
-	if (*fs == 0)
+	if (*fullscreen == 0)
 		full = IMG_Load("./img/menu/full.png");
 	else
 		full = IMG_Load("./img/menu/full_tick.png");
@@ -72,8 +73,7 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 
 	background = SDL_LoadBMP("./img/menu/ZEUUN.bmp");
 
-	while (continuer)
-	{
+	
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -82,16 +82,16 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_ESCAPE:
-					continuer = 0;
+					(*etat)=MENU;
 					break;
 				case SDLK_LEFT:
 					if (m == 1)
 					{
-						*volume -= 24;
+						(*volume) -= 24;
 						switch (*volume)
 						{
 						case 0:
-							*u = 1;
+							(*mute )= 1;
 							volume_bar = NULL;
 							break;
 						case 24:
@@ -115,12 +115,12 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				case SDLK_RIGHT:
 					if (m == 1)
 					{
-						*volume += 24;
-						*u = 0;
+						(*volume) += 24;
+						(*mute) = 0;
 						switch (*volume)
 						{
 						case 0:
-							*u = 1;
+							(*mute) = 1;
 							volume_bar = NULL;
 							break;
 						case 24:
@@ -145,35 +145,35 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					if (b == 1)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						continuer = 0;
+						(*etat)=MENU;
 					}
-					if (f == 1 && *fs == 0)
+					if (f == 1 && *fullscreen == 0)
 					{
 						Mix_PlayChannel(-1, click, 0);
 						screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
 						full = IMG_Load("./img/menu/full_active_tick.png");
-						SDL_Flip(screen);
-						*fs = 1;
+						//SDL_Flip(screen);
+						(*fullscreen) = 1;
 					}
-					else if (f == 1 && *fs == 1)
+					else if (f == 1 && *fullscreen == 1)
 					{
 						Mix_PlayChannel(-1, click, 0);
 						screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 						full = IMG_Load("./img/menu/full_active.png");
-						SDL_Flip(screen);
-						*fs = 0;
+						//SDL_Flip(screen);
+						(*fullscreen) = 0;
 					}
-					if (m == 1 && *u == 0)
+					if (m == 1 && *mute == 0)
 					{
 						Mix_PauseMusic();
-						mute = IMG_Load("./img/menu/mute_active_tick.png");
-						*u = 1;
+						mute_image = IMG_Load("./img/menu/mute_active_tick.png");
+						*mute = 1;
 					}
-					else if (m == 1 && *u == 1)
+					else if (m == 1 && *mute == 1)
 					{
 						Mix_ResumeMusic();
-						mute = IMG_Load("./img/menu/mute_active.png");
-						*u = 0;
+						mute_image = IMG_Load("./img/menu/mute_active.png");
+						*mute = 0;
 					}
 					break;
 				case SDLK_DOWN:
@@ -181,11 +181,11 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					{
 
 						Mix_PlayChannel(-1, click, 0);
-						if (*u == 0)
-							mute = IMG_Load("./img/menu/mute_active.png");
+						if (*mute == 0)
+							mute_image = IMG_Load("./img/menu/mute_active.png");
 						else
-							mute = IMG_Load("./img/menu/mute_active_tick.png");
-						if (*fs == 0)
+							mute_image = IMG_Load("./img/menu/mute_active_tick.png");
+						if (*fullscreen == 0)
 							full = IMG_Load("./img/menu/full.png");
 						else
 							full = IMG_Load("./img/menu/full_tick.png");
@@ -196,11 +196,11 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					else if (m == 1 && f == 0 && b == 0)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						if (*u == 0)
-							mute = IMG_Load("./img/menu/mute.png");
+						if (*mute == 0)
+							mute_image = IMG_Load("./img/menu/mute.png");
 						else
-							mute = IMG_Load("./img/menu/mute_tick.png");
-						if (*fs == 0)
+							mute_image = IMG_Load("./img/menu/mute_tick.png");
+						if (*fullscreen == 0)
 							full = IMG_Load("./img/menu/full_active.png");
 						else
 							full = IMG_Load("./img/menu/full_active_tick.png");
@@ -211,14 +211,14 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					else if (m == 0 && f == 1 && b == 0)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						if (*fs == 0)
+						if (*fullscreen == 0)
 							full = IMG_Load("./img/menu/full.png");
 						else
 							full = IMG_Load("./img/menu/full_tick.png");
-						if (*u == 0)
-							mute = IMG_Load("./img/menu/mute.png");
+						if (*mute == 0)
+							mute_image = IMG_Load("./img/menu/mute.png");
 						else
-							mute = IMG_Load("./img/menu/mute_tick.png");
+							mute_image = IMG_Load("./img/menu/mute_tick.png");
 						back = IMG_Load("./img/menu/back_active.png");
 						m = 0;
 						f = 0;
@@ -229,14 +229,14 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					if (m == 0 && f == 0 && b == 1)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						if (*fs == 0)
+						if (*fullscreen == 0)
 							full = IMG_Load("./img/menu/full_active.png");
 						else
 							full = IMG_Load("./img/menu/full_active_tick.png");
-						if (*u == 0)
-							mute = IMG_Load("./img/menu/mute.png");
+						if (*mute == 0)
+							mute_image = IMG_Load("./img/menu/mute.png");
 						else
-							mute = IMG_Load("./img/menu/mute_tick.png");
+							mute_image = IMG_Load("./img/menu/mute_tick.png");
 						back = IMG_Load("./img/menu/back.png");
 						m = 0;
 						f = 1;
@@ -245,14 +245,14 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					else if (m == 0 && f == 1 && b == 0)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						if (*fs == 0)
+						if (*fullscreen == 0)
 							full = IMG_Load("./img/menu/full.png");
 						else
 							full = IMG_Load("./img/menu/full_tick.png");
-						if (*u == 0)
-							mute = IMG_Load("./img/menu/mute_active.png");
+						if (*mute == 0)
+							mute_image = IMG_Load("./img/menu/mute_active.png");
 						else
-							mute = IMG_Load("./img/menu/mute_active_tick.png");
+							mute_image = IMG_Load("./img/menu/mute_active_tick.png");
 						back = IMG_Load("./img/menu/back.png");
 						m = 1;
 						f = 0;
@@ -265,11 +265,11 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				if (event.motion.x > pos_plus.x && event.motion.x < pos_plus.x + plus->w && event.motion.y > pos_plus.y && event.motion.y < pos_plus.y + plus->h)
 				{
 					plus = TTF_RenderText_Blended(police, "+", couleurRouge);
-					if (*u == 0)
-						mute = IMG_Load("./img/menu/mute.png");
+					if (*mute == 0)
+						mute_image = IMG_Load("./img/menu/mute.png");
 					else
-						mute = IMG_Load("./img/menu/mute_tick.png");
-					if (*fs == 0)
+						mute_image = IMG_Load("./img/menu/mute_tick.png");
+					if (*fullscreen == 0)
 						full = IMG_Load("./img/menu/full.png");
 					else
 						full = IMG_Load("./img/menu/full_tick.png");
@@ -278,23 +278,23 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				else if (event.motion.x > pos_moins.x && event.motion.x < pos_moins.x + moins->w && event.motion.y > pos_moins.y && event.motion.y < pos_moins.y + moins->h)
 				{
 					moins = TTF_RenderText_Blended(police, "-", couleurRouge);
-					if (*u == 0)
-						mute = IMG_Load("./img/menu/mute.png");
+					if (*mute == 0)
+						mute_image = IMG_Load("./img/menu/mute.png");
 					else
-						mute = IMG_Load("./img/menu/mute_tick.png");
-					if (*fs == 0)
+						mute_image = IMG_Load("./img/menu/mute_tick.png");
+					if (*fullscreen == 0)
 						full = IMG_Load("./img/menu/full.png");
 					else
 						full = IMG_Load("./img/menu/full_tick.png");
 					plus = TTF_RenderText_Blended(police, "+", couleurBlanche);
 				}
-				else if (event.motion.x > pos_mute.x && event.motion.x < pos_mute.x + mute->w && event.motion.y > pos_mute.y && event.motion.y < pos_mute.y + mute->h)
+				else if (event.motion.x > pos_mute.x && event.motion.x < pos_mute.x + mute_image->w && event.motion.y > pos_mute.y && event.motion.y < pos_mute.y + mute_image->h)
 				{
-					if (*u == 0)
-						mute = IMG_Load("./img/menu/mute_active.png");
+					if (*mute == 0)
+						mute_image = IMG_Load("./img/menu/mute_active.png");
 					else
-						mute = IMG_Load("./img/menu/mute_active_tick.png");
-					if (*fs == 0)
+						mute_image = IMG_Load("./img/menu/mute_active_tick.png");
+					if (*fullscreen == 0)
 						full = IMG_Load("./img/menu/full.png");
 					else
 						full = IMG_Load("./img/menu/full_tick.png");
@@ -304,25 +304,25 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				}
 				else if (event.motion.x > pos_full.x && event.motion.x < pos_full.x + full->w && event.motion.y > pos_full.y && event.motion.y < pos_full.y + full->h)
 				{
-					if (*fs == 0)
+					if (*fullscreen == 0)
 						full = IMG_Load("./img/menu/full_active.png");
 					else
 						full = IMG_Load("./img/menu/full_active_tick.png");
-					if (*u == 0)
-						mute = IMG_Load("./img/menu/mute.png");
+					if (*mute == 0)
+						mute_image = IMG_Load("./img/menu/mute.png");
 					else
-						mute = IMG_Load("./img/menu/mute_tick.png");
+						mute_image = IMG_Load("./img/menu/mute_tick.png");
 					back = IMG_Load("./img/menu/back.png");
 					plus = TTF_RenderText_Blended(police, "+", couleurBlanche);
 					moins = TTF_RenderText_Blended(police, "-", couleurBlanche);
 				}
 				else if (event.motion.x > pos_back.x && event.motion.x < pos_back.x + back->w && event.motion.y > pos_back.y && event.motion.y < pos_back.y + back->h)
 				{
-					if (*u == 0)
-						mute = IMG_Load("./img/menu/mute.png");
+					if (*mute == 0)
+						mute_image = IMG_Load("./img/menu/mute.png");
 					else
-						mute = IMG_Load("./img/menu/mute_tick.png");
-					if (*fs == 0)
+						mute_image = IMG_Load("./img/menu/mute_tick.png");
+					if (*fullscreen == 0)
 						full = IMG_Load("./img/menu/full.png");
 					else
 						full = IMG_Load("./img/menu/full_tick.png");
@@ -332,11 +332,11 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				}
 				else
 				{
-					if (*u == 0)
-						mute = IMG_Load("./img/menu/mute.png");
+					if (*mute == 0)
+						mute_image = IMG_Load("./img/menu/mute.png");
 					else
-						mute = IMG_Load("./img/menu/mute_tick.png");
-					if (*fs == 0)
+						mute_image = IMG_Load("./img/menu/mute_tick.png");
+					if (*fullscreen == 0)
 						full = IMG_Load("./img/menu/full.png");
 					else
 						full = IMG_Load("./img/menu/full_tick.png");
@@ -350,12 +350,12 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 				{
 					if (event.motion.x > pos_plus.x && event.motion.x < pos_plus.x + plus->w && event.motion.y > pos_plus.y && event.motion.y < pos_plus.y + plus->h)
 					{
-						*volume += 24;
-						*u = 0;
+						(*volume) += 24;
+						(*mute) = 0;
 						switch (*volume)
 						{
 						case 0:
-							*u = 1;
+							(*mute )= 1;
 							volume_bar = NULL;
 							break;
 						case 24:
@@ -378,11 +378,11 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 					else if (event.motion.x > pos_moins.x && event.motion.x < pos_moins.x + moins->w && event.motion.y > pos_moins.y && event.motion.y < pos_moins.y + moins->h)
 					{
 
-						*volume -= 24;
+						(*volume) -= 24;
 						switch (*volume)
 						{
 						case 0:
-							*u = 1;
+							(*mute) = 1;
 							volume_bar = NULL;
 							break;
 						case 24:
@@ -402,44 +402,44 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 							break;
 						}
 					}
-					else if (event.motion.x > pos_mute.x && event.motion.x < pos_mute.x + mute->w && event.motion.y > pos_mute.y && event.motion.y < pos_mute.y + mute->h)
+					else if (event.motion.x > pos_mute.x && event.motion.x < pos_mute.x + mute_image->w && event.motion.y > pos_mute.y && event.motion.y < pos_mute.y + mute_image->h)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						if (*u == 0)
+						if (*mute == 0)
 						{
 							Mix_PauseMusic();
-							mute = IMG_Load("./img/menu/mute_active_tick.png");
-							*u = 1;
+							mute_image = IMG_Load("./img/menu/mute_active_tick.png");
+							(*mute) = 1;
 						}
 						else
 						{
 							Mix_ResumeMusic();
-							mute = IMG_Load("./img/menu/mute_active.png");
-							*u = 0;
+							mute_image = IMG_Load("./img/menu/mute_active.png");
+							(*mute) = 0;
 						}
 					}
 					else if (event.motion.x > pos_full.x && event.motion.x < pos_full.x + full->w && event.motion.y > pos_full.y && event.motion.y < pos_full.y + full->h)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						if (*fs == 0)
+						if (*fullscreen == 0)
 						{
 							screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF | SDL_FULLSCREEN);
 							full = IMG_Load("./img/menu/full_active_tick.png");
-							SDL_Flip(screen);
-							*fs = 1;
+							//SDL_Flip(screen);
+							(*fullscreen) = 1;
 						}
 						else
 						{
 							screen = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 							full = IMG_Load("./img/menu/full_active.png");
-							SDL_Flip(screen);
-							*fs = 0;
+							//SDL_Flip(screen);
+							(*fullscreen )= 0;
 						}
 					}
 					else if (event.motion.x > pos_back.x && event.motion.x < pos_back.x + back->w && event.motion.y > pos_back.y && event.motion.y < pos_back.y + back->h)
 					{
 						Mix_PlayChannel(-1, click, 0);
-						continuer = 0;
+						(*etat) = MENU;
 					}
 				}
 				break;
@@ -449,13 +449,13 @@ void settings(SDL_Surface *screen, int *u, int *fs, int *volume)
 		SDL_BlitSurface(screen_mode, NULL, screen, &pos_screen);
 		SDL_BlitSurface(full, NULL, screen, &pos_full);
 		SDL_BlitSurface(sound, NULL, screen, &pos_sound);
-		SDL_BlitSurface(mute, NULL, screen, &pos_mute);
+		SDL_BlitSurface(mute_image, NULL, screen, &pos_mute);
 		SDL_BlitSurface(back, NULL, screen, &pos_back);
 		SDL_BlitSurface(volume_bar, NULL, screen, &pos_vol_bar);
 		SDL_BlitSurface(plus, NULL, screen, &pos_plus);
 		SDL_BlitSurface(moins, NULL, screen, &pos_moins);
 		Mix_VolumeMusic(*volume);
-		SDL_Flip(screen);
-	}
-	SDL_FreeSurface(background);
+		//SDL_Flip(screen);
+	
+	//SDL_FreeSurface(background);
 }
