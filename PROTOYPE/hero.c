@@ -116,8 +116,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 	static int timeLastMs, timeAccumulatedMs, timeDeltaMs, timeCurrentMs = 0;
 	static int current_ground_position;
 	static float accel = 0;
-	static int tanguiza = 0;
-	static int test;
+	static int tanguiza = -1;
 
 	timeLastMs = timeCurrentMs;
 	timeCurrentMs = SDL_GetTicks();
@@ -129,24 +128,20 @@ void deplacer_hero(hero *h, SDL_Event event)
 
 	while (timeAccumulatedMs >= timeStepMs)
 	{
-		test = 0;
 		Uint8 *keystates = SDL_GetKeyState(NULL);
-		if (keystates[SDLK_UP] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)))
-		{
 			if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
 			{
 				animer_hero(h, JUMP);
 				h->position.y -= JUMP_SPEED;
 			}
-
-			else if (h->position.y == h->current_ground_position - JUMP_HEIGHT || (tanguiza == 1 && !h->collision_DOWN))
+			if(h->position.y == h->current_ground_position - JUMP_HEIGHT || h->collision_UP)
+				tanguiza=1;
+		    if (tanguiza == 1 && !h->collision_DOWN)
 			{
 				animer_hero(h, JUMP);
 				h->position.y += JUMP_SPEED;
-				tanguiza = 1;
-				test = 1;
 			}
-		}
+		
 		if (keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x > h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_RIGHT)
@@ -181,15 +176,10 @@ void deplacer_hero(hero *h, SDL_Event event)
 					h->position.x = 0;
 			}
 		}
-		if (!test && tanguiza == 1 && !h->collision_DOWN)
-			h->position.y += JUMP_SPEED;
-		else if (h->collision_DOWN)
-			tanguiza = 0;
-		if (!h->collision_DOWN && !keystates[SDLK_UP])
-			h->position.y += JUMP_SPEED;
-		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT] && !keystates[SDLK_UP])
+		
+		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT] )
 			h->state = IDLE;
-		if (event.type == SDL_MOUSEBUTTONUP)
+	/*	if (event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (event.button.button == SDL_BUTTON_RIGHT)
 			{
@@ -204,20 +194,20 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 			if (event.button.button == SDL_BUTTON_LEFT)
 				accel = 0;
+		}*/
+		if(event.type==SDL_KEYDOWN)
+		{
+			if(event.key.keysym.sym==SDLK_UP)
+				if(h->collision_DOWN)
+					tanguiza=0;
 		}
 		if (event.type == SDL_KEYUP)
 		{
 
 			if (event.key.keysym.sym == SDLK_UP)
 			{
-				if ((!h->collision_DOWN) && (!test))
-				{
-					h->position.y += JUMP_SPEED;
-					tanguiza = 1;
-				}
-				else if (h->collision_DOWN)
-					tanguiza = 0;
-				break;
+				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
+					tanguiza=1;
 			}
 			if (event.key.keysym.sym == SDLK_RIGHT || (event.key.keysym.sym == SDLK_LEFT))
 			{
