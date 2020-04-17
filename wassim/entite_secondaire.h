@@ -44,6 +44,9 @@ typedef struct Entite
     int vitesse;
 } entite;
 
+void input_ennemi(entite *E, SDL_Rect pos);
+void update_entite(entite *E ,SDL_Rect pos);
+void attack_entite(entite *E,SDL_Rect pos);
 void initialiser_entite(entite *E);
 void deplacer_alea(entite *E);
 void animer_entite(entite *E);

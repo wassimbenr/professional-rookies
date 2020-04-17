@@ -2,6 +2,7 @@
     "files.associations": {
         "hero.h": "c",
         "defs.h": "c",
-        "colision.h": "c"
+        "colision.h": "c",
+        "entite_secondaire.h": "c"
     }
 }

@@ -23,7 +23,7 @@ void jeu(SDL_Surface *ecran)
 	SDL_Init(SDL_INIT_VIDEO);
 
 	SDL_EnableKeyRepeat(2, 2);
-	int nb=0;
+	int nb = 0;
 	while (Jcontinuer)
 	{
 
@@ -67,13 +67,9 @@ void jeu(SDL_Surface *ecran)
 		}
 		deplacer_hero(&safwen, event); //gravity and acceleration
 		//deplacer_alea(&enemie);
-
-		//if (enemie.posMin.x <= safwen.position.x)
-		
-		attack_entite(&enemie, &safwen);
-
+	
+		input_ennemi(&enemie, safwen.position);
 		animer_hero(&safwen, safwen.state);
-		animer_entite(&enemie);
 		afficher_background(&background, ecran);
 		afficher_entite(&enemie, ecran);
 		afficher_hero(safwen, ecran);

@@ -7,7 +7,6 @@
 
 SDL_Color GetPixel(SDL_Surface *pSurface, int x, int y);
 void CollisionParfaite(hero *h,background b);
-int Colision_bb(hero *h, entite *e);
-void attack_entite (entite *e,hero *h);
-
+//int Colision_bb(hero *h, entite *e);
+int collision(entite *E, SDL_Rect pos);
 #endif

@@ -102,43 +102,15 @@ void CollisionParfaite(hero *h, background b)
 	else
 		h->collision_DOWN = 1;
 }
-int Colision_bb(hero *h, entite *e)
+int collision(entite *E, SDL_Rect pos)
 {
-	if ((h->position.x + h->position.w / 2 < e->position.x) || (h->position.x > e->position.x + e->position.w / 2) || (h->position.y + h->position.h < e->position.y) || (h->position.y > e->position.y + e->position.h))
-	{
+	if (pos.x > E->position.x && pos.x < E->position.x + E->position.w)
 		return 0;
-	}
-	else
-	{
-		return 1;
-	}
-}
-
-void attack_entite(entite *e, hero *h)
-{
-	printf("position: %d\n", e->posMin.x <= h->position.x);
-	printf("collision: %d\n", Colision_bb(h, e));
-
-	if (Colision_bb(h, e))
-	{
-		h->state = DAMAGE;
-		//e->state_entite=ATTACK_entite;
-	}
-	else 
-	{
-		e->state_entite = WALK_entite;
-	}
-
-	if (e->position.x >= h->position.x)
-	{
-		e->direction_entite = 0;
-		e->position.x -= 2;
-		e->state_entite = ATTACK_entite;
-	}
-	else if (e->position.x < h->position.x)
-	{
-		e->direction_entite = 1;
-		e->position.x += 2;
-		e->state_entite = ATTACK_entite;
-	}
+	if (pos.x + pos.w > E->position.x && pos.x + pos.w < E->position.x + E->position.w)
+		return 0;
+	if (pos.y > E->position.y && pos.y < E->position.y + E->position.h)
+		return 0;
+	if (pos.y + pos.h > E->position.y && pos.y + pos.h < E->position.y + E->position.h)
+		return 0;
+	return 1;
 }
