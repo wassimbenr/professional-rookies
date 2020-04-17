@@ -179,22 +179,24 @@ void deplacer_hero(hero *h, SDL_Event event)
 		
 		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT] )
 			h->state = IDLE;
-	/*	if (event.type == SDL_MOUSEBUTTONUP)
+		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			if (event.button.button == SDL_BUTTON_RIGHT)
 			{
-				if ((!h->collision_DOWN) && (!test))
-				{
-					h->position.y += JUMP_SPEED;
-					tanguiza = 1;
-				}
-				else if (h->collision_DOWN)
-					tanguiza = 0;
-				break;
+				if(h->collision_DOWN)
+					tanguiza=0;
+		}
+		}
+		if (event.type == SDL_MOUSEBUTTONUP)
+		{
+			if (event.button.button == SDL_BUTTON_RIGHT)
+			{
+				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
+					tanguiza=1;
 			}
 			if (event.button.button == SDL_BUTTON_LEFT)
 				accel = 0;
-		}*/
+		}
 		if(event.type==SDL_KEYDOWN)
 		{
 			if(event.key.keysym.sym==SDLK_UP)
