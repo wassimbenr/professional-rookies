@@ -5,7 +5,7 @@
 #include "defs.h"
 #include "enigme.h"
 
-void jeu(SDL_Surface *ecran)//etat 
+void jeu(SDL_Surface *ecran) //etat
 {
 	hero safwen;
 	background background;
@@ -44,6 +44,8 @@ void jeu(SDL_Surface *ecran)//etat
 				}
 				break;
 			}
+			//if (safwen.position.x < (SCREEN_WIDTH / 2))
+
 			scrolling(&background, event);
 		}
 		if (safwen.position.x >= 790 && verif == 0)
@@ -51,12 +53,12 @@ void jeu(SDL_Surface *ecran)//etat
 			enigme_math(ecran);
 			verif = 1;
 		}
-		
 		deplacer_hero(&safwen, event);
 		animer_hero(&safwen, safwen.state);
 
 		//deplacer_alea(&enemie);
 		//input_ennemi(&enemie, safwen.position);
+
 		afficher_background(&background, ecran);
 		//afficher_entite(&enemie, ecran);
 		afficher_hero(safwen, ecran);

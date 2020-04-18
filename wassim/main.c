@@ -23,7 +23,7 @@ void main()
     position_game_over.y = 0;
 
     SDL_Init(SDL_INIT_VIDEO);
-    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32,SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_RESIZABLE);
 
     while (continuer)
     {

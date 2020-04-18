@@ -149,7 +149,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 			else if (h->collision_DOWN && !h->collision_RIGHT)
 			{
-				h->position.x += 5 + accel;
+				h->position.x += 4 + accel;
 				
 				//animer_hero(h, WALK_RIGHT);
 				h->state=WALK_RIGHT;
@@ -170,7 +170,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 			else if (h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 5 + accel;
+				h->position.x -= 4 + accel;
 
 				h->state=WALK_LEFT;
 				//animer_hero(h, WALK_LEFT);
