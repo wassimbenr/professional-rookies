@@ -36,7 +36,6 @@ void jeu(SDL_Surface *ecran)//etat
 				break;
 			case SDL_KEYDOWN:
 				//scrolling(&background, event);
-				//deplacer_hero(&safwen, event);
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_ESCAPE:
@@ -45,22 +44,22 @@ void jeu(SDL_Surface *ecran)//etat
 				}
 				break;
 			}
-			//deplacer_hero(&safwen, event);
+			scrolling(&background, event);
 		}
-		if (safwen.position.x >= 706 && verif == 0)
+		if (safwen.position.x >= 790 && verif == 0)
 		{
 			enigme_math(ecran);
 			verif = 1;
 		}
+		
 		deplacer_hero(&safwen, event);
+		animer_hero(&safwen, safwen.state);
+
 		//deplacer_alea(&enemie);
 		//input_ennemi(&enemie, safwen.position);
-		//animer_hero(&safwen, safwen.state);
-
 		afficher_background(&background, ecran);
 		//afficher_entite(&enemie, ecran);
 		afficher_hero(safwen, ecran);
-
 		SDL_Flip(ecran);
 
 		printf("safwen: %d %d\n", safwen.position.x, safwen.position.x);

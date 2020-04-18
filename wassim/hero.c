@@ -127,14 +127,17 @@ void deplacer_hero(hero *h, SDL_Event event)
 		Uint8 *keystates = SDL_GetKeyState(NULL);
 		if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
 		{
-			animer_hero(h, JUMP);
+			//animer_hero(h, JUMP);
+			h->state=JUMP;
+
 			h->position.y -= JUMP_SPEED;
 		}
 		if (h->position.y == h->current_ground_position - JUMP_HEIGHT || h->collision_UP)
 			tanguiza = 1;
 		if (tanguiza == 1 && !h->collision_DOWN)
 		{
-			animer_hero(h, JUMP);
+			//animer_hero(h, JUMP);
+			h->state=JUMP;
 			h->position.y += JUMP_SPEED;
 		}
 
@@ -147,7 +150,10 @@ void deplacer_hero(hero *h, SDL_Event event)
 			else if (h->collision_DOWN && !h->collision_RIGHT)
 			{
 				h->position.x += 5 + accel;
-				animer_hero(h, WALK_RIGHT);
+				
+				//animer_hero(h, WALK_RIGHT);
+				h->state=WALK_RIGHT;
+
 				if (accel < 5)
 					accel += 0.1;
 			}
@@ -165,7 +171,10 @@ void deplacer_hero(hero *h, SDL_Event event)
 			else if (h->collision_DOWN && !h->collision_LEFT)
 			{
 				h->position.x -= 5 + accel;
-				animer_hero(h, WALK_LEFT);
+
+				h->state=WALK_LEFT;
+				//animer_hero(h, WALK_LEFT);
+
 				if (accel < 5)
 					accel += 0.1;
 				if (h->position.x < 0)
@@ -199,10 +208,12 @@ void deplacer_hero(hero *h, SDL_Event event)
 				if (h->collision_DOWN)
 					tanguiza = 0;
 			if (event.key.keysym.sym == SDLK_d)
-				animer_hero(h, PUNCH);
+				//animer_hero(h, PUNCH);
+				h->state=PUNCH;
 
 			if (event.key.keysym.sym == SDLK_s)
-				animer_hero(h, KICK);
+				//animer_hero(h, KICK);
+				h->state=KICK;
 		}
 		if (event.type == SDL_KEYUP)
 		{
