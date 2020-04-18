@@ -16,23 +16,23 @@ void initialiser_background(background *b)
 	b->posCamera.h = SCREEN_HEIGHT;
 }
 
-void scrolling(background *b, SDL_Event event)
+void scrolling(background *b, hero *h, SDL_Event event)
 {
 	switch (event.key.keysym.sym)
 	{
 	case SDLK_LEFT:
-		b->posCamera.x -= 2;
-		//b->position_background_mask.x+=4;
+		if (!h->collision_LEFT)
+			b->posCamera.x -= 5;
+		if (b->posCamera.x <= 0)
+			b->posCamera.x = 0;
 		break;
 	case SDLK_RIGHT:
-		b->posCamera.x += 2;
-		//b->position_background_mask.x-=4;
+		if (!h->collision_RIGHT)
+			b->posCamera.x += 5;
+		if (b->posCamera.x + SCREEN_WIDTH >= b->image->w)
+			b->posCamera.x = b->image->w - SCREEN_WIDTH;
 		break;
 	}
-	if (b->posCamera.x >= b->image->w - SCREEN_WIDTH)
-		b->posCamera.x = b->image->w - SCREEN_WIDTH;
-	else if (b->posCamera.x <= 0)
-		b->posCamera.x = 0;
 }
 void afficher_background(background *b, SDL_Surface *screen)
 {
@@ -45,4 +45,8 @@ void free_background(background *b)
 {
 	SDL_FreeSurface(b->image);
 	SDL_FreeSurface(b->background_mask);
+}
+void cameraXY(background *b, SDL_Surface *screen)
+{
+	SDL_BlitSurface(b->image, &b->posCamera, screen, NULL);
 }

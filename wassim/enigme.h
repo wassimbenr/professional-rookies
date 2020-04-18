@@ -16,7 +16,7 @@ typedef struct
     int rangR,resolution;
 } enigme;
 
-void enigme_math(SDL_Surface *screen);
+void enigme_math(SDL_Surface *screen,enigme *E);
 void initenigme(enigme *E);
 void afficherenigme(enigme *E, SDL_Surface *screen);
 void freeenigme(enigme *E);

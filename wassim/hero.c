@@ -145,38 +145,38 @@ void deplacer_hero(hero *h, SDL_Event event)
 		{
 			if (!h->collision_DOWN && !h->collision_RIGHT)
 			{
-				h->position.x += 4 + accel;
+				h->position.x += 6 + accel;
 			}
 			else if (h->collision_DOWN && !h->collision_RIGHT)
 			{
-				h->position.x += 4 + accel;
+				h->position.x += 6 + accel;
 				
 				//animer_hero(h, WALK_RIGHT);
 				h->state=WALK_RIGHT;
-
+/*
 				if (accel < 5)
-					accel += 0.1;
+					accel += 0.1;*/
 			}
 		}
 		if (keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 4 + accel;
-				if (accel < 5)
-					accel += 0.1;
+				h->position.x -= 6 + accel;
+				/*if (accel < 5)
+					accel += 0.1;*/
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
 			else if (h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 4 + accel;
+				h->position.x -= 6 + accel;
 
 				h->state=WALK_LEFT;
 				//animer_hero(h, WALK_LEFT);
 
-				if (accel < 5)
-					accel += 0.1;
+				/*if (accel < 5)
+					accel += 0.1;*/
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}

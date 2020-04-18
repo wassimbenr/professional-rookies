@@ -7,6 +7,7 @@
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
 #include "defs.h"
+#include "hero.h"
 
 typedef struct Background
 {
@@ -17,9 +18,10 @@ typedef struct Background
 	SDL_Rect posCamera;
 }background;
 
-void scrolling(background *b, SDL_Event event);
+void scrolling(background *b,hero *h,SDL_Event event);
 void initialiser_background(background *b);
 void afficher_background(background *b,SDL_Surface *screen);
+void cameraXY(background *b,SDL_Surface *screen);
 void free_background(background *b);
 #endif
 

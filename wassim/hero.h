@@ -32,6 +32,19 @@ typedef struct Sprite
     SDL_Rect frame;
     int curframe, maxframe;
 } sprite;
+
+typedef struct Vie
+{
+    SDL_Surface *image_vie;
+    int nb_vie;
+} vie;
+
+typedef struct Score
+{
+    SDL_Surface *texte_score;
+    int valeur_score;
+} score;
+
 typedef struct Hero
 {
     SDL_Rect position;
@@ -40,6 +53,8 @@ typedef struct Hero
     int collision_UP, collision_DOWN, collision_RIGHT, collision_LEFT;
     int current_ground_position;
     direction direction;
+    vie vie_hero;
+    score score_hero;
 
 } hero;
 
