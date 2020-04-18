@@ -4,5 +4,5 @@
 
 #define JUMP_HEIGHT 140
 #define GROUND_LEVEL 465
-#define JUMP_SPEED 7
+#define JUMP_SPEED 5
 

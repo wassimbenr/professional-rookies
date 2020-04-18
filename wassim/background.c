@@ -21,10 +21,10 @@ void scrolling(background *b, SDL_Event event)
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_LEFT:
-				b->posCamera.x--;
+				b->posCamera.x-=4;
 				break;
 			case SDLK_RIGHT:
-				b->posCamera.x++;
+				b->posCamera.x+=4;
 				break;
 			}
 	if (b->posCamera.x >= b->image->w - SCREEN_WIDTH)

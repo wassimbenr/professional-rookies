@@ -14,10 +14,10 @@ void initialiser_hero(hero *h, char name[20])
 	//load function
 	strcpy(image_load, "./img/hero/");
 	strcat(image_load, name);
-	if (h->direction==RIGHT)
-		strcat(image_load,"_right");
-	else if (h->direction==LEFT)
-		strcat(image_load,"_left");
+	if (h->direction == RIGHT)
+		strcat(image_load, "_right");
+	else if (h->direction == LEFT)
+		strcat(image_load, "_left");
 	strcat(image_load, ".png");
 	h->sprite.image = IMG_Load(image_load);
 	//end load function
@@ -38,7 +38,6 @@ void animer_hero(hero *h, state movement)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
-
 	switch (movement)
 	{
 	case IDLE:
@@ -75,7 +74,7 @@ void animer_hero(hero *h, state movement)
 	case DAMAGE:
 		h->sprite.frame.y = 5 * h->sprite.frame.h;
 		h->sprite.maxframe = 4;
-		h->state =DAMAGE;
+		h->state = DAMAGE;
 		break;
 	case DIE:
 		h->sprite.frame.y = 6 * h->sprite.frame.h;
@@ -83,7 +82,6 @@ void animer_hero(hero *h, state movement)
 		h->state = DIE;
 		break;
 	}
-
 	if (h->direction == RIGHT)
 		h->sprite.image = IMG_Load("./img/hero/safwen_right.png");
 	if (h->direction == LEFT)
@@ -98,14 +96,11 @@ void animer_hero(hero *h, state movement)
 			if (h->state != WALK_RIGHT && h->state != WALK_LEFT)
 				h->state = IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
 		}
-
 		h->sprite.frame.x = h->sprite.curframe * h->sprite.frame.w;
 		tempsPrecedent = tempsActuel;
 		h->sprite.curframe += 1;
-
 	}
 }
-
 void free_hero(hero *h)
 {
 	SDL_FreeSurface(h->sprite.image);
@@ -117,37 +112,32 @@ void deplacer_hero(hero *h, SDL_Event event)
 	static int timeLastMs, timeAccumulatedMs, timeDeltaMs, timeCurrentMs = 0;
 	static int current_ground_position;
 	static float accel = 0;
-	static int tanguiza = 0;
-	static int test;
+	static int tanguiza = -1;
 
 	timeLastMs = timeCurrentMs;
 	timeCurrentMs = SDL_GetTicks();
 	timeDeltaMs = timeCurrentMs - timeLastMs;
 	timeAccumulatedMs += timeDeltaMs;
 
-	if (h->collision_DOWN)
-		h->current_ground_position = h->position.y;
-
 	while (timeAccumulatedMs >= timeStepMs)
 	{
-		test = 0;
-		Uint8 *keystates = SDL_GetKeyState(NULL);
-		if (keystates[SDLK_UP] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT)))
-		{
-			if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
-			{
-				animer_hero(h, JUMP);
-				h->position.y -= JUMP_SPEED;
-			}
+		if (h->collision_DOWN)
+			h->current_ground_position = h->position.y;
 
-			else if (h->position.y == h->current_ground_position - JUMP_HEIGHT || (tanguiza == 1 && !h->collision_DOWN))
-			{
-				animer_hero(h, JUMP);
-				h->position.y += JUMP_SPEED;
-				tanguiza = 1;
-				test = 1;
-			}
+		Uint8 *keystates = SDL_GetKeyState(NULL);
+		if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
+		{
+			animer_hero(h, JUMP);
+			h->position.y -= JUMP_SPEED;
 		}
+		if (h->position.y == h->current_ground_position - JUMP_HEIGHT || h->collision_UP)
+			tanguiza = 1;
+		if (tanguiza == 1 && !h->collision_DOWN)
+		{
+			animer_hero(h, JUMP);
+			h->position.y += JUMP_SPEED;
+		}
+
 		if (keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x > h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_RIGHT)
@@ -162,7 +152,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 					accel += 0.1;
 			}
 		}
-		if (keystates[SDLK_LEFT]|| (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < h->position.x)))
+		if (keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_LEFT)
 			{
@@ -182,57 +172,52 @@ void deplacer_hero(hero *h, SDL_Event event)
 					h->position.x = 0;
 			}
 		}
-		if (!test && tanguiza == 1 && !h->collision_DOWN)
-			h->position.y += JUMP_SPEED;
-		else if (h->collision_DOWN)
-			tanguiza = 0;
-		if (!h->collision_DOWN && !keystates[SDLK_UP])
-			h->position.y += JUMP_SPEED;
-		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT] && !keystates[SDLK_UP])
-			h->state=IDLE;
-		switch (event.type)
+
+		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT])
+			h->state = IDLE;
+		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-			while (SDL_PollEvent(&event))
+			if (event.button.button == SDL_BUTTON_RIGHT)
 			{
-
-				if (event.type == SDL_MOUSEBUTTONUP)
-				{
-					if (event.button.button == SDL_BUTTON_RIGHT)
-					{
-						if ((!h->collision_DOWN) && (!test))
-						{
-							h->position.y += JUMP_SPEED;
-							tanguiza = 1;
-						}
-						else if (h->collision_DOWN)
-							tanguiza = 0;
-						break;
-					}
-					if (event.button.button == SDL_BUTTON_LEFT)
-						accel = 0;
-				}
-				if (event.type == SDL_KEYUP)
-				{
-
-					if (event.key.keysym.sym == SDLK_UP)
-					{
-						if ((!h->collision_DOWN) && (!test))
-						{
-							h->position.y += JUMP_SPEED;
-							tanguiza = 1;
-						}
-						else if (h->collision_DOWN)
-							tanguiza = 0;
-						break;
-					}
-					if (event.key.keysym.sym == SDLK_RIGHT || (event.key.keysym.sym == SDLK_LEFT))
-					{
-						accel = 0;
-					}
-					if (h->state == WALK_RIGHT || h->state == WALK_LEFT)
-						h->state = IDLE;
-				}
+				if (h->collision_DOWN)
+					tanguiza = 0;
 			}
+		}
+		if (event.type == SDL_MOUSEBUTTONUP)
+		{
+			if (event.button.button == SDL_BUTTON_RIGHT)
+			{
+				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
+					tanguiza = 1;
+			}
+			if (event.button.button == SDL_BUTTON_LEFT)
+				accel = 0;
+		}
+		if (event.type == SDL_KEYDOWN)
+		{
+			if (event.key.keysym.sym == SDLK_UP)
+				if (h->collision_DOWN)
+					tanguiza = 0;
+			if (event.key.keysym.sym == SDLK_d)
+				animer_hero(h, PUNCH);
+
+			if (event.key.keysym.sym == SDLK_s)
+				animer_hero(h, KICK);
+		}
+		if (event.type == SDL_KEYUP)
+		{
+
+			if (event.key.keysym.sym == SDLK_UP)
+			{
+				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
+					tanguiza = 1;
+			}
+			if (event.key.keysym.sym == SDLK_RIGHT || (event.key.keysym.sym == SDLK_LEFT))
+			{
+				accel = 0;
+			}
+			if (h->state == WALK_RIGHT || h->state == WALK_LEFT)
+				h->state = IDLE;
 		}
 		timeAccumulatedMs -= timeStepMs;
 	}
