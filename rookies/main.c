@@ -19,7 +19,7 @@ void main()
     SDL_Event event;
 
     int continuer = 1;
-    int volume = 120, mute = 0, fullscreen = 0;
+    int volume = 0, mute = 0, fullscreen = 0; //volume 120
 
     SDL_Surface *screen;
     SDL_Surface *game_over = IMG_Load("./img/game_over.png");
@@ -42,13 +42,13 @@ void main()
     {
         if (etat == MENU)
         {
-            menu(&etat, volume);
+            menu(&etat, volume,screen);
         }
         else if (etat == SETTINGS)
         {
             settings(screen, &mute, &fullscreen, &volume, &etat);
         }
-        else if (etat == GAME)
+        /*else if (etat == GAME)
         {
             afficher_background(&background, screen);
             afficher_entite(&ennemie, screen);
@@ -106,7 +106,7 @@ void main()
             SDL_BlitSurface(game_over, NULL, screen, &position_game_over);
             SDL_Delay(2000);
             etat = MENU;
-        }
+        }*/
         else if (etat == EXIT)
             continuer = 0;
         SDL_Flip(screen);

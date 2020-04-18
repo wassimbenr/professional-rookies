@@ -116,16 +116,24 @@ int Colision_bb(hero *h, entite *e)
 
 void attack_entite(entite *e, hero *h)
 {
-	printf("position: %d\n", e->posMin.x <= h->position.x);
-	printf("collision: %d\n", Colision_bb(h, e));
-	if (Colision_bb(h, e) && (h->state!=KICK ||h->state!=PUNCH))
-	{
-		h->state = DAMAGE;
-		//e->state_entite=ATTACK_entite;
+	static int tempsActuel = 0;
+	static int tempsPrecedent = -2000;
+	
+	if (Colision_bb(h, e) && (h->state != KICK || h->state != PUNCH))
+	{	
+
+		tempsActuel = SDL_GetTicks();
+		if (tempsActuel - tempsPrecedent >= 2000)
+		{
+			h->state = DAMAGE;
+			h->vie_hero.nb_vie--;
+			tempsPrecedent = tempsActuel;
+			//e->state_entite=ATTACK_entite;
+		}
 	}
-		
-	else if (Colision_bb(h, e) && (h->state!=KICK ||h->state!=PUNCH))
-		e->state_entite=DIE_entite;
+
+	else if (Colision_bb(h, e) && (h->state != KICK || h->state != PUNCH))
+		e->state_entite = DIE_entite;
 
 	if (e->posMin.x <= h->position.x)
 	{

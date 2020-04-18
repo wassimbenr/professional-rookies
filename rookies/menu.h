@@ -9,4 +9,4 @@
 
 
 
-void menu(etat *etat,int volume);
+void menu(etat *etat,int volume,SDL_Surface *screen);

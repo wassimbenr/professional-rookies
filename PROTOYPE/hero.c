@@ -28,6 +28,9 @@ void initialiser_hero(hero *h, char name[20])
 	h->sprite.frame.h = h->sprite.image->h / 7;
 
 	h->sprite.curframe = 0;
+
+	h->vie_hero.nb_vie=3;
+	h->score_hero.valeur_score=0;
 }
 
 void afficher_hero(hero h, SDL_Surface *screen)

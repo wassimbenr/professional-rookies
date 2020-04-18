@@ -10,6 +10,7 @@ void jeu(SDL_Surface *ecran)
 	hero safwen;
 	background background;
 	entite enemie;
+	enigme enigme_m;
 
 	int Jcontinuer = 1;
 	int verif = 0;
@@ -17,6 +18,7 @@ void jeu(SDL_Surface *ecran)
 	initialiser_hero(&safwen, "safwen");
 	initialiser_background(&background);
 	initialiser_entite(&enemie);
+	initenigme(&enigme_m);
 
 	SDL_Event event;
 
@@ -60,7 +62,11 @@ void jeu(SDL_Surface *ecran)
 		}
 		if (safwen.position.y==381 && safwen.position.x>=830 && verif ==0)
 		{
-			enigme_math(ecran);
+			enigme_math(ecran,&enigme_m);
+			if (enigme_m.resolution==1)
+				safwen.score_hero.valeur_score+=50;
+			else
+				safwen.score_hero.valeur_score-=50;
 			verif =1;
 		}
 
@@ -68,6 +74,9 @@ void jeu(SDL_Surface *ecran)
 
 		if (enemie.posMin.x > safwen.position.x)
 			deplacer_alea(&enemie);
+
+		printf("%d\n",safwen.vie_hero.nb_vie);
+		printf("%d\n",safwen.score_hero.valeur_score);
 
 		attack_entite(&enemie, &safwen);
 
@@ -86,5 +95,6 @@ void jeu(SDL_Surface *ecran)
 	free_background(&background);
 	free_entite(&enemie);
 	free_hero(&safwen);
+	freeenigme(&enigme_m);
 	SDL_Quit();
 }

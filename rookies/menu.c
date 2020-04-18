@@ -1,8 +1,7 @@
 #include "menu.h"
 
-void menu(etat *etat,int volume)
+void menu(etat *etat,int volume, SDL_Surface *screen)
 {
-	SDL_Surface *screen = NULL;
 	SDL_Surface *backgroundP = NULL;
 	SDL_Surface *buttonPlay = NULL, *buttonSettings = NULL, *buttonCredits = NULL, *buttonQuit = NULL, *buttonBonus = NULL, *note = NULL, *loop = NULL;
 	SDL_Surface *coffeeLogo;
@@ -16,7 +15,6 @@ void menu(etat *etat,int volume)
 	TTF_Font *police = NULL;
 	SDL_Surface *texte = NULL;
 	SDL_Event event;
-	int continuer = 1;
 
 	int tempsActuel = 0, tempsPrecedent = 0;
 	int t = 0, ind = 1;
@@ -367,7 +365,8 @@ void menu(etat *etat,int volume)
 	SDL_BlitSurface(texte, NULL, screen, &positionText);
 	SDL_BlitSurface(note, NULL, screen, &positionNote);
 	SDL_BlitSurface(loop, NULL, screen, &positionLoop);
-	SDL_Flip(screen);
+
+	//SDL_Flip(screen);
 
 	/*SDL_FreeSurface(backgroundP);
 	SDL_FreeSurface(buttonPlay);
