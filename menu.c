@@ -7,9 +7,9 @@
 #include "structs.h"
 #include "jeu.h"
 #include "settings.h"
-int menu(etat *etat)
+int menu(SDL_Surface *screen, etat *etat)
 {
-	SDL_Surface *screen = NULL;
+	//SDL_Surface *screen = NULL;
 	SDL_Surface *backgroundP = NULL;
 	SDL_Surface *buttonPlay = NULL, *buttonSettings = NULL, *buttonCredits = NULL, *buttonQuit = NULL, *buttonBonus = NULL, *note = NULL, *loop = NULL;
 	SDL_Surface *coffeeLogo;
@@ -119,7 +119,7 @@ int menu(etat *etat)
 						Mix_PlayChannel(-1, click, 0);
 						Mix_PauseMusic();
 						//etat=GAME;
-						jeu(screen);
+						jeu(screen,etat);
 						verif = 1;
 						Mix_ResumeMusic();
 					}
@@ -299,7 +299,7 @@ int menu(etat *etat)
 						Mix_PlayChannel(-1, click, 0);
 						Mix_PauseMusic();
 						buttonPlay = IMG_Load("./img/menu/buttonPlaySelected.png");
-						jeu(screen);
+						jeu(screen,etat);
 						verif = 1;
 						Mix_ResumeMusic();
 					}

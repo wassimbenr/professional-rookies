@@ -3,6 +3,9 @@
         "hero.h": "c",
         "defs.h": "c",
         "colision.h": "c",
-        "entite_secondaire.h": "c"
+        "entite_secondaire.h": "c",
+        "sdl_mixer.h": "c",
+        "sdl_image.h": "c",
+        "background.h": "c"
     }
 }

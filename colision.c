@@ -44,7 +44,7 @@ void CollisionParfaite(hero *h, background b)
 
 	for (i = 0; i < 8; i++)
 	{
-		couleur_obstacle = GetPixel(b.background_mask, ((pos[i].x)+b.posCamera.x), pos[i].y);
+		couleur_obstacle = GetPixel(b.background_mask, ((pos[i].x) + b.posCamera.x), pos[i].y);
 		if (couleur_obstacle.r == 0 && couleur_obstacle.g == 0 && couleur_obstacle.b == 0)
 		{
 			if (i == 0)
@@ -102,15 +102,27 @@ void CollisionParfaite(hero *h, background b)
 	else
 		h->collision_DOWN = 1;
 }
-int collision(entite *E, SDL_Rect pos)
+/*int collision(entite *E, hero *h)
 {
-	if (pos.x > E->position.x && pos.x < E->position.x + E->position.w)
+	if (h->position.x > E->position.x && h->position.x < E->position.x + E->position.w)
 		return 0;
-	if (pos.x + pos.w > E->position.x && pos.x + pos.w < E->position.x + E->position.w)
+	else if (h->position.x + h->position.w > E->position.x && h->position.x + h->position.w < E->position.x + E->position.w)
 		return 0;
-	if (pos.y > E->position.y && pos.y < E->position.y + E->position.h)
+	else if (h->position.y > E->position.y && h->position.y < E->position.y + E->position.h)
 		return 0;
-	if (pos.y + pos.h > E->position.y && pos.y + pos.h < E->position.y + E->position.h)
+	else if (h->position.y + h->position.h > E->position.y && h->position.y + h->position.h < E->position.y + E->position.h)
 		return 0;
-	return 1;
+	else
+		return 1;
+}*/
+int collision(entite *e, hero *h)
+{
+	if ((h->position.x + h->position.w / 2 < e->position.x) || (h->position.x > e->position.x + e->position.w / 2) || (h->position.y + h->position.h < e->position.y) || (h->position.y > e->position.y + e->position.h))
+	{
+		return 0;
+	}
+	else
+	{
+		return 1;
+	}
 }

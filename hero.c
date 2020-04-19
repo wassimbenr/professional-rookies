@@ -28,6 +28,9 @@ void initialiser_hero(hero *h, char name[20])
 	h->sprite.frame.h = h->sprite.image->h / 7;
 
 	h->sprite.curframe = 0;
+
+	h->vie_hero.nb_vie=3;
+	h->score_hero.valeur_score=0;
 }
 
 void afficher_hero(hero h, SDL_Surface *screen)
@@ -38,6 +41,7 @@ void animer_hero(hero *h, state movement)
 {
 	static int tempsActuel = 0;
 	static int tempsPrecedent = 0;
+
 	switch (movement)
 	{
 	case IDLE:
@@ -82,6 +86,7 @@ void animer_hero(hero *h, state movement)
 		h->state = DIE;
 		break;
 	}
+
 	if (h->direction == RIGHT)
 		h->sprite.image = IMG_Load("./img/hero/safwen_right.png");
 	if (h->direction == LEFT)
@@ -96,11 +101,13 @@ void animer_hero(hero *h, state movement)
 			if (h->state != WALK_RIGHT && h->state != WALK_LEFT)
 				h->state = IDLE; //to not interrupt animation (but can be interrupted with SDL_KEYUP)
 		}
+
 		h->sprite.frame.x = h->sprite.curframe * h->sprite.frame.w;
 		tempsPrecedent = tempsActuel;
 		h->sprite.curframe += 1;
 	}
 }
+
 void free_hero(hero *h)
 {
 	SDL_FreeSurface(h->sprite.image);
@@ -119,28 +126,25 @@ void deplacer_hero(hero *h, SDL_Event event)
 	timeDeltaMs = timeCurrentMs - timeLastMs;
 	timeAccumulatedMs += timeDeltaMs;
 
+	if (h->collision_DOWN)
+		h->current_ground_position = h->position.y;
+
 	while (timeAccumulatedMs >= timeStepMs)
 	{
-		if (h->collision_DOWN)
-			h->current_ground_position = h->position.y;
-
 		Uint8 *keystates = SDL_GetKeyState(NULL);
-		if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
-		{
-			//animer_hero(h, JUMP);
-			h->state=JUMP;
-
-			h->position.y -= JUMP_SPEED;
-		}
-		if (h->position.y == h->current_ground_position - JUMP_HEIGHT || h->collision_UP)
-			tanguiza = 1;
-		if (tanguiza == 1 && !h->collision_DOWN)
-		{
-			//animer_hero(h, JUMP);
-			h->state=JUMP;
-			h->position.y += JUMP_SPEED;
-		}
-
+			if (h->position.y > h->current_ground_position - JUMP_HEIGHT && tanguiza == 0 && !h->collision_UP)
+			{
+				animer_hero(h, JUMP);
+				h->position.y -= JUMP_SPEED;
+			}
+			if(h->position.y == h->current_ground_position - JUMP_HEIGHT || h->collision_UP)
+				tanguiza=1;
+		    if (tanguiza == 1 && !h->collision_DOWN)
+			{
+				animer_hero(h, JUMP);
+				h->position.y += JUMP_SPEED;
+			}
+		
 		if (keystates[SDLK_RIGHT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x > h->position.x)))
 		{
 			if (!h->collision_DOWN && !h->collision_RIGHT)
@@ -149,12 +153,10 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 			else if (h->collision_DOWN && !h->collision_RIGHT)
 			{
-				h->position.x += 4 + accel;
-				
-				//animer_hero(h, WALK_RIGHT);
-				h->state=WALK_RIGHT;
-
-				
+				h->position.x += 5 + accel;
+				animer_hero(h, WALK_RIGHT);
+				if (accel < 5)
+					accel += 0.1;
 			}
 		}
 		if (keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < h->position.x)))
@@ -162,54 +164,47 @@ void deplacer_hero(hero *h, SDL_Event event)
 			if (!h->collision_DOWN && !h->collision_LEFT)
 			{
 				h->position.x -= 4 + accel;
-				
+				if (accel < 5)
+					accel += 0.1;
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
 			else if (h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 4 + accel;
-
-				h->state=WALK_LEFT;
-				//animer_hero(h, WALK_LEFT);
-
+				h->position.x -= 5 + accel;
+				animer_hero(h, WALK_LEFT);
+				if (accel < 5)
+					accel += 0.1;
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
 		}
-
-		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT])
+		
+		if (!keystates[SDLK_RIGHT] && !keystates[SDLK_LEFT] )
 			h->state = IDLE;
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
 			if (event.button.button == SDL_BUTTON_RIGHT)
 			{
-				if (h->collision_DOWN)
-					tanguiza = 0;
-			}
+				if(h->collision_DOWN)
+					tanguiza=0;
+		}
 		}
 		if (event.type == SDL_MOUSEBUTTONUP)
 		{
 			if (event.button.button == SDL_BUTTON_RIGHT)
 			{
 				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
-					tanguiza = 1;
+					tanguiza=1;
 			}
 			if (event.button.button == SDL_BUTTON_LEFT)
 				accel = 0;
 		}
-		if (event.type == SDL_KEYDOWN)
+		if(event.type==SDL_KEYDOWN)
 		{
-			if (event.key.keysym.sym == SDLK_UP)
-				if (h->collision_DOWN)
-					tanguiza = 0;
-			if (event.key.keysym.sym == SDLK_d)
-				//animer_hero(h, PUNCH);
-				h->state=PUNCH;
-
-			if (event.key.keysym.sym == SDLK_s)
-				//animer_hero(h, KICK);
-				h->state=KICK;
+			if(event.key.keysym.sym==SDLK_UP)
+				if(h->collision_DOWN)
+					tanguiza=0;
 		}
 		if (event.type == SDL_KEYUP)
 		{
@@ -217,7 +212,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 			if (event.key.keysym.sym == SDLK_UP)
 			{
 				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
-					tanguiza = 1;
+					tanguiza=1;
 			}
 			if (event.key.keysym.sym == SDLK_RIGHT || (event.key.keysym.sym == SDLK_LEFT))
 			{
@@ -225,6 +220,7 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 			if (h->state == WALK_RIGHT || h->state == WALK_LEFT)
 				h->state = IDLE;
+			
 		}
 		timeAccumulatedMs -= timeStepMs;
 	}

@@ -5,5 +5,5 @@
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
-void jeu(SDL_Surface* screen);
+void jeu(SDL_Surface *ecran,etat *etat);
 #endif

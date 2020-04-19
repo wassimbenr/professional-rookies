@@ -6,6 +6,8 @@
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
 #include <time.h>
+#include "hero.h"
+#include "defs.h"
 
 typedef struct Sprite_entite
 {
@@ -44,9 +46,9 @@ typedef struct Entite
     int vitesse;
 } entite;
 
-void input_ennemi(entite *E, SDL_Rect pos);
-void update_entite(entite *E ,SDL_Rect pos);
-void attack_entite(entite *E,SDL_Rect pos);
+void input_ennemi(entite *E, hero *h);
+void update_entite(entite *E ,hero *h);
+void attack_entite(entite *E,hero *h);
 void initialiser_entite(entite *E);
 void deplacer_alea(entite *E);
 void animer_entite(entite *E);

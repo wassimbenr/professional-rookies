@@ -6,4 +6,4 @@
 #include "settings.h"
 #include "structs.h"
 #include "jeu.h"
-void menu(etat *etat);
+void menu(SDL_Surface *screen, etat *etat);

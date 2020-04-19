@@ -30,10 +30,10 @@ void main()
         switch (etat)
         {
         case MENU:
-            menu(&etat);
+            menu(screen,&etat);
             break;
         case GAME:
-            jeu(screen);
+            jeu(screen,&etat);
             break;
         case SETTINGS:
             //settings(screen, &mute, &fullscreen, &volume, &etat);
