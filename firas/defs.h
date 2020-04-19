@@ -1,0 +1,8 @@
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+
+
+#define JUMP_HEIGHT 140
+#define GROUND_LEVEL 465
+#define JUMP_SPEED 5
+

@@ -1,79 +1,52 @@
-#include <stdio.h>
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
-#include "SDL/SDL_mixer.h"
-#include "SDL/SDL_ttf.h"
-int main(void)
+#include "background.h"
+#include "entite_secondaire.h"
+#include "hero.h"
+#include "colision.h"
+#include "enigme.h"
+#include "menu.h"
+#include "structs.h"
+#include "defs.h"
+//#include "settings.h"
+
+void main()
 {
-    SDL_Surface *screen = NULL;
-    SDL_Surface *background = NULL;
-    SDL_Rect positionBackground;
-    SDL_Rect positionText;
-    SDL_WM_SetCaption("Test", NULL);
-    screen = SDL_SetVideoMode(480, 360, 32, SDL_HWSURFACE);
-    background = IMG_Load("img/backgrounds/piano.png"); // f hot l background f dossier img/background
-    if (TTF_Init() == -1)
-    {
-        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
-        exit(EXIT_FAILURE);
-    }
-    TTF_Font *police = NULL;
-    SDL_Surface *texte = NULL;
-    positionBackground.x = 0;
-    positionBackground.y = 0;
-    SDL_Color couleur = {0, 0, 0};
-    SDL_Event event;
+    etat etat = MENU;
+
     int continuer = 1;
-    police = TTF_OpenFont("fonts/angelina.TTF", 15);
-    if (!screen)
-    {
-        fprintf(stderr, "Impossible de charger le mode video: %s\n", SDL_GetError());
-        printf("Window not created\n");
-        exit(EXIT_FAILURE);
-    }
-    if (!background)
-    {
-        printf("Unable to Load Image%s\n", SDL_GetError());
-        return 1;
-    }
-    SDL_EnableKeyRepeat(5, 5);
+    int mute = 0, fullscreen = 0;
+
+    SDL_Surface *screen;
+
+    SDL_Surface *game_over = IMG_Load("./img/game_over.jpg");
+    SDL_Rect position_game_over;
+    position_game_over.x = 0;
+    position_game_over.y = 0;
+
+    SDL_Init(SDL_INIT_VIDEO);
+    screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
+
     while (continuer)
     {
-        while (SDL_PollEvent(&event))
+        switch (etat)
         {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                continuer = 0;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_d:
-                {
-                    texte = TTF_RenderText_Blended(police, "Do", couleur);
-                    positionText.x = 32;
-                    positionText.y = 262;
-                    break;
-                }
-                case SDLK_r:
-                {
-                    texte = TTF_RenderText_Blended(police, "Re", couleur);
-                    positionText.x = 87;
-                    positionText.y = 262;
-                    break;
-                }
-                }
-            }
+        case MENU:
+            menu(&etat);
+            break;
+        case GAME:
+            jeu(screen);
+            break;
+        case SETTINGS:
+            //settings(screen, &mute, &fullscreen, &volume, &etat);
+            break;
+        case GAME_OVER:
+            SDL_BlitSurface(game_over, NULL, screen, &position_game_over);
+            SDL_Delay(2000);
+            etat = MENU;
+            // scanf if y alors menu , sinon etat = exit
+        case EXIT:
+            continuer = 0;
+            break;
         }
-        SDL_BlitSurface(background, NULL, screen, &positionBackground);
-        SDL_BlitSurface(texte, NULL, screen, &positionText);
-        SDL_Flip(screen);
     }
-    SDL_FreeSurface(background);
-    TTF_CloseFont(police);
-    TTF_Quit();
-    SDL_FreeSurface(texte);
     SDL_Quit();
-    return 0;
 }

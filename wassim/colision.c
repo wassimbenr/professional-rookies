@@ -44,7 +44,7 @@ void CollisionParfaite(hero *h, background b)
 
 	for (i = 0; i < 8; i++)
 	{
-		couleur_obstacle = GetPixel(b.background_mask, pos[i].x, pos[i].y);
+		couleur_obstacle = GetPixel(b.background_mask, 100, pos[i].y);
 		if (couleur_obstacle.r == 0 && couleur_obstacle.g == 0 && couleur_obstacle.b == 0)
 		{
 			if (i == 0)
