@@ -12,6 +12,7 @@ void jeu(SDL_Surface *ecran, etat *etat) //etat
 	entite enemie;
 	enigme enigme_m;
 
+
 	int Jcontinuer = 1;
 	int verif = 0;
 
@@ -49,18 +50,25 @@ void jeu(SDL_Surface *ecran, etat *etat) //etat
 		{
 			enigme_math(ecran, &enigme_m);
 			if (enigme_m.resolution == 1)
+			{	
 				safwen.score_hero.valeur_score += 50;
+			}	
 			else
+			{
 				safwen.score_hero.valeur_score -= 50;
+			}
+				
 			verif = 1;
 		}
 		printf("%d\n", safwen.vie_hero.nb_vie);
 		printf("%d\n", safwen.score_hero.valeur_score);
 		//deplacer_alea(&enemie);
+		attack_entite(&enemie,&safwen);
+		printf("%d\n",safwen.state);
+		animer_hero(&safwen, safwen.state);
 		deplacer_hero(&safwen, event);
 		CollisionParfaite(&safwen, background);
 		input_ennemi(&enemie, &safwen);
-		animer_hero(&safwen, safwen.state);
 		afficher_background(&background, ecran);
 		afficher_entite(&enemie, ecran);
 		afficher_hero(safwen, ecran);

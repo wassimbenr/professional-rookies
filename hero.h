@@ -35,13 +35,19 @@ typedef struct Sprite
 
 typedef struct Vie
 {
-    SDL_Surface *image_vie;
+    SDL_Surface *heart;
+    SDL_Rect position_heart_a;
+    SDL_Rect position_heart_b;
+    SDL_Rect position_heart_c;
     int nb_vie;
 } vie;
 
 typedef struct Score
 {
     SDL_Surface *texte_score;
+    SDL_Rect position_texte;
+    TTF_Font *score_font;
+    SDL_Color couleurNoire;
     int valeur_score;
 } score;
 

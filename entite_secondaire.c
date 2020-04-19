@@ -84,11 +84,23 @@ void attack_entite(entite *E, hero *h)
 	if (collision(E, h) && (h->state != KICK || h->state != PUNCH))
 	{
 		tempsActuel = SDL_GetTicks();
+		h->state = DAMAGE;
 		if (tempsActuel - tempsPrecedent >= 2000)
 		{
-			h->state = DAMAGE;
 			h->vie_hero.nb_vie--;
 			tempsPrecedent = tempsActuel;
+		}
+		switch(h->vie_hero.nb_vie)
+		{
+			case 2:
+				h->vie_hero.position_heart_c.x=0;
+				break;
+			case 1:
+				h->vie_hero.position_heart_b.x=0;
+				break;
+			case 0:
+				h->vie_hero.heart=NULL;
+				break;
 		}
 	}
 	if (E->position.x >= h->position.x)

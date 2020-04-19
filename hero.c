@@ -3,6 +3,7 @@
 void initialiser_hero(hero *h, char name[20])
 {
 	char image_load[40] = "";
+	char score_str[10]="";
 	h->position.x = 0;
 	h->position.y = GROUND_LEVEL;
 
@@ -31,11 +32,38 @@ void initialiser_hero(hero *h, char name[20])
 
 	h->vie_hero.nb_vie=3;
 	h->score_hero.valeur_score=0;
+
+	h->vie_hero.heart=IMG_Load("./img/hero/heart1.png");
+
+
+	h->vie_hero.position_heart_a.x=0;
+	h->vie_hero.position_heart_a.y=0;
+	h->vie_hero.position_heart_b.x=50;
+	h->vie_hero.position_heart_b.y=0;
+	h->vie_hero.position_heart_c.x=100;
+	h->vie_hero.position_heart_c.y=0;
+
+	h->score_hero.couleurNoire.b=0;
+	h->score_hero.couleurNoire.g=0;
+	h->score_hero.couleurNoire.r=0;
+	h->score_hero.score_font = TTF_OpenFont("./fonts/8bit.ttf", 15);
+	snprintf(score_str, 10, "%d", h->score_hero.valeur_score);
+	h->score_hero.texte_score= TTF_RenderText_Blended(h->score_hero.score_font , score_str, h->score_hero.couleurNoire);
+	h->score_hero.position_texte.x=200;
+	h->score_hero.position_texte.y=0;
 }
 
 void afficher_hero(hero h, SDL_Surface *screen)
 {
+	char score_str[10];
 	SDL_BlitSurface(h.sprite.image, &h.sprite.frame, screen, &h.position);
+	SDL_BlitSurface(h.vie_hero.heart, NULL, screen, &h.vie_hero.position_heart_a);
+	SDL_BlitSurface(h.vie_hero.heart, NULL, screen, &h.vie_hero.position_heart_b);
+	SDL_BlitSurface(h.vie_hero.heart, NULL, screen, &h.vie_hero.position_heart_c);
+
+	snprintf(score_str, 10, "%d", h.score_hero.valeur_score);
+	h.score_hero.texte_score= TTF_RenderText_Blended(h.score_hero.score_font , score_str, h.score_hero.couleurNoire);
+	SDL_BlitSurface(h.score_hero.texte_score,NULL,screen,&h.score_hero.position_texte);
 }
 void animer_hero(hero *h, state movement)
 {
