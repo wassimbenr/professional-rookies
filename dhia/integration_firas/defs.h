@@ -1,3 +1,0 @@
-#define JUMP_HEIGHT 140
-#define GROUND_LEVEL 465
-#define VERTICAL_MOVEMENT 7

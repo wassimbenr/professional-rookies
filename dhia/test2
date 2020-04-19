@@ -1,4 +1,0 @@
-gcc -c main.c
-gcc -c hero.c
-gcc main.o hero.o -o prog -lSDL -lSDL_mixer ...
-./prog
