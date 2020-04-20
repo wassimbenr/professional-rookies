@@ -118,8 +118,9 @@ int menu(SDL_Surface *screen, etat *etat)
 					{
 						Mix_PlayChannel(-1, click, 0);
 						Mix_PauseMusic();
-						//etat=GAME;
-						jeu(screen,etat);
+						*etat=GAME;
+						continuer=0;
+						//jeu(screen,etat);
 						verif = 1;
 						Mix_ResumeMusic();
 					}
@@ -299,7 +300,8 @@ int menu(SDL_Surface *screen, etat *etat)
 						Mix_PlayChannel(-1, click, 0);
 						Mix_PauseMusic();
 						buttonPlay = IMG_Load("./img/menu/buttonPlaySelected.png");
-						jeu(screen,etat);
+						*etat=GAME;
+						continuer=0;
 						verif = 1;
 						Mix_ResumeMusic();
 					}
@@ -398,6 +400,4 @@ int menu(SDL_Surface *screen, etat *etat)
 	TTF_Quit();
 	SDL_FreeSurface(texte);
 	SDL_FreeSurface(loop);
-	SDL_Quit();
-	return 0;
 }

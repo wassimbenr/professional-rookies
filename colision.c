@@ -104,20 +104,19 @@ void CollisionParfaite(hero *h, background b)
 }
 /*int collision(entite *E, hero *h)
 {
-	if (h->position.x > E->position.x && h->position.x < E->position.x + E->position.w)
+	if (h->position.x > E->position.x && h->position.x < E->position.x + E->sprite_entite.frame.w)
 		return 0;
-	else if (h->position.x + h->position.w > E->position.x && h->position.x + h->position.w < E->position.x + E->position.w)
+	if (h->position.x + h->sprite.frame.w > E->position.x && h->position.x + h->sprite.frame.w < E->position.x + E->sprite_entite.frame.w)
 		return 0;
-	else if (h->position.y > E->position.y && h->position.y < E->position.y + E->position.h)
+	if (h->position.y > E->position.y && h->position.y < E->position.y + E->sprite_entite.frame.h)
 		return 0;
-	else if (h->position.y + h->position.h > E->position.y && h->position.y + h->position.h < E->position.y + E->position.h)
+	if (h->position.y + h->sprite.frame.h > E->position.y && h->position.y + h->sprite.frame.h < E->position.y + E->sprite_entite.frame.h)
 		return 0;
-	else
-		return 1;
+	return 1;
 }*/
 int collision(entite *e, hero *h)
 {
-	if ((h->position.x + h->position.w / 2 < e->position.x) || (h->position.x > e->position.x + e->position.w / 2) || (h->position.y + h->position.h < e->position.y) || (h->position.y > e->position.y + e->position.h))
+	if ((h->position.x + h->sprite.frame.w / 2 < e->position.x) || (h->position.x > e->position.x + e->sprite_entite.frame.w / 2) || (h->position.y + h->sprite.frame.h < e->position.y) || (h->position.y > e->position.y + e->sprite_entite.frame.h))
 	{
 		return 0;
 	}

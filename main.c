@@ -1,3 +1,4 @@
+
 #include "background.h"
 #include "entite_secondaire.h"
 #include "hero.h"
@@ -21,8 +22,10 @@ void main()
     SDL_Rect position_game_over;
     position_game_over.x = 0;
     position_game_over.y = 0;
+    position_game_over.w = SCREEN_WIDTH;
+    position_game_over.h = SCREEN_HEIGHT;
 
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_EVERYTHING);
     screen = SDL_SetVideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 
     while (continuer)
@@ -30,19 +33,21 @@ void main()
         switch (etat)
         {
         case MENU:
-            menu(screen,&etat);
+            menu(screen, &etat);
             break;
         case GAME:
-            jeu(screen,&etat);
+            jeu(screen, &etat);
             break;
         case SETTINGS:
             //settings(screen, &mute, &fullscreen, &volume, &etat);
             break;
         case GAME_OVER:
             SDL_BlitSurface(game_over, NULL, screen, &position_game_over);
+            SDL_Flip(screen);
             SDL_Delay(2000);
-            etat = MENU;
+            etat = GAME;
             // scanf if y alors menu , sinon etat = exit
+            break;
         case EXIT:
             continuer = 0;
             break;

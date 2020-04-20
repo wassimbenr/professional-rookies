@@ -12,7 +12,6 @@ void jeu(SDL_Surface *ecran, etat *etat) //etat
 	entite enemie;
 	enigme enigme_m;
 
-
 	int Jcontinuer = 1;
 	int verif = 0;
 
@@ -50,36 +49,37 @@ void jeu(SDL_Surface *ecran, etat *etat) //etat
 		{
 			enigme_math(ecran, &enigme_m);
 			if (enigme_m.resolution == 1)
-			{	
 				safwen.score_hero.valeur_score += 50;
-			}	
 			else
-			{
 				safwen.score_hero.valeur_score -= 50;
-			}
-				
 			verif = 1;
 		}
-		printf("%d\n", safwen.vie_hero.nb_vie);
-		printf("%d\n", safwen.score_hero.valeur_score);
+		if ( safwen.vie_hero.nb_vie==0)
+		{
+			*etat = GAME_OVER;
+			Jcontinuer=0;
+		}
+		printf("%d\t%d\n", safwen.vie_hero.nb_vie, safwen.score_hero.valeur_score);
 		//deplacer_alea(&enemie);
-		attack_entite(&enemie,&safwen);
-		printf("%d\n",safwen.state);
-		animer_hero(&safwen, safwen.state);
+		//if (enemie.posMin.x > safwen.position.x)
+
 		deplacer_hero(&safwen, event);
 		CollisionParfaite(&safwen, background);
-		input_ennemi(&enemie, &safwen);
+
+		attack_entite(&enemie,&safwen);
+		//input_ennemi(&enemie, &safwen);
+
+		animer_entite(&enemie);
+		animer_hero(&safwen, safwen.state);
 		afficher_background(&background, ecran);
 		afficher_entite(&enemie, ecran);
 		afficher_hero(safwen, ecran);
 		SDL_Flip(ecran);
 		printf("camera x: \t%d \n", background.posCamera.x);
-		printf("safwen: %d\t%d\n", safwen.position.x, safwen.position.y);
-		printf("omar: %d\t%d\n", enemie.position.x, enemie.position.y);
+		printf("safwen:%d.%d\t%d\tomar:%d.%d\n",safwen.position.x,safwen.position.y,collision(&enemie,&safwen),enemie.position.x, enemie.position.y);
 	}
 	free_background(&background);
 	free_entite(&enemie);
 	freeenigme(&enigme_m);
 	free_hero(&safwen);
-	SDL_Quit();
 }

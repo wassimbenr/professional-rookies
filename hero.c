@@ -182,9 +182,10 @@ void deplacer_hero(hero *h, SDL_Event event)
 			else if (h->collision_DOWN && !h->collision_RIGHT)
 			{
 				h->position.x += 5 + accel;
-				animer_hero(h, WALK_RIGHT);
-				if (accel < 5)
-					accel += 0.1;
+				h->state=WALK_RIGHT;
+				//animer_hero(h, WALK_RIGHT);
+				/*if (accel < 5)
+					accel += 0.1;*/
 			}
 		}
 		if (keystates[SDLK_LEFT] || (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT) && (event.motion.x < h->position.x)))
@@ -192,17 +193,18 @@ void deplacer_hero(hero *h, SDL_Event event)
 			if (!h->collision_DOWN && !h->collision_LEFT)
 			{
 				h->position.x -= 4 + accel;
-				if (accel < 5)
-					accel += 0.1;
+				/*if (accel < 5)
+					accel += 0.1;*/
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
 			else if (h->collision_DOWN && !h->collision_LEFT)
 			{
-				h->position.x -= 5 + accel;
-				animer_hero(h, WALK_LEFT);
-				if (accel < 5)
-					accel += 0.1;
+				h->position.x -= 4 + accel;
+				h->state=WALK_LEFT;
+				//animer_hero(h, WALK_LEFT);
+				/*if (accel < 5)
+					accel += 0.1;*/
 				if (h->position.x < 0)
 					h->position.x = 0;
 			}
@@ -233,10 +235,14 @@ void deplacer_hero(hero *h, SDL_Event event)
 			if(event.key.keysym.sym==SDLK_UP)
 				if(h->collision_DOWN)
 					tanguiza=0;
+			if(event.key.keysym.sym==SDLK_x)
+				h->state=PUNCH;
+			if(event.key.keysym.sym==SDLK_c)
+				h->state=KICK;
+				
 		}
 		if (event.type == SDL_KEYUP)
 		{
-
 			if (event.key.keysym.sym == SDLK_UP)
 			{
 				if (h->collision_UP || h->position.y == h->current_ground_position - JUMP_HEIGHT)
@@ -248,7 +254,6 @@ void deplacer_hero(hero *h, SDL_Event event)
 			}
 			if (h->state == WALK_RIGHT || h->state == WALK_LEFT)
 				h->state = IDLE;
-			
 		}
 		timeAccumulatedMs -= timeStepMs;
 	}
