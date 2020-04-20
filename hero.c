@@ -2,6 +2,12 @@
 
 void initialiser_hero(hero *h, char name[20])
 {
+	if (TTF_Init() == -1)
+    {
+        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+        exit(EXIT_FAILURE);
+    }
+
 	char image_load[40] = "";
 	char score_str[10]="";
 	h->position.x = 0;
@@ -55,6 +61,11 @@ void initialiser_hero(hero *h, char name[20])
 
 void afficher_hero(hero h, SDL_Surface *screen)
 {
+	if (TTF_Init() == -1)
+    {
+        fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
+        exit(EXIT_FAILURE);
+    }
 	char score_str[10];
 	SDL_BlitSurface(h.sprite.image, &h.sprite.frame, screen, &h.position);
 	SDL_BlitSurface(h.vie_hero.heart, NULL, screen, &h.vie_hero.position_heart_a);
