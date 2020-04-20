@@ -7,6 +7,9 @@
 #include "SDL/SDL_mixer.h"
 #include "SDL/SDL_ttf.h"
 
+#include "structs.h"
+#include "background.h"
+
 #include "defs.h"
 
 typedef enum State
@@ -65,7 +68,7 @@ typedef struct Hero
 } hero;
 
 void initialiser_hero(hero *h, char name[20]);
-void deplacer_hero(hero *h, SDL_Event event);
+void deplacer_hero(hero *h, background *b,int *Jcontinuer);
 void animer_hero(hero *h, state movement);
 void afficher_hero(hero h, SDL_Surface *screen);
 void free_hero(hero *h);
