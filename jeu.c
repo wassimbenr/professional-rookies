@@ -21,7 +21,7 @@ void jeu(SDL_Surface *ecran, etat *etat) //etat
 	initenigme(&enigme_m);
 	SDL_Event event;
 
-	SDL_EnableKeyRepeat(2, 2);
+	
 	int nb = 0;
 	while (Jcontinuer)
 	{
