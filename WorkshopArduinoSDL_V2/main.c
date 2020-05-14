@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
     }
     //input from arduino
     arduinoReadData(&x);
-    received = x;
+    received=x;
     switch (received)
     {
     case 0:
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
     SDL_BlitSurface(barriere, NULL, screen, &posbarriere1);
     SDL_BlitSurface(barriere, NULL, screen, &posbarriere2);
     SDL_Flip(screen);
-    printf("\nReceived from Arduino :%d ", received);
+    printf("\nReceived from Arduino :%d ",received);
   }
 
   SDL_FreeSurface(pomme);
