@@ -1,6 +1,6 @@
 #include "hero.h"
 #include "background.h"
-#include "colision.h"
+#include "collision.h"
 
 void initialiser_hero(hero *h, char name[20])
 {

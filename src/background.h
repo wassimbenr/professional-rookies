@@ -32,13 +32,16 @@ typedef struct Text
 	SDL_Color color;
 }text;
 
+//background
 void scrolling(background *b, SDL_Event event);
 void initialiser_background(background *b);
 void afficher_background(background *b, SDL_Surface *screen);
 void free_background(background *b);
+//platforme
 void initialiser_platforme(platforme *p, int x, int y);
 void animer_platforme(platforme *p);
 void afficher_platforme(platforme p, background b, SDL_Surface *ecran);
+//texte
 void initialiser_text(text *i,char message[40],int x,int y,int size);
 void afficher_text(text i,background b,SDL_Surface *ecran);
 #endif

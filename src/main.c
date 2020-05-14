@@ -1,7 +1,7 @@
 #include "background.h"
 #include "entite_secondaire.h"
 #include "hero.h"
-#include "colision.h"
+#include "collision.h"
 #include "enigme.h"
 #include "menu.h"
 #include "structs.h"
@@ -37,9 +37,9 @@ void main()
             menu(screen, &etat, &parameter);
             break;
         case GAME:
-            jeu(screen, &etat, safwen, &parameter, c,background);
+            jeu(screen, &etat, safwen, &parameter, c, background);
             break;
-        case SETTINGS:
+        case SETTING:
             settings(screen, &parameter, &etat);
             break;
         case GAME_OVER:

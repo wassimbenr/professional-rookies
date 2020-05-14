@@ -10,7 +10,7 @@
 typedef enum etat
 {
     MENU,
-    SETTINGS,
+    SETTING,
     GAME,
     ENIGME,
     GAME_OVER,

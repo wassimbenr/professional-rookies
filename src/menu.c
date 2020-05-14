@@ -99,14 +99,14 @@ void game_load(hero *h, background *b, etat *etat, SDL_Surface *screen, paramete
 	position_character_choice.h = SCREEN_HEIGHT;
 
 	SDL_Surface *cont = IMG_Load("../img/menu/buttons/continue.png");
-	SDL_Rect positionPlay;
-	positionPlay.x = 227;
-	positionPlay.y = 219;
+	SDL_Rect pos_continue;
+	pos_continue.x = 227;
+	pos_continue.y = 219;
 
 	SDL_Surface *new_game = IMG_Load("../img/menu/buttons/new_game.png");
-	SDL_Rect positionSettings;
-	positionSettings.x = 227;
-	positionSettings.y = 264;
+	SDL_Rect pos_new_game;
+	pos_new_game.x = 227;
+	pos_new_game.y = 264;
 
 	SDL_Surface *back = IMG_Load("../img/menu/buttons/back.png");
 	SDL_Rect pos_back;
@@ -182,11 +182,11 @@ void game_load(hero *h, background *b, etat *etat, SDL_Surface *screen, paramete
 				}
 				break;
 			case SDL_MOUSEMOTION:
-				if (event.motion.x > positionPlay.x && event.motion.x < positionPlay.x + cont->w && event.motion.y > positionPlay.y && event.motion.y < positionPlay.y + cont->h)
+				if (event.motion.x > pos_continue.x && event.motion.x < pos_continue.x + cont->w && event.motion.y > pos_continue.y && event.motion.y < pos_continue.y + cont->h)
 				{
 					cont = IMG_Load("../img/menu/buttons/continue_active.png");
 				}
-				else if (event.motion.x > positionSettings.x && event.motion.x < positionSettings.x + new_game->w && event.motion.y > positionSettings.y && event.motion.y < positionSettings.y + new_game->h)
+				else if (event.motion.x > pos_new_game.x && event.motion.x < pos_new_game.x + new_game->w && event.motion.y > pos_new_game.y && event.motion.y < pos_new_game.y + new_game->h)
 				{
 					new_game = IMG_Load("../img/menu/buttons/new_game_active.png");
 				}
@@ -204,13 +204,13 @@ void game_load(hero *h, background *b, etat *etat, SDL_Surface *screen, paramete
 			case SDL_MOUSEBUTTONUP:
 				if (event.button.button == SDL_BUTTON_LEFT)
 				{
-					if (event.motion.x > positionPlay.x && event.motion.x < positionPlay.x + cont->w && event.motion.y > positionPlay.y && event.motion.y < positionPlay.y + cont->h)
+					if (event.motion.x > pos_continue.x && event.motion.x < pos_continue.x + cont->w && event.motion.y > pos_continue.y && event.motion.y < pos_continue.y + cont->h)
 					{
 						load_game(h, b, c);
 						*etat = GAME;
 						continuer = 0;
 					}
-					else if (event.motion.x > positionSettings.x && event.motion.x < positionSettings.x + new_game->w && event.motion.y > positionSettings.y && event.motion.y < positionSettings.y + new_game->h)
+					else if (event.motion.x > pos_new_game.x && event.motion.x < pos_new_game.x + new_game->w && event.motion.y > pos_new_game.y && event.motion.y < pos_new_game.y + new_game->h)
 					{
 						*etat = CHARACTER;
 						continuer = 0;
@@ -225,49 +225,31 @@ void game_load(hero *h, background *b, etat *etat, SDL_Surface *screen, paramete
 			}
 		}
 		SDL_BlitSurface(character_choice, NULL, screen, &position_character_choice);
-		SDL_BlitSurface(cont, NULL, screen, &positionPlay);
-		SDL_BlitSurface(new_game, NULL, screen, &positionSettings);
+		SDL_BlitSurface(cont, NULL, screen, &pos_continue);
+		SDL_BlitSurface(new_game, NULL, screen, &pos_new_game);
 		SDL_BlitSurface(back, NULL, screen, &pos_back);
 		SDL_Flip(screen);
 	}
 }
 
-/*void save_game(hero h, background b, character c)
-{
-	FILE *f = NULL;
-	hero *hero_saved = (hero *)malloc(sizeof(hero));
-
-	*hero_saved = h;
-
-	f = fopen("niveau.bin", "wb");
-	fwrite(hero_saved, sizeof(hero), 1, f);
-
-	if (c==SAFWEN)
-		fprintf(f, "%d %d %d %d %d\n", h.vie_hero.nb_vie, h.score_hero.valeur_score, h.position.x, h.position.y,0);
-	else if (c==OMAR)
-		fprintf(f, "%d %d %d %d %d\n", h.vie_hero.nb_vie, h.score_hero.valeur_score, h.position.x, h.position.y,1);
-	fclose(f);
-}
-void load_game(hero *h, background *b, character *c)
-{
-	FILE *f = NULL;
-	hero *hero_saved = (hero *)malloc(sizeof(hero));
-
-	f = fopen("niveau.bin", "rb");
-
-	fread(hero_saved, sizeof(hero), 1, f);
-
-	*h = *hero_saved;
-	fclose(f);
-}*/
 void save_game(hero h, background b, character c)
 {
 	FILE *f = NULL;
 	f = fopen("niveau.txt", "w");
+	if (f == NULL)
+	{
+		fprintf(stderr, "Failed to open save file\n");
+		exit(EXIT_FAILURE);
+	}
 	if (c == SAFWEN)
 		fprintf(f, "%d %d %d %d %d\n", h.vie_hero.nb_vie, h.score_hero.valeur_score, h.position.x, h.position.y, 0);
 	else if (c == OMAR)
 		fprintf(f, "%d %d %d %d %d\n", h.vie_hero.nb_vie, h.score_hero.valeur_score, h.position.x, h.position.y, 1);
+	if (ferror(f))
+	{
+		fprintf(stderr, "Failed to print to file\n");
+		exit(EXIT_FAILURE);
+	}
 	fclose(f);
 }
 void load_game(hero *h, background *b, character *c)
@@ -275,6 +257,11 @@ void load_game(hero *h, background *b, character *c)
 	int i;
 	FILE *f = NULL;
 	f = fopen("niveau.txt", "r");
+	if (f == NULL)
+	{
+		fprintf(stderr, "Failed to open load file\n");
+		exit(EXIT_FAILURE);
+	}
 	initialiser_hero(h, "safwen");
 
 	initialiser_background(b);
@@ -285,22 +272,20 @@ void load_game(hero *h, background *b, character *c)
 	else if (i == 1)
 		*c = OMAR;
 	printf("char: %d\n", i);
+	if (ferror(f))
+	{
+		fprintf(stderr, "Failed to print to file\n");
+		exit(EXIT_FAILURE);
+	}
 	fclose(f);
 }
 
-typedef enum Choice
-{
-	SAF,
-	OM,
-	BACK,
-	NO,
-} choice;
 void character_choice(hero *h, etat *etat, SDL_Surface *screen, parameter *p, character *c)
 {
 	SDL_Event event;
 
 	background b;
-	load_game(h,&b,c);
+	//load_game(h, &b, c);
 
 	SDL_Surface *character_choice = SDL_LoadBMP("../img/menu/background/ZEUUN.bmp");
 	SDL_Rect position_character_choice;
@@ -331,8 +316,8 @@ void character_choice(hero *h, etat *etat, SDL_Surface *screen, parameter *p, ch
 	SDL_Rect pos_lock;
 	pos_lock.x = 310;
 	pos_lock.y = 240;
-	printf("score: %d\n",h->score_hero.valeur_score);
-	if (h->score_hero.valeur_score >=  40)
+	printf("score: %d\n", h->score_hero.valeur_score);
+	if (h->score_hero.valeur_score >= 40)
 		lock = NULL;
 
 	int continuer = 1;
@@ -992,24 +977,45 @@ void initialiser_parameters(parameter *p)
 	Mix_PlayMusic(p->music, -1);
 	Mix_VolumeMusic(p->volume);
 }
+
 void menu(SDL_Surface *screen, etat *etat, parameter *p)
 {
+	SDL_Event event;
+
 	SDL_Surface *backgroundP = NULL;
-	SDL_Surface *buttonPlay = NULL, *buttonSettings = NULL, *buttonCredits = NULL, *buttonQuit = NULL, *buttonBonus = NULL, *note = NULL, *loop = NULL;
+	SDL_Surface *note = NULL, *loop = NULL;
 	SDL_Surface *coffeeLogo;
 	SDL_Rect positionCoffeeLogo;
 	SDL_Rect positionBackgroundP;
-	SDL_Rect positionPlay, positionSettings, positionCredits, positionBonus, positionQuit, positionNote, positionLoop;
+	SDL_Rect positionNote, positionLoop;
 
-	SDL_Rect positionText, positionClic;
-	SDL_Color couleurBlanche = {255, 255, 255};
-	TTF_Font *police = NULL;
-	SDL_Surface *texte = NULL;
-	SDL_Event event;
+	SDL_Rect positionClic;
+	text text;
+
+	button buttons[6];
+
+	buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+	buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+	buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+	buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+	buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
+
+	buttons[PLAY].position.x = 227;
+	buttons[PLAY].position.y = 219;
+	buttons[SETTINGS].position.x = 227;
+	buttons[SETTINGS].position.y = 244;
+	buttons[CREDITS].position.x = 227;
+	buttons[CREDITS].position.y = 269;
+	buttons[BONUS].position.x = 227;
+	buttons[BONUS].position.y = 294;
+	buttons[QUIT].position.x = 229;
+	buttons[QUIT].position.y = 319;
+
 	int continuer = 1;
 	int rang = 0;
 	int tempsActuel = 0, tempsPrecedent = 0;
 	int t = 0, ind = 1;
+	int choice;
 
 	int verif = 0;
 
@@ -1018,6 +1024,7 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 		fprintf(stderr, "Erreur d'initialisation de TTF_Init : %s\n", TTF_GetError());
 		exit(EXIT_FAILURE);
 	}
+	initialiser_text(&text, "© 2020 All rights reserved, Professional Rookies", 510, 590, 10);
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
@@ -1031,31 +1038,17 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 
 	backgroundP = SDL_LoadBMP("../img/menu/background/backgroundP.bmp");
 
-	buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-	buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-	buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-	buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-	buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+	buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+	buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+	buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+	buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+	buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 	coffeeLogo = IMG_Load("../img/menu/objects/coffeeLogo1.png");
-	loop = IMG_Load("../img/menu/objects/loop.png");
+	loop = NULL;
 
-	police = TTF_OpenFont("../fonts/angelina.TTF", 15);
-	texte = TTF_RenderText_Blended(police, "© 2020 All rights reserved, Professional Rookies", couleurBlanche);
 	positionBackgroundP.x = 0;
 	positionBackgroundP.y = 0;
 
-	positionPlay.x = 227;
-	positionPlay.y = 219;
-	positionSettings.x = 227;
-	positionSettings.y = 244;
-	positionCredits.x = 227;
-	positionCredits.y = 269;
-	positionBonus.x = 227;
-	positionBonus.y = 294;
-	positionQuit.x = 229;
-	positionQuit.y = 319;
-	positionText.x = screen->w - texte->w - 10;
-	positionText.y = 580;
 	positionCoffeeLogo.x = 500;
 	positionCoffeeLogo.y = 100;
 	positionNote.x = 348;
@@ -1088,15 +1081,15 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 					if (rang == 2)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettingsSelected.png");
-						*etat = SETTINGS;
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettingsSelected.png");
+						*etat = SETTING;
 						continuer = 0;
 						//settings(screen, p);
 					}
 					if (rang == 5)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
-						buttonQuit = IMG_Load("../img/menu/buttons/buttonQuitSelected.png");
+						buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuitSelected.png");
 						continuer = 0;
 						*etat = EXIT;
 					}
@@ -1104,42 +1097,42 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 				case SDLK_DOWN:
 					if (rang == 0)
 					{
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang++;
 					}
 					else if (rang == 1)
 					{
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettingsActive.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettingsActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang++;
 					}
 					else if (rang == 2)
 					{
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-						buttonCredits = IMG_Load("../img/menu/buttons/buttonCreditsActive.png");
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+						buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCreditsActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang++;
 					}
 					else if (rang == 3)
 					{
-						buttonBonus = IMG_Load("../img/menu/buttons/buttonBonusActive.png");
-						buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
+						buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonusActive.png");
+						buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang++;
 					}
 					else if (rang == 4)
 					{
-						buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-						buttonQuit = IMG_Load("../img/menu/buttons/buttonQuitActive.png");
+						buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+						buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuitActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang++;
 					}
 					else if (rang == 5)
 					{
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
-						buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
+						buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang = 1;
 					}
@@ -1147,92 +1140,92 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 				case SDLK_UP:
 					if (rang == 5)
 					{
-						buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
-						buttonBonus = IMG_Load("../img/menu/buttons/buttonBonusActive.png");
+						buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
+						buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonusActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang--;
 					}
 					else if (rang == 4)
 					{
-						buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-						buttonCredits = IMG_Load("../img/menu/buttons/buttonCreditsActive.png");
+						buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+						buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCreditsActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang--;
 					}
 					else if (rang == 3)
 					{
-						buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettingsActive.png");
+						buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettingsActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang--;
 					}
 					else if (rang == 2)
 					{
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang--;
 					}
 					else if (rang == 1)
 					{
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-						buttonQuit = IMG_Load("../img/menu/buttons/buttonQuitActive.png");
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+						buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuitActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang = 5;
 					}
 					else if (rang == 0)
 					{
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
 						Mix_PlayChannel(-1, p->click, 0);
 						rang = 1;
 					}
 				}
 				break;
 			case SDL_MOUSEMOTION:
-				if (event.motion.x > positionPlay.x && event.motion.x < positionPlay.x + buttonPlay->w && event.motion.y > positionPlay.y && event.motion.y < positionPlay.y + buttonPlay->h)
+				if (event.motion.x > buttons[PLAY].position.x && event.motion.x < buttons[PLAY].position.x + buttons[PLAY].image->w && event.motion.y > buttons[PLAY].position.y && event.motion.y < buttons[PLAY].position.y + buttons[PLAY].image->h)
 				{
-					buttonPlay = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
-					buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-					buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-					buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-					buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+					buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlayActive.png");
+					buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+					buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+					buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+					buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 					rang = 1;
 				}
-				else if (event.motion.x > positionSettings.x && event.motion.x < positionSettings.x + buttonSettings->w && event.motion.y > positionSettings.y && event.motion.y < positionSettings.y + buttonSettings->h)
+				else if (event.motion.x > buttons[SETTINGS].position.x && event.motion.x < buttons[SETTINGS].position.x + buttons[SETTINGS].image->w && event.motion.y > buttons[SETTINGS].position.y && event.motion.y < buttons[SETTINGS].position.y + buttons[SETTINGS].image->h)
 				{
-					buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-					buttonSettings = IMG_Load("../img/menu/buttons/buttonSettingsActive.png");
-					buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-					buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-					buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+					buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+					buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettingsActive.png");
+					buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+					buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+					buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 					rang = 2;
 				}
-				else if (event.motion.x > positionCredits.x && event.motion.x < positionCredits.x + buttonCredits->w && event.motion.y > positionCredits.y && event.motion.y < positionCredits.y + buttonCredits->h)
+				else if (event.motion.x > buttons[CREDITS].position.x && event.motion.x < buttons[CREDITS].position.x + buttons[CREDITS].image->w && event.motion.y > buttons[CREDITS].position.y && event.motion.y < buttons[CREDITS].position.y + buttons[CREDITS].image->h)
 				{
-					buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-					buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-					buttonCredits = IMG_Load("../img/menu/buttons/buttonCreditsActive.png");
-					buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-					buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+					buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+					buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+					buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCreditsActive.png");
+					buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+					buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 					rang = 3;
 				}
-				else if (event.motion.x > positionBonus.x && event.motion.x < positionBonus.x + buttonBonus->w && event.motion.y > positionBonus.y && event.motion.y < positionBonus.y + buttonBonus->h)
+				else if (event.motion.x > buttons[BONUS].position.x && event.motion.x < buttons[BONUS].position.x + buttons[BONUS].image->w && event.motion.y > buttons[BONUS].position.y && event.motion.y < buttons[BONUS].position.y + buttons[BONUS].image->h)
 				{
-					buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-					buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-					buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-					buttonBonus = IMG_Load("../img/menu/buttons/buttonBonusActive.png");
-					buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+					buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+					buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+					buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+					buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonusActive.png");
+					buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 					rang = 4;
 				}
-				else if (event.motion.x > positionQuit.x && event.motion.x < positionQuit.x + buttonQuit->w && event.motion.y > positionQuit.y && event.motion.y < positionQuit.y + buttonQuit->h)
+				else if (event.motion.x > buttons[QUIT].position.x && event.motion.x < buttons[QUIT].position.x + buttons[QUIT].image->w && event.motion.y > buttons[QUIT].position.y && event.motion.y < buttons[QUIT].position.y + buttons[QUIT].image->h)
 				{
-					buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-					buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-					buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-					buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-					buttonQuit = IMG_Load("../img/menu/buttons/buttonQuitActive.png");
+					buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+					buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+					buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+					buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+					buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuitActive.png");
 					rang = 5;
 				}
 				else if (event.motion.x > 500 && event.motion.x < 672 && event.motion.y > 400 && event.motion.y < 568)
@@ -1245,11 +1238,11 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 				else
 				{
 
-					buttonPlay = IMG_Load("../img/menu/buttons/buttonPlay.png");
-					buttonSettings = IMG_Load("../img/menu/buttons/buttonSettings.png");
-					buttonCredits = IMG_Load("../img/menu/buttons/buttonCredits.png");
-					buttonBonus = IMG_Load("../img/menu/buttons/buttonBonus.png");
-					buttonQuit = IMG_Load("../img/menu/buttons/buttonQuit.png");
+					buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlay.png");
+					buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettings.png");
+					buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCredits.png");
+					buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonus.png");
+					buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuit.png");
 					note = NULL;
 					loop = NULL;
 					SDL_ShowCursor(SDL_ENABLE);
@@ -1258,38 +1251,38 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 			case SDL_MOUSEBUTTONUP:
 				if (event.button.button == SDL_BUTTON_LEFT)
 				{
-					if (verif == 0 && event.motion.x > positionPlay.x && event.motion.x < positionPlay.x + buttonPlay->w && event.motion.y > positionPlay.y && event.motion.y < positionPlay.y + buttonPlay->h)
+					if (verif == 0 && event.motion.x > buttons[PLAY].position.x && event.motion.x < buttons[PLAY].position.x + buttons[PLAY].image->w && event.motion.y > buttons[PLAY].position.y && event.motion.y < buttons[PLAY].position.y + buttons[PLAY].image->h)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
 						Mix_PauseMusic();
-						buttonPlay = IMG_Load("../img/menu/buttons/buttonPlaySelected.png");
+						buttons[PLAY].image = IMG_Load("../img/menu/buttons/buttonPlaySelected.png");
 						*etat = GAME_LOAD;
 						continuer = 0;
 						verif = 1;
 						Mix_ResumeMusic();
 					}
-					else if (event.motion.x > positionSettings.x && event.motion.x < positionSettings.x + buttonSettings->w && event.motion.y > positionSettings.y && event.motion.y < positionSettings.y + buttonSettings->h)
+					else if (event.motion.x > buttons[SETTINGS].position.x && event.motion.x < buttons[SETTINGS].position.x + buttons[SETTINGS].image->w && event.motion.y > buttons[SETTINGS].position.y && event.motion.y < buttons[SETTINGS].position.y + buttons[SETTINGS].image->h)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
-						buttonSettings = IMG_Load("../img/menu/buttons/buttonSettingsSelected.png");
-						*etat = SETTINGS;
+						buttons[SETTINGS].image = IMG_Load("../img/menu/buttons/buttonSettingsSelected.png");
+						*etat = SETTING;
 						continuer = 0;
 						//settings(screen, p);
 					}
-					else if (event.motion.x > positionCredits.x && event.motion.x < positionCredits.x + buttonCredits->w && event.motion.y > positionCredits.y && event.motion.y < positionCredits.y + buttonCredits->h)
+					else if (event.motion.x > buttons[CREDITS].position.x && event.motion.x < buttons[CREDITS].position.x + buttons[CREDITS].image->w && event.motion.y > buttons[CREDITS].position.y && event.motion.y < buttons[CREDITS].position.y + buttons[CREDITS].image->h)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
-						buttonCredits = IMG_Load("../img/menu/buttons/buttonCreditsSelected.png");
+						buttons[CREDITS].image = IMG_Load("../img/menu/buttons/buttonCreditsSelected.png");
 					}
-					else if (event.motion.x > positionBonus.x && event.motion.x < positionBonus.x + buttonBonus->w && event.motion.y > positionBonus.y && event.motion.y < positionBonus.y + buttonBonus->h)
+					else if (event.motion.x > buttons[BONUS].position.x && event.motion.x < buttons[BONUS].position.x + buttons[BONUS].image->w && event.motion.y > buttons[BONUS].position.y && event.motion.y < buttons[BONUS].position.y + buttons[BONUS].image->h)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
-						buttonBonus = IMG_Load("../img/menu/buttons/buttonBonusSelected.png");
+						buttons[BONUS].image = IMG_Load("../img/menu/buttons/buttonBonusSelected.png");
 					}
-					else if (event.motion.x > positionQuit.x && event.motion.x < positionQuit.x + buttonQuit->w && event.motion.y > positionQuit.y && event.motion.y < positionQuit.y + buttonQuit->h)
+					else if (event.motion.x > buttons[QUIT].position.x && event.motion.x < buttons[QUIT].position.x + buttons[QUIT].image->w && event.motion.y > buttons[QUIT].position.y && event.motion.y < buttons[QUIT].position.y + buttons[QUIT].image->h)
 					{
 						Mix_PlayChannel(-1, p->click, 0);
-						buttonQuit = IMG_Load("../img/menu/buttons/buttonQuitSelected.png");
+						buttons[QUIT].image = IMG_Load("../img/menu/buttons/buttonQuitSelected.png");
 						continuer = 0;
 						*etat = EXIT;
 					}
@@ -1342,25 +1335,115 @@ void menu(SDL_Surface *screen, etat *etat, parameter *p)
 		}
 		//fin animation
 		SDL_BlitSurface(backgroundP, NULL, screen, &positionBackgroundP);
-		SDL_BlitSurface(buttonPlay, NULL, screen, &positionPlay);
-		SDL_BlitSurface(buttonSettings, NULL, screen, &positionSettings);
-		SDL_BlitSurface(buttonBonus, NULL, screen, &positionBonus);
-		SDL_BlitSurface(buttonCredits, NULL, screen, &positionCredits);
-		SDL_BlitSurface(buttonQuit, NULL, screen, &positionQuit);
+		for (choice = 0; choice < 5; choice++)
+		{
+			SDL_BlitSurface(buttons[choice].image, NULL, screen, &buttons[choice].position);
+		}
 		SDL_BlitSurface(coffeeLogo, NULL, screen, &positionCoffeeLogo);
-		SDL_BlitSurface(texte, NULL, screen, &positionText);
+		SDL_BlitSurface(text.text, NULL, screen, &text.position);
 		SDL_BlitSurface(note, NULL, screen, &positionNote);
 		SDL_BlitSurface(loop, NULL, screen, &positionLoop);
 		SDL_Flip(screen);
 	}
 	SDL_FreeSurface(backgroundP);
-	SDL_FreeSurface(buttonPlay);
-	SDL_FreeSurface(buttonCredits);
-	SDL_FreeSurface(buttonSettings);
-	SDL_FreeSurface(buttonBonus);
-	SDL_FreeSurface(buttonQuit);
-	TTF_CloseFont(police);
+	for (choice=0;choice<5;choice++)
+	{
+		SDL_FreeSurface(buttons[choice].image);
+	}
 	TTF_Quit();
-	SDL_FreeSurface(texte);
 	SDL_FreeSurface(loop);
 }
+
+//LOADING FROM BINARY
+/*void save_game(hero h, background b, character c)
+{
+	FILE *f_hero = NULL, *f_background = NULL, *f_character = NULL;
+
+	f_hero = fopen("hero.bin", "wb");
+	if (f_hero == NULL)
+	{
+		fprintf(stderr, "Failed to save hero\n");
+		exit(EXIT_FAILURE);
+	}
+	fwrite(&h, sizeof(hero), 1, f_hero);
+	if (ferror(f_hero))
+	{
+		fprintf(stderr, "no hero saved\n");
+		exit(EXIT_FAILURE);
+	}
+	fclose(f_hero);
+
+	f_background = fopen("background.bin", "wb");
+	if (f_background==NULL)
+	{
+		fprintf(stderr, "Failed to save background\n");
+		exit(EXIT_FAILURE);
+	}
+	fwrite(&b, sizeof(background), 1, f_background);
+	if (ferror(f_background))
+	{
+		fprintf(stderr, "no hero saved\n");
+		exit(EXIT_FAILURE);
+	}
+	fclose(f_background);
+
+	f_character= fopen("character.bin", "wb");
+	if(f_character==NULL)
+	{
+		fprintf(stderr, "Failed to save character\n");
+		exit(EXIT_FAILURE);
+	}
+	fwrite(&h, sizeof(character), 1, f_character);
+	if (ferror(f_character))
+	{
+		fprintf(stderr, "no hero saved\n");
+		exit(EXIT_FAILURE);
+	}
+	fclose(f_character);
+}
+void load_game(hero *h, background *b, character *c)
+{
+	FILE *f_hero = NULL, *f_background = NULL, *f_character = NULL;
+
+	f_hero = fopen("hero.bin", "rb");
+	if (f_hero==NULL)
+	{
+		fprintf(stderr, "Failed to load hero\n");
+		exit(EXIT_FAILURE);
+	}
+	fread(h, sizeof(hero), 1, f_hero);
+	if (ferror(f_hero))
+	{
+		fprintf(stderr, "No hero read\n");
+		exit(EXIT_FAILURE);
+	}
+	fclose(f_hero);
+
+	f_background = fopen("background.bin", "rb");
+	if(f_background==NULL)
+	{
+		fprintf(stderr, "Failed to load background\n");
+		exit(EXIT_FAILURE);
+	}
+	fread(b, sizeof(background), 1, f_hero);
+	if (ferror(f_background))
+	{
+		fprintf(stderr, "No back read\n");
+		exit(EXIT_FAILURE);
+	}
+	fclose(f_background);
+
+	f_character = fopen("character.bin", "rb");
+	if(f_character==NULL)
+	{
+		fprintf(stderr, "Failed to load character\n");
+		exit(EXIT_FAILURE);
+	}
+	fread(c, sizeof(character), 1, f_hero);
+	if (ferror(f_character))
+	{
+		fprintf(stderr, "No character read\n");
+		exit(EXIT_FAILURE);
+	}
+	fclose(f_character);
+}*/

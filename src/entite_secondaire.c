@@ -1,5 +1,5 @@
 #include "entite_secondaire.h"
-#include "colision.h"
+#include "collision.h"
 #include "background.h"
 
 void initialiser_entite(entite *E)

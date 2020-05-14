@@ -1,7 +1,7 @@
 #include "background.h"
 #include "entite_secondaire.h"
 #include "hero.h"
-#include "colision.h"
+#include "collision.h"
 #include "defs.h"
 #include "enigme.h"
 #include "structs.h"
@@ -25,7 +25,7 @@ void jeu(SDL_Surface *ecran, etat *etat, hero safwen, parameter *p, character c,
 	initialiser_pu(&coin_1, 1065, 1460);
 	initialiser_pu(&coin_2, 1696, 1400);
 	initialiser_platforme(&platforme, 1180, 1400);
-	initialiser_text(&instruction_1, "Press the arrow keys to move", 488, 1360, 30);
+	initialiser_text(&instruction_1, "Press the arrow keys to move around", 488, 1360, 30);
 	initialiser_text(&instruction_2, "Press x to punch and c to kick", 1400, 1300, 30);
 	initialiser_text(&game_over_txt, "GAME OVER", SCREEN_WIDTH / 2 - 250, SCREEN_HEIGHT / 2, 90);
 

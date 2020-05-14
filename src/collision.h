@@ -1,5 +1,5 @@
-#ifndef COLISION_H
-#define COLISION_H
+#ifndef COLLISION_H
+#define COLLISION_H
 #include "hero.h"
 #include "entite_secondaire.h"
 #include "defs.h"
