@@ -1,0 +1,7 @@
+<map id="Hero" name="Hero">
+<area shape="rect" id="node2" href="$structSprite.html" title="to load and update the sprite " alt="" coords="5,5,61,32"/>
+<area shape="rect" id="node3" href="$structDirection.html" title="Describe the hero direction. " alt="" coords="85,5,160,32"/>
+<area shape="rect" id="node4" href="$structScore.html" title="For score updating. " alt="" coords="184,5,240,32"/>
+<area shape="rect" id="node5" href="$structVie.html" title="For life parameters. " alt="" coords="289,5,330,32"/>
+<area shape="rect" id="node6" href="$structState.html" title="Describe the hero state. " alt="" coords="367,5,420,32"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="menu.c" name="menu.c">
+<area shape="rect" id="node2" href="$menu_8h_source.html" title="menu.h" alt="" coords="1478,80,1543,107"/>
+<area shape="rect" id="node8" href="$structs_8h_source.html" title="structs.h" alt="" coords="1006,528,1079,555"/>
+<area shape="rect" id="node10" href="$jeu_8h_source.html" title="jeu.h" alt="" coords="1485,155,1536,181"/>
+<area shape="rect" id="node11" href="$background_8h_source.html" title="background.h" alt="" coords="1510,453,1610,480"/>
+<area shape="rect" id="node14" href="$entite__secondaire_8h_source.html" title="entite_secondaire.h" alt="" coords="1809,304,1943,331"/>
+<area shape="rect" id="node15" href="$hero_8h_source.html" title="hero.h" alt="" coords="1573,379,1632,405"/>
+<area shape="rect" id="node13" href="$defs_8h_source.html" title="defs.h" alt="" coords="2125,528,2184,555"/>
+<area shape="rect" id="node16" href="$collision_8h_source.html" title="collision.h" alt="" coords="1731,229,1811,256"/>
+<area shape="rect" id="node17" href="$enigme_8h_source.html" title="enigme.h" alt="" coords="1053,304,1128,331"/>
+<area shape="rect" id="node19" href="$matchsticks_8h_source.html" title="matchsticks.h" alt="" coords="681,304,785,331"/>
+<area shape="rect" id="node21" href="$pendu_8h_source.html" title="pendu.h" alt="" coords="1287,304,1355,331"/>
+</map>

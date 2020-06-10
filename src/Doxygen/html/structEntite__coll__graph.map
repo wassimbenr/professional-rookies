@@ -1,0 +1,4 @@
+<map id="Entite" name="Entite">
+<area shape="rect" id="node2" href="$structType.html" title="the collision type " alt="" coords="5,5,56,32"/>
+<area shape="rect" id="node3" href="$structSprite__entite.html" title="To load the enemy sprite. " alt="" coords="81,5,175,32"/>
+</map>

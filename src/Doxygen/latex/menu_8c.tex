@@ -1,0 +1,70 @@
+\hypertarget{menu_8c}{}\section{menu.\+c File Reference}
+\label{menu_8c}\index{menu.\+c@{menu.\+c}}
+{\ttfamily \#include \char`\"{}menu.\+h\char`\"{}}\newline
+Include dependency graph for menu.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{menu_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{menu_8c_a70ed59adcb4159ac551058053e649640}\label{menu_8c_a70ed59adcb4159ac551058053e649640}} 
+\#define {\bfseries S\+I\+ZE}~100
+\item 
+\mbox{\Hypertarget{menu_8c_a078b6c12f1ac6819cecef90ab5870276}\label{menu_8c_a078b6c12f1ac6819cecef90ab5870276}} 
+\#define {\bfseries T\+I\+ME}~30
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{menu_8c_a729b636b66e172f2a73f519299de6e2f}\label{menu_8c_a729b636b66e172f2a73f519299de6e2f}} 
+void {\bfseries load\+\_\+story\+\_\+intro} (S\+D\+L\+\_\+\+Surface $\ast$tab\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{menu_8c_a371ce9fcdfed59abbaba8741ed34e73c}\label{menu_8c_a371ce9fcdfed59abbaba8741ed34e73c}} 
+void {\bfseries play\+\_\+story\+\_\+intro} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, \hyperlink{structparameter}{parameter} $\ast$p, S\+D\+L\+\_\+\+Surface $\ast$tab\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{menu_8c_a4e6a832cd3270d184078d9e3aed5c5df}\label{menu_8c_a4e6a832cd3270d184078d9e3aed5c5df}} 
+void {\bfseries play\+\_\+credits} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, \hyperlink{structparameter}{parameter} $\ast$p)
+\item 
+\mbox{\Hypertarget{menu_8c_a2fa53544d2918e028d920409ac006b33}\label{menu_8c_a2fa53544d2918e028d920409ac006b33}} 
+unsigned long {\bfseries hash} (const char $\ast$str)
+\item 
+\mbox{\Hypertarget{menu_8c_a3cad762fad61dc22aff682db4bf6fdfd}\label{menu_8c_a3cad762fad61dc22aff682db4bf6fdfd}} 
+char $\ast$ {\bfseries hack} (char pass\mbox{[}$\,$\mbox{]}\mbox{[}20\mbox{]})
+\item 
+\mbox{\Hypertarget{menu_8c_a31e0c6b10c6320803e5bf595a1bab547}\label{menu_8c_a31e0c6b10c6320803e5bf595a1bab547}} 
+void {\bfseries cheat} (S\+D\+L\+\_\+\+Surface $\ast$ecran, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, \hyperlink{structparameter}{parameter} p)
+\item 
+\mbox{\Hypertarget{menu_8c_af563da3c2de3023ad60cced2f9117860}\label{menu_8c_af563da3c2de3023ad60cced2f9117860}} 
+void {\bfseries load\+\_\+intro} (S\+D\+L\+\_\+\+Surface $\ast$tab\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\Hypertarget{menu_8c_ab5deb8be0048e15ac8e371616b2e2c45}\label{menu_8c_ab5deb8be0048e15ac8e371616b2e2c45}} 
+void {\bfseries play\+\_\+intro} (S\+D\+L\+\_\+\+Surface $\ast$tab\mbox{[}$\,$\mbox{]}, S\+D\+L\+\_\+\+Surface $\ast$ecran, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, \hyperlink{structparameter}{parameter} $\ast$p)
+\item 
+\mbox{\Hypertarget{menu_8c_aefdc5add95117daa4fdc1afe5d73bbab}\label{menu_8c_aefdc5add95117daa4fdc1afe5d73bbab}} 
+void {\bfseries game\+\_\+over} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, \hyperlink{structparameter}{parameter} $\ast$p, \hyperlink{structHero}{hero} $\ast$h)
+\item 
+\mbox{\Hypertarget{menu_8c_ad9ed1f3668813696f05c8798ca883d20}\label{menu_8c_ad9ed1f3668813696f05c8798ca883d20}} 
+void \hyperlink{menu_8c_ad9ed1f3668813696f05c8798ca883d20}{game\+\_\+load} (\hyperlink{structHero}{hero} $\ast$h, \hyperlink{structbackground}{background} $\ast$b, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structparameter}{parameter} $\ast$p, \hyperlink{structcharacter}{character} $\ast$c, \hyperlink{structDialogue}{dialogue} $\ast$d)
+\begin{DoxyCompactList}\small\item\em utilise les fonctions load\+\_\+game afin de charger le porgres \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{menu_8c_afc05492e40278012da098c088245405d}\label{menu_8c_afc05492e40278012da098c088245405d}} 
+void \hyperlink{menu_8c_afc05492e40278012da098c088245405d}{save\+\_\+game} (\hyperlink{structHero}{hero} h, \hyperlink{structbackground}{background} b, \hyperlink{structcharacter}{character} c, \hyperlink{structDialogue}{dialogue} d)
+\begin{DoxyCompactList}\small\item\em sauvegarde la position de l\textquotesingle{}hero, sa vie et son score dans un fichier texte et sera appelée dans la boucle du jeu \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{menu_8c_a08601bf96dad12fb62fdfcf47d418731}\label{menu_8c_a08601bf96dad12fb62fdfcf47d418731}} 
+void \hyperlink{menu_8c_a08601bf96dad12fb62fdfcf47d418731}{load\+\_\+game} (\hyperlink{structHero}{hero} $\ast$h, \hyperlink{structbackground}{background} $\ast$b, \hyperlink{structcharacter}{character} $\ast$c, \hyperlink{structDialogue}{dialogue} $\ast$d)
+\begin{DoxyCompactList}\small\item\em utilise le fichier txt de sauvegarde pour charger la position de l\textquotesingle{}hero, sa vie et son score et sera appelée dans l\textquotesingle{}ecran de chargement de l\textquotesingle{}hero \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{menu_8c_ab518680e5cea27a01df167298f2391d0}\label{menu_8c_ab518680e5cea27a01df167298f2391d0}} 
+void \hyperlink{menu_8c_ab518680e5cea27a01df167298f2391d0}{character\+\_\+choice} (\hyperlink{structHero}{hero} $\ast$h, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structparameter}{parameter} $\ast$p, \hyperlink{structcharacter}{character} $\ast$c)
+\begin{DoxyCompactList}\small\item\em permet de choisir le spritesheet a charger au depend du hero choisi (character c) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{menu_8c_aa1ea7eecc48878d8dc47dd824edce9e6}\label{menu_8c_aa1ea7eecc48878d8dc47dd824edce9e6}} 
+void {\bfseries settings} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structparameter}{parameter} $\ast$p, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat})
+\item 
+\mbox{\Hypertarget{menu_8c_aca680b22b8d941e8480504df271df088}\label{menu_8c_aca680b22b8d941e8480504df271df088}} 
+void {\bfseries initialiser\+\_\+parameters} (\hyperlink{structparameter}{parameter} $\ast$p)
+\item 
+\mbox{\Hypertarget{menu_8c_a570f16210fc250b7bdb6ee902c2f7fd7}\label{menu_8c_a570f16210fc250b7bdb6ee902c2f7fd7}} 
+void {\bfseries menu} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structetat}{etat} $\ast$\hyperlink{structetat}{etat}, \hyperlink{structparameter}{parameter} $\ast$p)
+\end{DoxyCompactItemize}

@@ -1,0 +1,17 @@
+Starting program: /home/dhia/Desktop/cinematics/src/game 
+warning: File "/usr/lib/debug/.build-id/8a/980b57d17a1e050e7646f9604e8a96824d3691.debug" has no build-id, file skipped
+warning: File "/usr/lib/debug/.build-id/40/f80fd23b36ba3a7e20f63d615dc1aca83f4262.debug" has no build-id, file skipped
+warning: File "/usr/lib/debug/.build-id/c4/a3637fae9ad715292bf842d2dd0c67893a808a.debug" has no build-id, file skipped
+warning: File "/usr/lib/debug/.build-id/fe/1a1d4c0d3cb818fa7b331ac0490b770e019527.debug" has no build-id, file skipped
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+warning: File "/usr/lib/debug/.build-id/44/0fec8a89a9ccd50a38eed775b993f62a1e7396.debug" has no build-id, file skipped
+warning: File "/usr/lib/debug/.build-id/91/4df134105aa08ac4019b1742afa3c91daccb57.debug" has no build-id, file skipped
+warning: File "/usr/lib/debug/.build-id/25/a8fdae7e299b59445facdde4e02e527024f9f6.debug" has no build-id, file skipped
+[New Thread 0x7fffaaa98700 (LWP 19736)]
+[Thread 0x7fffaaa98700 (LWP 19736) exited]
+[New Thread 0x7fffaaa98700 (LWP 19737)]
+[New Thread 0x7fffaa297700 (LWP 19738)]
+[Thread 0x7fffaaa98700 (LWP 19737) exited]
+[Thread 0x7fffaa297700 (LWP 19738) exited]
+[Inferior 1 (process 19735) exited normally]

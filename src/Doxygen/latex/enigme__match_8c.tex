@@ -1,0 +1,42 @@
+\hypertarget{enigme__match_8c}{}\section{enigme\+\_\+match.\+c File Reference}
+\label{enigme__match_8c}\index{enigme\+\_\+match.\+c@{enigme\+\_\+match.\+c}}
+{\ttfamily \#include \char`\"{}matchsticks.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}background.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hero.\+h\char`\"{}}\newline
+Include dependency graph for enigme\+\_\+match.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{enigme__match_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{enigme__match_8c_ad2aedfd0ef0b4ffd9b1fa83eec18ec8c}\label{enigme__match_8c_ad2aedfd0ef0b4ffd9b1fa83eec18ec8c}} 
+void {\bfseries initialiser\+\_\+text\+\_\+enigme} (\hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$i, char message\mbox{[}40\mbox{]}, int x, int y, int size)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_ac7dfc55563600d252c9b3adfeee59918}\label{enigme__match_8c_ac7dfc55563600d252c9b3adfeee59918}} 
+void {\bfseries afficher\+\_\+text\+\_\+enigme} (\hyperlink{structText__enigme}{text\+\_\+enigme} i, S\+D\+L\+\_\+\+Surface $\ast$ecran, char message\mbox{[}20\mbox{]})
+\item 
+\mbox{\Hypertarget{enigme__match_8c_ac81145beb0b07141617c561c7eba5102}\label{enigme__match_8c_ac81145beb0b07141617c561c7eba5102}} 
+int {\bfseries rand\+\_\+matchs} (int Match\+Count)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_a8df6166b1af575a8af08c1ad6fe4e736}\label{enigme__match_8c_a8df6166b1af575a8af08c1ad6fe4e736}} 
+void {\bfseries Init} (\hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$match\+Text, \hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$Pturn\+Text, \hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$A\+Iturn\+Text, \hyperlink{structMatchstick}{Matchstick} $\ast$match)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_a9f3c14e67cec924709f10cfadba03e5e}\label{enigme__match_8c_a9f3c14e67cec924709f10cfadba03e5e}} 
+void {\bfseries affichage\+\_\+matchs} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structMatchstick}{Matchstick} $\ast$match)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_addef751480273e3fc408417118518f4f}\label{enigme__match_8c_addef751480273e3fc408417118518f4f}} 
+void {\bfseries update\+Text} (S\+D\+L\+\_\+\+Surface $\ast$screen, int turn, \hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$Pturn\+Text, \hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$A\+Iturn\+Text)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_ac00162d87efd3ddb5079ff605571bbef}\label{enigme__match_8c_ac00162d87efd3ddb5079ff605571bbef}} 
+void {\bfseries afficher\+Text} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structText__enigme}{text\+\_\+enigme} matchtext, \hyperlink{structText__enigme}{text\+\_\+enigme} Pturn\+Text, \hyperlink{structText__enigme}{text\+\_\+enigme} A\+Iturn\+Text, int turn)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_a976fe143b8d95318705e426e1b3b0ba3}\label{enigme__match_8c_a976fe143b8d95318705e426e1b3b0ba3}} 
+void {\bfseries game\+\_\+end} (\hyperlink{structMatchstick}{Matchstick} match, int Turn, \hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$Pturn\+Text, \hyperlink{structText__enigme}{text\+\_\+enigme} $\ast$A\+Iturn\+Text, int $\ast$A\+Icontinuer, int $\ast$win)
+\item 
+\mbox{\Hypertarget{enigme__match_8c_ae982e631730163f723d9ad3f4085bb28}\label{enigme__match_8c_ae982e631730163f723d9ad3f4085bb28}} 
+int {\bfseries A\+I\+\_\+enigme} (S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structHero}{hero} $\ast$h)
+\end{DoxyCompactItemize}

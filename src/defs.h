@@ -1,0 +1,14 @@
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
+
+#define SCREEN_WIDTH_GAME 800
+#define SCREEN_HEIGHT_GAME 600
+
+#define SFW 1400
+#define SFH 800
+
+
+#define JUMP_HEIGHT 170
+#define GROUND_LEVEL 465
+#define JUMP_SPEED 5
+

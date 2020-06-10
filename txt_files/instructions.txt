@@ -1,0 +1,7 @@
+Press the arrow keys to move around
+Press X to punch and C to kick
+coins increase your score
+hearts increase your health
+Press TAB to expand the minimap
+Press S to save your progress
+

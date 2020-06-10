@@ -1,0 +1,68 @@
+\hypertarget{hero_8c}{}\section{hero.\+c File Reference}
+\label{hero_8c}\index{hero.\+c@{hero.\+c}}
+{\ttfamily \#include \char`\"{}hero.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}collision.\+h\char`\"{}}\newline
+Include dependency graph for hero.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{hero_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{hero_8c_abd8677bb8e8dd6afd74dfc4ed7ab1311}\label{hero_8c_abd8677bb8e8dd6afd74dfc4ed7ab1311}} 
+void \hyperlink{hero_8c_abd8677bb8e8dd6afd74dfc4ed7ab1311}{initialiser\+\_\+hero} (\hyperlink{structHero}{hero} $\ast$h, char name\mbox{[}20\mbox{]})
+\begin{DoxyCompactList}\small\item\em initalise la position de l\textquotesingle{}hero, sa vie et son score et charge les spritesheets \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{hero_8c_a98c057202ecb96d77238a9e57e25b35b}\label{hero_8c_a98c057202ecb96d77238a9e57e25b35b}} 
+void {\bfseries afficher\+\_\+hero} (\hyperlink{structHero}{hero} h, S\+D\+L\+\_\+\+Surface $\ast$screen, \hyperlink{structbackground}{background} b)
+\item 
+\mbox{\Hypertarget{hero_8c_a70fd82b71fa9dc4f5e19e460df643471}\label{hero_8c_a70fd82b71fa9dc4f5e19e460df643471}} 
+void \hyperlink{hero_8c_a70fd82b71fa9dc4f5e19e460df643471}{animer\+\_\+hero} (\hyperlink{structHero}{hero} $\ast$h, state movement, \hyperlink{structcharacter}{character} c)
+\begin{DoxyCompactList}\small\item\em Anime l\textquotesingle{}hero en utilisant le spritesheet en fonction de son S\+T\+A\+TE. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{hero_8c_a38fde0b313f04acc310571f3ae51605f}\label{hero_8c_a38fde0b313f04acc310571f3ae51605f}} 
+void {\bfseries free\+\_\+hero} (\hyperlink{structHero}{hero} $\ast$h)
+\item 
+\mbox{\Hypertarget{hero_8c_aa2fd5bd8676e74b087a05d79f2e2dea0}\label{hero_8c_aa2fd5bd8676e74b087a05d79f2e2dea0}} 
+void {\bfseries deplacer\+\_\+hero} (\hyperlink{structHero}{hero} $\ast$h, \hyperlink{structbackground}{background} $\ast$b, int $\ast$Jcontinuer, \hyperlink{structcharacter}{character} c, \hyperlink{structplatforme}{platforme} plats\mbox{[}$\,$\mbox{]}, int $\ast$saving, int n, int $\ast$mini)
+\item 
+\mbox{\Hypertarget{hero_8c_a2541472d3a56031307069cd582df9ae3}\label{hero_8c_a2541472d3a56031307069cd582df9ae3}} 
+void {\bfseries initialiser\+\_\+dialogue} (\hyperlink{structDialogue}{dialogue} $\ast$d, S\+D\+L\+\_\+\+Surface $\ast$ecran, \hyperlink{structcharacter}{character} c)
+\item 
+\mbox{\Hypertarget{hero_8c_a651ad824d8e099e0eea0d865854ba7c0}\label{hero_8c_a651ad824d8e099e0eea0d865854ba7c0}} 
+void {\bfseries linear\+\_\+dialogue} (\hyperlink{structDialogue}{dialogue} $\ast$d, S\+D\+L\+\_\+\+Surface $\ast$ecran)
+\item 
+\mbox{\Hypertarget{hero_8c_a4d3fb7d0532b49959c184d0c0bb4e0cb}\label{hero_8c_a4d3fb7d0532b49959c184d0c0bb4e0cb}} 
+void {\bfseries playing\+\_\+dialogue} (\hyperlink{structDialogue}{dialogue} $\ast$d, \hyperlink{structHero}{hero} h, S\+D\+L\+\_\+\+Surface $\ast$ecran, \hyperlink{structtimer}{timer} \hyperlink{structtimer}{timer})
+\item 
+\mbox{\Hypertarget{hero_8c_afb721c8e2b9801994ae44b19790fabe6}\label{hero_8c_afb721c8e2b9801994ae44b19790fabe6}} 
+void {\bfseries afficher\+\_\+dialogue} (\hyperlink{structDialogue}{dialogue} d, S\+D\+L\+\_\+\+Surface $\ast$ecran)
+\item 
+\mbox{\Hypertarget{hero_8c_a216e31a4312808182269cc50f9fc36fc}\label{hero_8c_a216e31a4312808182269cc50f9fc36fc}} 
+void {\bfseries free\+\_\+dialogue} (\hyperlink{structDialogue}{dialogue} $\ast$d)
+\item 
+\mbox{\Hypertarget{hero_8c_ae5d431e456c0fb41b9221a0099af7a8a}\label{hero_8c_ae5d431e456c0fb41b9221a0099af7a8a}} 
+void {\bfseries initialiser\+\_\+minimap} (\hyperlink{structminimap}{minimap} $\ast$m, \hyperlink{structbackground}{background} b, \hyperlink{structHero}{hero} h)
+\item 
+\mbox{\Hypertarget{hero_8c_ac18966a0126b961c04800a3155887149}\label{hero_8c_ac18966a0126b961c04800a3155887149}} 
+void {\bfseries afficher\+\_\+minimap} (\hyperlink{structminimap}{minimap} $\ast$m, \hyperlink{structHero}{hero} h, S\+D\+L\+\_\+\+Surface $\ast$screen, int mini)
+\item 
+\mbox{\Hypertarget{hero_8c_a61f3fa11da6487fcc2e57edc0cecbac9}\label{hero_8c_a61f3fa11da6487fcc2e57edc0cecbac9}} 
+void {\bfseries free\+\_\+minimap} (\hyperlink{structminimap}{minimap} $\ast$m)
+\item 
+\mbox{\Hypertarget{hero_8c_ae2f8decb0a83e4c2a2469df3a783a840}\label{hero_8c_ae2f8decb0a83e4c2a2469df3a783a840}} 
+void {\bfseries initialiser\+\_\+portal} (\hyperlink{structPortal}{portal} $\ast$p)
+\item 
+\mbox{\Hypertarget{hero_8c_ac5f2549b68aeb74f058ab3b508fc727f}\label{hero_8c_ac5f2549b68aeb74f058ab3b508fc727f}} 
+void {\bfseries animer\+\_\+portal} (\hyperlink{structPortal}{portal} $\ast$p)
+\item 
+\mbox{\Hypertarget{hero_8c_a455ef28b1b5c65f43ba7266257b901ec}\label{hero_8c_a455ef28b1b5c65f43ba7266257b901ec}} 
+void {\bfseries afficher\+\_\+portal} (\hyperlink{structPortal}{portal} p, \hyperlink{structbackground}{background} b, \hyperlink{structHero}{hero} h, S\+D\+L\+\_\+\+Surface $\ast$screen)
+\item 
+\mbox{\Hypertarget{hero_8c_a39d809155f2772d9292d090ac8db29f2}\label{hero_8c_a39d809155f2772d9292d090ac8db29f2}} 
+void {\bfseries free\+\_\+portal} (\hyperlink{structPortal}{portal} $\ast$p)
+\item 
+\mbox{\Hypertarget{hero_8c_a1d7d40f603f0e3d6bfbf0aad6257c7da}\label{hero_8c_a1d7d40f603f0e3d6bfbf0aad6257c7da}} 
+void {\bfseries camera\+\_\+pan} (\hyperlink{structbackground}{background} $\ast$b, \hyperlink{structHero}{hero} h, int x, int y, int $\ast$panning, int duree)
+\end{DoxyCompactItemize}
