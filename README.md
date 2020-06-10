@@ -1,9 +1,10 @@
+# Projet-1A
 # professional-rookies
-A video game project by Professional Rookies (ESPRIT Student)
+A video game project by Professional Rookies (ESPRIT Students)
 
-Our team consist of 6 members :
+Our team:
   Wassim Ben romdhane, 
-  Dhia Abdeli, 
+  Dhia Abdelli, 
   Omar Chakchouk, 
   Firas Ben Romdhane, 
   Khalil Sridi, 
